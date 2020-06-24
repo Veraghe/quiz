@@ -3,12 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Questionnaire;
+use App\Entity\Question;
 use App\Form\QuestionnaireType;
+use App\Form\QuestionType;
 use App\Repository\QuestionnaireRepository;
+use App\Repository\ReponseRepository;
+use App\Repository\QuestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/questionnaire")
@@ -18,24 +24,70 @@ class QuestionnaireController extends AbstractController
 
     /**
      * @Route("/", name="questionnaire_index", methods={"GET"})
+     * @param Questionnaire $questionnaire
+     * @return Response
      */
-    public function index(QuestionnaireRepository $questionnaireRepository): Response
+    public function index(QuestionnaireRepository $questionnaireRepository, QuestionRepository $questionRepository): Response
     {
         return $this->render('questionnaire/index.html.twig', [
             'questionnaires' => $questionnaireRepository->findAll(),
+            'questions' => $questionRepository->findAll(),
+        ]);
+    }
+    // /**
+    //  * @Route("/{id}/listeQuestions", name="question_index", methods={"GET"})
+    //  * @param Questionnaire $questionnaire
+    //  * @return Response
+    //  */
+    // public function indexQuestion(Questionnaire $questionnaire): Response
+    // {
+    //     return $this->render('question/index.html.twig',[
+    //         'questionnaire' => $questionnaire,
+    //     ]);
+    // }
+        /**
+     * @Route("/{id}/edit", name="question_edit", methods={"GET","POST"})
+     */
+    public function editQuestion(Request $request, Question $question): Response
+    {
+        $form = $this->createForm(QuestionType::class, $question);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('question_index');
+        }
+
+        return $this->render('question/edit.html.twig', [
+            'question' => $question,
+            'form' => $form->createView(),
         ]);
     }
     //FONCTION: Accueil----------------------------------------------
     /**
-     * @Route("/home", name="home" , methods={"GET"})
+     * @Route("/home/", name="home" , methods={"GET"})
+     * @param Questionnaire $questionnaire
+     * @return Response
      */
-    public function home(QuestionnaireRepository $questionnaireRepository): Response
+    public function home(QuestionnaireRepository $questionnaireRepository, QuestionRepository $questionRepository): Response
     {
         return $this->render('questionnaire/home.html.twig', [
             'questionnaires' => $questionnaireRepository->findAll(),
+            'questions' => $questionRepository->findAll(),
         ]);
     }
-
+    /**
+     * @Route("/{id}/quiz", name="question_quiz", methods={"GET"})
+     * @param Questionnaire $questionnaire
+     * @return Response
+     */
+    public function quiz(Questionnaire $questionnaire): Response
+    {
+       return $this->render('question/quiz.html.twig',[
+           'questionnaire' => $questionnaire,
+        ]);
+    }
 
     /**
      * @Route("/new", name="questionnaire_new", methods={"GET","POST"})
@@ -61,7 +113,7 @@ class QuestionnaireController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="questionnaire_show", methods={"GET"})
+     * @Route("/{id}/show", name="questionnaire_show", methods={"GET"})
      */
     public function show(Questionnaire $questionnaire): Response
     {

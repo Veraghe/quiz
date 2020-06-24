@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateur{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Utilisateur</h1>
+
+    <table class="table">
+        <thead class="orange">
+            <tr>
+                <th class="flexP">Id</th>
+                <th >Nom</th>
+                <th >Prénom</th>
+                <th class="flexG">Email</th>
+                <th class="flexG">Roles</th>
+                <th class="flexP">Score</th>
+                {# <th>Password</th> #}
+                <th class="flexP"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for utilisateur in utilisateurs %}
+            <tr>
+                <td class="flexP">{{ utilisateur.id }}</td>
+                <td >{{ utilisateur.nom }}</td>
+                <td >{{ utilisateur.prenom }}</td>
+                <td class="flexG">{{ utilisateur.email }}</td>
+                <td class="flexG">{{ utilisateur.roles ? utilisateur.roles|json_encode : '' }}</td>
+                 <td class="flexP">{{ utilisateur.score }}</td>
+                {# <td ><div class="scroll">{{ utilisateur.password }}</div></td> #}
+                <td class="flexP">
+                    <a href="{{ path('utilisateur_show', {'id': utilisateur.id}) }}"><i class="far fa-eye"></i></a>
+                    <a href="{{ path('utilisateur_edit', {'id': utilisateur.id}) }}"><i class="far fa-edit"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="centerbtn">
+        <a href="{{ path('utilisateur_new') }}" class="btn bleu">Ajouter</a>
+        <a href="{{ path('admin') }}" class="btn orange">Retour</a>
+    </div>
+</div>
+{% endblock %}

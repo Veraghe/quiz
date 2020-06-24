@@ -1,37 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reponse index{% endblock %}
+{% block title %}Réponse {% endblock %}
 
 {% block body %}
-    <h1>Reponse index</h1>
-
+    <h1>Réponse</h1>
     <table class="table">
-        <thead>
+        <thead class="orange">
             <tr>
-                <th>Id</th>
+                <th class="flexP">Id</th>
                 <th>LibelleReponse</th>
-                <th>ValeurReponse</th>
-                <th>actions</th>
+                <th class="flexP">Valeur</th>
+                <th class="flexP"></th>
             </tr>
         </thead>
         <tbody>
+
         {% for reponse in reponses %}
             <tr>
-                <td>{{ reponse.id }}</td>
+                <td class="flexP">{{ reponse.id }}</td>
                 <td>{{ reponse.libelleReponse }}</td>
-                <td>{{ reponse.valeurReponse }}</td>
-                <td>
-                    <a href="{{ path('reponse_show', {'id': reponse.id}) }}">show</a>
-                    <a href="{{ path('reponse_edit', {'id': reponse.id}) }}">edit</a>
+                <td class="flexP">{{ reponse.valeurReponse }}</td>
+                <td class="flexP">
+                    {# <a href="{{ path('reponse_show', {'id': reponse.id}) }}"><i class="far fa-eye"></i></a> #}
+                    <a href="{{ path('reponse_edit', {'id': reponse.id}) }}"><i class="far fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="4">Aucune réponse trouvée</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('reponse_new') }}">Create new</a>
+    <div class="centerbtn">
+        <a href="{{ path('reponse_new') }}" class="btn bleu">Ajouter</a>
+        {# {% for questionnaire in questionnaires %} #}
+            <a href="{{ path('question_index', {'id': questions}) }}" class="btn orange">Retour</a>
+        {# {% endfor %} #}
+    </div>
 {% endblock %}

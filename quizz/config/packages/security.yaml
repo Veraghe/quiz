@@ -1,7 +1,16 @@
 security:
+    # enable_authenticator_manager: true
+    encoders:
+        App\Entity\Utilisateur:
+            algorithm: auto
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\Utilisateur
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -9,7 +18,14 @@ security:
         main:
             anonymous: true
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -21,4 +37,16 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # - { path: ^/questionnaire/home, roles: ROLE_USER }
+        
+        # # but, definitely allow /login to be accessible anonymously
+        # - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # # require the user to fully login to change password
+        # - { path: ^/change-password, roles: IS_AUTHENTICATED_FULLY }
+        # # if you wanted to force EVERY URL to be protected
+        # - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+
+        
+    role_hierarchy:
+        # Un admin hérite des droits d'auteur et d'utilisateur'
+        ROLE_ADMIN:       [ROLE_MEMBRE, ROLE_USER]

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Question;
+use App\Entity\Reponse;
 use App\Form\QuestionType;
 use App\Repository\QuestionRepository;
+use App\Repository\ReponseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +19,17 @@ class QuestionController extends AbstractController
 {
     /**
      * @Route("/", name="question_index", methods={"GET"})
+     * @param Question $question
+     * @return Response
      */
-    public function index(QuestionRepository $questionRepository): Response
+    public function index(QuestionRepository $questionRepository, ReponseRepository $reponseRepository, Request $request): Response
     {
-        return $this->render('question/index.html.twig', [
-            'questions' => $questionRepository->findAll(),
+        // dump($request->query->get('id'));
+        $question = $questionRepository->findBy(['Questionnaire' => $request->query->get('id')]);
+         
+        return $this->render('question/index.html.twig',[
+            'questions' => $question,
+            'reponses' => $reponseRepository->findAll(),
         ]);
     }
 
@@ -51,10 +59,11 @@ class QuestionController extends AbstractController
     /**
      * @Route("/{id}", name="question_show", methods={"GET"})
      */
-    public function show(Question $question): Response
+    public function show(Question $question, ReponseRepository $reponseRepository,  QuestionRepository $questionRepository, Request $request): Response
     {
         return $this->render('question/show.html.twig', [
             'question' => $question,
+            'reponses' => $reponseRepository->findAll(),
         ]);
     }
 

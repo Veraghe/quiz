@@ -35,6 +35,12 @@ class Question
      */
     private $reponses;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Questionnaire::class, inversedBy="questions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Questionnaire;
+
     public function __construct()
     {
         $this->reponses = new ArrayCollection();
@@ -68,7 +74,17 @@ class Question
 
         return $this;
     }
+    public function getQuestionnaire(): ?Questionnaire
+    {
+        return $this->Questionnaire;
+    }
 
+    public function setQuestionnaire(?Questionnaire $Questionnaire): self
+    {
+        $this->Questionnaire = $Questionnaire;
+
+        return $this;
+    }
     /**
      * @return Collection|Reponse[]
      */
@@ -99,4 +115,9 @@ class Question
 
         return $this;
     }
+    public function __toString() {
+    return $this->getLibelleQuestion();
+    }
+
+
 }

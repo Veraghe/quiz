@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Question{% endblock %}
+{% block title %}Ajouter une Question{% endblock %}
 
 {% block body %}
-    <h1>Create new Question</h1>
+<div class="center container">
+    <fieldset>
+        <h1>Ajouter une Question</h1>
 
-    {{ include('question/_form.html.twig') }}
+        {{ include('question/_form.html.twig') }}
 
-    <a href="{{ path('question_index') }}">back to list</a>
+        <a href="{{ path('question_index') }}" class="btn orange">Annulez !</a>
+    </fieldset>
+</div>
 {% endblock %}

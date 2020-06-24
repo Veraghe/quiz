@@ -99,7 +99,8 @@ class TypeDeQuestion
 
         return $this;
     }
-    public function _toString(){
-        return $this->getLibelleTypeDeQuestion();
+    
+    public function __toString() {
+    return $this->getLibelleTypeDeQuestion();
     }
 }

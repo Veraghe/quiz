@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un Utilisateur{% endblock %}
+
+{% block body %}
+    <div class="center container">
+        <fieldset>
+
+            {% if app.user %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <h1>Ajouter un Utilisateur</h1>
+                {% endif %}
+            {% else %}
+                <h1>Inscription</h1>
+            {% endif %}
+            
+
+            {{ include('utilisateur/_form.html.twig') }}
+
+            <a href="{{ path('utilisateur_index') }}" class="btn orange">Annulez !</a>
+           </fieldset>
+    </div>
+{% endblock %}

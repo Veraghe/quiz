@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiz{% endblock %}
+
+{% block body %}
+<div class="center container">
+    <div class="ligne">
+        <div class="quiz">
+        <form action="" method="post">
+            {# S'il est connecté on récupère son Nom d'utilisateur, aussi non on demande le nom et prénom  #}
+            {% if app.user %}
+                <input type="text" placeholder="Nom" value="{{ app.user.username }}" hidden>
+            {% else %}
+            <div class="gauche quiz_identifiant">
+                <div>
+                    <label for="nom">Nom :</label>
+                    <input type="text"  name="nom" required >
+                </div>
+                <div>
+                    <label for="nom">Prénom :</label>
+                    <input type="text"  name="prenom" required>
+                </div>
+            </div>
+            {% endif %}
+
+
+            {% for question in questionnaire.questions %}
+                <div class="titreQuiz">
+                    <h2>{{ question.libelleQuestion}}</h2> 
+                </div>
+                
+                    {% for reponse in question.reponses %}
+                        {% if {'id' : reponse.question}=={'id' : question.libelleQuestion} %} 
+                            <div class="reponseQuiz">
+                            {# Afficher le bon type de Input selon la question #}
+                             {% if question.typeDeQuestion =='radio' %}
+                                <input type="radio" name="reponses" id="{{reponse.libelleReponse}}" value="{{reponse.libelleReponse}}">
+                                <label for="{{reponse.libelleReponse}}">{{reponse.libelleReponse}}</label>
+                             {% else %}   
+                                <input type="checkbox" name="reponses" id="{{reponse.libelleReponse}}" value="{{reponse.libelleReponse}}">
+                                <label for="{{reponse.libelleReponse}}">{{reponse.libelleReponse}}</label>
+                            {% endif %}
+                            </div> 
+                        {% endif %}
+                    {% endfor %}
+                
+            {% else %}
+                    <p>Il n'y a pas de question &#128546;</p>
+            {% endfor %}
+                <input class="btn orange" type="submit" value="Valider">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

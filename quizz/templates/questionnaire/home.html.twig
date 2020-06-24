@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}1.Questionnaire{% endblock %}
+{% block title %}Questionnaire{% endblock %}
 
 {% block body %}
-<div class="center">
+<div class="center container">
     <h1>Questionnaire </h1>
     <div class="blocs">
         {% for questionnaire in questionnaires %}
             <!--Liens doit mener aux questions du questionnaire !!!-->
-            <a href="{{ path('question_index', {'id': questionnaire.id}) }}" class="vert btnBloc">
+            <a href="{{ path('question_quiz', {'id': questionnaire.id}) }}" class="vert btnBloc">
                 <div class="bloc">
                     <h3>{{ questionnaire.libelleQuestionnaire }}</h3>
                 </div>

@@ -1,4 +1,9 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+    {{ form_row(form.Questionnaire)}}
+    {{ form_row(form.libelleQuestion)}}
+    {{ form_row(form.typeDeQuestion)}}
+    
+
+    <button class="btn vert">{{ button_label|default('Valider') }}</button>
 {{ form_end(form) }}

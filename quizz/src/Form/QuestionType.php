@@ -14,6 +14,7 @@ class QuestionType extends AbstractType
         $builder
             ->add('libelleQuestion')
             ->add('typeDeQuestion')
+            ->add('Questionnaire')
         ;
     }
 

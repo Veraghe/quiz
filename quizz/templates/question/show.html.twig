@@ -3,24 +3,46 @@
 {% block title %}Question{% endblock %}
 
 {% block body %}
-    <h1>Question</h1>
+    <div class="center container voir">
+        <fieldset>
+            <h1>Question</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ question.id }}</td>
-            </tr>
-            <tr>
-                <th>LibelleQuestion</th>
-                <td>{{ question.libelleQuestion }}</td>
-            </tr>
-        </tbody>
-    </table>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ question.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Question</th>
+                        <td>{{ question.libelleQuestion }}</td>
+                    </tr>
+                    <tr>
+                        <th>Réponse(s) :</th>
+                    </tr>
+                    {# afficher les réponses à la question part rapport à son ID #}
+                    {% for reponse in reponses %}
+                        {% if {'id' : reponse.question}=={'id' : question.libelleQuestion} %}
+                            {# afficher uniquement les bonnes réponses #}
+                            {% if reponse.valeurReponse == 1 %}
+                                <tr>
+                                    <td>{{ reponse.libelleReponse }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endif %} 
+                    {% else %}
+                     <tr>
+                        <td colspan="3">Aucune réponse trouvée</td>
+                    </tr>
+                   {% endfor %} 
+                    
+                </tbody>
+            </table>
 
-    <a href="{{ path('question_index') }}">back to list</a>
+            <a href="{{ path('question_index',{'id': question}) }}" class="btn orange">Retour</a>
 
-    <a href="{{ path('question_edit', {'id': question.id}) }}">edit</a>
+            <a href="{{ path('question_edit', {'id': question.id}) }}" class="btn vert">Modifier</a>
 
-    {{ include('question/_delete_form.html.twig') }}
+        </fieldset>
+    </div>
 {% endblock %}
