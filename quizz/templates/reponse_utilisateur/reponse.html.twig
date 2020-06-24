@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réponse{% endblock %}
+
+{% block body %}
+    <div class="container">
+    {% if is_granted('ROLE_ADMIN') %}
+        <h1>Réponse </h1>
+    {% endif %} 
+
+    <table class="table">
+        <thead class="orange">
+            <tr>
+                <th>Utilisateur</th>
+                {# <th>Question</th>
+                <th>Réponse</th>
+                <th class="flexP">Valeur</th> #}
+                <th class="flexP"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for utilisateur in utilisateurs %}
+            <tr>
+                <td >{{ utilisateur.nom ~ "  " ~ utilisateur.prenom }}</td>
+                {# {% for reponse in reponses %}
+                <td >{{ reponse.question }}</td>
+                <td >{{ reponse.libelleReponse }}</td>
+                <td class="flexP">{{ reponse.valeurReponse }}</td>
+                {% endfor %} #}
+                <td class="flexP">
+                    <a href="{{ path('utilisateur_show', {'id': utilisateur.id}) }}"><i class="far fa-eye"></i></a>
+                    <a href="{{ path('utilisateur_edit', {'id': utilisateur.id}) }}"><i class="far fa-edit"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="centerbtn">
+        <a href="{{ path('admin') }}" class="btn orange">Retour</a>
+    </div>
+</div>
+{% endblock %}

@@ -38,16 +38,4 @@ class AdminController extends AbstractController
     $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
     }
 
-    /**
-     * @Route("/reponseUtilisateur", name="reponse_utilisateur")
-     */
-    public function reponse()
-    {
-        return $this->render('admin/reponse.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
-    }
-
-
-
 }
