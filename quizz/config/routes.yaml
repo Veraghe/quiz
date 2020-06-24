@@ -1,0 +1,8 @@
+#index:
+  #  path: /
+  #  controller: App\Controller\DefaultController::index
+
+# config/routes.yaml
+index:
+    path: /
+    defaults: { _controller: 'App\Controller\QuestionnaireController::home' }

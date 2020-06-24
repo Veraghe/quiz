@@ -1,0 +1,39 @@
+{%  extends 'base.html.twig' %}
+
+{# Pour utiliser les fonctionnalités de Bootstrap : #}
+{% form_theme formLivre 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+    <h1>Création d'un livre</h1>
+
+    {# {{ form(formLivre)}} #} <!--Afficher tous le formulaire avec twig-->
+
+    {{ form_start(formLivre) }} <!--Personnaliser mon formulaire (ajouter des éléments et des attributs HTML)-->
+    <!-- Formulaire basique -->
+    {# <div class="form-group">
+        <label for="">Titre</label>
+        {{ form_widget(formLivre.titre) }}
+    </div>
+
+    <div class="form-group">
+        <label for="">Auteur</label>
+        {{ form_widget(formLivre.auteur) }}
+    </div>
+
+    <div class="form-group">
+        <label for="">Catégorie</label>
+        {{ form_widget(formLivre.categorie) }}
+    </div>
+
+    <div class="form-group">
+        <label for="">Description</label>
+        {{ form_widget(formLivre.description) }}
+    </div> #}
+    {{ form_widget(formLivre)}}
+
+    {{ form_end(formLivre)}}
+    
+
+
+{% endblock %}

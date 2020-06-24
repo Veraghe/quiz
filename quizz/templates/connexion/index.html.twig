@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ConnexionController!{% endblock %}
+
+{% block body %}
+
+<div class="center">
+    <div class="ligne">
+        <div class="gauche">
+        <h1>Connexion</h1>
+            <form action="" method="">
+                <label for="login">Identifiant :</label>
+                <input type="text" name="login">
+
+                <label for="password">Mot de passe :</label>
+                <input type="password" name="password">
+                <button class="btn bleu">{{ button_label|default('Valider') }}</button>
+            </form>
+            <a href="{{ path('membre_new') }}" class="btn vert">Inscris-toi !</a>
+        </div>
+        <div class="droite">
+            <h4>Bienvenue</h4>
+            <p>Connecte-toi  si tu es membre ou si tu n'as pas de compte inscris-toi !</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

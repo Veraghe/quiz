@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Questionnaire{% endblock %}
+
+{% block body %}
+<div class="center">
+<h1>Questionnaire</h1>
+    <div class="blocs">
+    
+        {% for questionnaire in questionnaires %}
+        <div class="blocAdmin">
+        <!--liens vers les questions du formulaire-->
+            <a href="{{ path('question_index', {'id': questionnaire.id}) }}" class="orange">
+                    <h3>{{ questionnaire.libelleQuestionnaire }}</h3>
+            </a>
+                <div class="action">
+                        <a href="{{ path('questionnaire_show', {'id': questionnaire.id}) }}"><i class="far fa-eye"></i></a>
+                        <a href="{{ path('questionnaire_edit', {'id': questionnaire.id}) }}"><i class="far fa-edit"></i></a>         
+                </div>
+           </div>
+        {% else %}
+                <p>Il n'y a pas de questionnaire &#128546;</p>
+        {% endfor %}
+    </div>
+    <div class="centerbtn">
+        <a href="{{ path('questionnaire_new') }}" class="btn bleu">Ajouter</a>
+        <a href="{{ path('admin') }}" class="btn orange">Retour</a>
+    </div>
+</div>
+    
+
+    
+   
+{% endblock %}

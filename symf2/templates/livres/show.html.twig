@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livres{% endblock %}
+
+{% block body %}
+<section class="jumbotron">
+    <h1>Livres</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ livre.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ livre.titre }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ livre.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('livres_index') }}">retour à la liste</a>
+
+    <a href="{{ path('livres_edit', {'id': livre.id}) }}">modifier</a>
+
+    {{ include('livres/_delete_form.html.twig') }}
+    </section>
+{% endblock %}

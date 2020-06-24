@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit TypeDeQuestion{% endblock %}
+
+{% block body %}
+    <h1>Edit TypeDeQuestion</h1>
+
+    {{ include('type_de_question/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('type_de_question_index') }}">back to list</a>
+
+    {{ include('type_de_question/_delete_form.html.twig') }}
+{% endblock %}

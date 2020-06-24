@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeDeQuestion{% endblock %}
+
+{% block body %}
+    <h1>TypeDeQuestion</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ type_de_question.id }}</td>
+            </tr>
+            <tr>
+                <th>LibelleTypeDeQuestion</th>
+                <td>{{ type_de_question.libelleTypeDeQuestion }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('type_de_question_index') }}">back to list</a>
+
+    <a href="{{ path('type_de_question_edit', {'id': type_de_question.id}) }}">edit</a>
+
+    {{ include('type_de_question/_delete_form.html.twig') }}
+{% endblock %}

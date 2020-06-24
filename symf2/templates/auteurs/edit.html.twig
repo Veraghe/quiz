@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Auteurs{% endblock %}
+
+{% block body %}
+<section class="jumbotron">
+    <h1>Modifier un Auteur</h1>
+
+    {{ include('auteurs/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('auteurs_index') }}">retour à la liste</a>
+
+    {{ include('auteurs/_delete_form.html.twig') }}
+</section>
+{% endblock %}

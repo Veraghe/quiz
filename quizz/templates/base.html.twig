@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Quizz !{% endblock %}</title>
+        <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/13bc1841db.js" crossorigin="anonymous"></script>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <nav>
+            <div class="centrer nav">
+                <a href="{{ path('home') }}"><img src="{{ asset('images/logo.svg') }}" alt="logo"></a>
+                <div class="espace"></div>
+                <ul>
+                    <li><a href="{{ path('admin') }}"><i class="fas fa-user-alt"></i> Admin</a></li>
+                    <li><a href="{{ path('connexion') }}"><i class="fas fa-user-alt"></i> Connexion</a></li>
+                    <li><a href="{{ path('home') }}"><i class="fas fa-align-justify"></i> Questionnaire</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

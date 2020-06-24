@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Categories{% endblock %}
+
+{% block body %}
+<section class="jumbotron">
+    <h1>Ajouter une Categorie</h1>
+
+    {{ include('categories/_form.html.twig') }}
+
+    <a href="{{ path('categories_index') }}">retour à la liste</a>
+    </section>
+{% endblock %}

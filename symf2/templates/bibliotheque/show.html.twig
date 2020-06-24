@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ livre.titre }}{% endblock %}
+
+{% block body %}
+        <article>
+            <h2>{{ livre.titre }}</h2>
+            <h3>{{ livre.auteur }}</h3>
+            <p>{{ livre.categorie }}</p>
+            <hr>
+            {{ livre.description | raw }} <!--raw: filtre qui marque la valeur comme "sure"!!-->
+           </article>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeDeQuestion index{% endblock %}
+
+{% block body %}
+    <h1>TypeDeQuestion index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>LibelleTypeDeQuestion</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type_de_question in type_de_questions %}
+            <tr>
+                <td>{{ type_de_question.id }}</td>
+                <td>{{ type_de_question.libelleTypeDeQuestion }}</td>
+                <td>
+                    <a href="{{ path('type_de_question_show', {'id': type_de_question.id}) }}">show</a>
+                    <a href="{{ path('type_de_question_edit', {'id': type_de_question.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('type_de_question_new') }}">Create new</a>
+{% endblock %}

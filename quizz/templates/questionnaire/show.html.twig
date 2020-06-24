@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Questionnaire{% endblock %}
+
+{% block body %}
+    <div class="center voir">
+        <fieldset>
+            <h2>Questionnaire</h2>
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ questionnaire.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>LibelleQuestionnaire</th>
+                        <td>{{ questionnaire.libelleQuestionnaire }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a href="{{ path('questionnaire_index') }}"class="btn orange">Retour</a>
+
+            <a href="{{ path('questionnaire_edit', {'id': questionnaire.id}) }}"class="btn vert">Modifier</a>
+
+            {# {{ include('questionnaire/_delete_form.html.twig') }} #}
+
+        </fieldset>
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le Questionnaire{% endblock %}
+
+{% block body %}        
+    <div class="center">
+        <fieldset>
+            <h2>Questionnaire</2>
+            {{ include('questionnaire/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+            {{ include('questionnaire/_delete_form.html.twig') }}
+            
+            <a href="{{ path('questionnaire_index') }}" class="btn orange">Annulez !</a>
+        </fieldset>
+    </div>
+{% endblock %}

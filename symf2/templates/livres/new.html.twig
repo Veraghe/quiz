@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Livres{% endblock %}
+
+{% block body %}
+<section class="jumbotron">
+    <h1>Ajouter un Livre</h1>
+
+    {{ include('livres/_form.html.twig') }}
+
+    <a href="{{ path('livres_index') }}">retour à la liste</a>
+</section>
+{% endblock %}

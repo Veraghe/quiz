@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Auteurs index{% endblock %}
+
+{% block body %}
+<section class="jumbotron">
+    <h1>Gestion des Auteurs</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>LibelleAuteur</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for auteur in auteurs %}
+            <tr>
+                <td>{{ auteur.id }}</td>
+                <td>{{ auteur.LibelleAuteur }}</td>
+                <td>
+                    <a href="{{ path('auteurs_show', {'id': auteur.id}) }}">voir</a>
+                    <a href="{{ path('auteurs_edit', {'id': auteur.id}) }}">modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('auteurs_new') }}">Ajouter un auteur</a>
+    </section>
+{% endblock %}

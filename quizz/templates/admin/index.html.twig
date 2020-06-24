@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion du site{% endblock %}
+
+{% block body %}
+<div class="center">
+    <h1>Gestion du site </h1>
+    <div class="blocs">
+    <a href="{{ path('questionnaire_index') }}" class="orange btnBloc"><div class="bloc"><i class="fas fa-align-justify"></i><h3>Questionnaires</h3></div></a>
+    <a href="{{ path('membre_index') }}" class="orange btnBloc"><div class="bloc"><i class="fas fa-user-alt"></i><h3>Membres</h3></div></a>
+    <a href="" class="orange btnBloc"><div class="bloc"><i class="fas fa-clipboard-list"></i><h3>Réponses</h3></div></a>
+    </div>
+</div>  
+{% endblock %}

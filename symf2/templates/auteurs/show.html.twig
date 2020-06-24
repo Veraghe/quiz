@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Auteurs{% endblock %}
+
+{% block body %}
+<section class="jumbotron">
+    <h1>Auteurs</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ auteur.id }}</td>
+            </tr>
+            <tr>
+                <th>LibelleAuteur</th>
+                <td>{{ auteur.LibelleAuteur }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('auteurs_index') }}">retour à la liste</a>
+
+    <a href="{{ path('auteurs_edit', {'id': auteur.id}) }}">modifier</a>
+
+    {{ include('auteurs/_delete_form.html.twig') }}
+    </section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bibliotheque{% endblock %}
+
+{% block body %}
+    <section class="livres">
+        <div class="container">
+            <div class="row">
+                {% for livre in livres %}<!--Boucle pour afficher tous les livres-->
+                <article class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                    <h3>{{ livre.titre }}</h3>
+                    <h4>{{ livre.auteur }}</h4>
+                    <p>{{ livre.categorie }}</p>
+                    <!--Le lien va vers la route "bibliotheque_show et il recupère l'ID du livre-->
+                    <a href="{{ path('bibliotheque_show', {'id': livre.id}) }}" class="btn btn-primary">Lire la suite</a>
+                    </div>
+                </article>
+                {% endfor %} <!--Fermeture de la boucle-->
+            </div>
+        </div>
+    </section>
+{% endblock %}

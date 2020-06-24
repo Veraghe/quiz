@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Categories{% endblock %}
+
+{% block body %}
+<section class="jumbotron">
+    <h1>Modifier la Categorie</h1>
+
+    {{ include('categories/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    <a href="{{ path('categories_index') }}">retour à la liste</a>
+
+    {{ include('categories/_delete_form.html.twig') }}
+    </section>
+{% endblock %}
