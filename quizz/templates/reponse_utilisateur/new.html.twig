@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ReponseUtilisateur{% endblock %}
+
+{% block body %}
+    <h1>Create new ReponseUtilisateur</h1>
+
+    {{ include('reponse_utilisateur/_form.html.twig') }}
+
+    <a href="{{ path('reponse_utilisateur_index') }}">back to list</a>
+{% endblock %}

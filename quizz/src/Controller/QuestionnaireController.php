@@ -82,7 +82,7 @@ class QuestionnaireController extends AbstractController
      * @param Questionnaire $questionnaire
      * @return Response
      */
-    public function quiz(Questionnaire $questionnaire): Response
+    public function quiz(Questionnaire $questionnaire, Request $request): Response
     {
        return $this->render('question/quiz.html.twig',[
            'questionnaire' => $questionnaire,

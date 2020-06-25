@@ -153,8 +153,10 @@ button{
 }
 div.centerbtn{
     display: flex;
+    flex-direction: row;
     justify-content: center;
 }
+
 .btn{
     font-size: 1em;
     border-radius: 20px;

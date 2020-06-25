@@ -47,7 +47,10 @@
             {% else %}
                     <p>Il n'y a pas de question &#128546;</p>
             {% endfor %}
-                <input class="btn orange" type="submit" value="Valider">
+                <div class="centerbtn">
+                    <input class="btn bleu" type="submit" value="Valider">
+                    <a href="{{ path('home') }}" class="btn orange">Retour</a>
+                </div>
             </form>
         </div>
     </div>
