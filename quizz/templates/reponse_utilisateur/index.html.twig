@@ -1,24 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ReponseUtilisateur index{% endblock %}
+{% block title %}Réponse Utilisateur{% endblock %}
 
 {% block body %}
-    <h1>ReponseUtilisateur index</h1>
+<div class="container">
+    <h1>Réponse Utilisateur</h1>
 
     <table class="table">
-        <thead>
+        <thead class="orange">
             <tr>
                 <th>Id</th>
-                <th>actions</th>
+                <th class="flexG">Utilisateur</th>
+                <th class="flexG">Réponse</th>
+                <th class="flexP"></th>
             </tr>
         </thead>
         <tbody>
         {% for reponse_utilisateur in reponse_utilisateurs %}
             <tr>
                 <td>{{ reponse_utilisateur.id }}</td>
-                <td>
-                    <a href="{{ path('reponse_utilisateur_show', {'id': reponse_utilisateur.id}) }}">show</a>
-                    <a href="{{ path('reponse_utilisateur_edit', {'id': reponse_utilisateur.id}) }}">edit</a>
+                <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
+                <td class="flexG">{{ reponse_utilisateur.Reponse}}</td>
+                <td class="flexP">
+                    {# <a href="{{ path('reponse_utilisateur_show', {'id': reponse_utilisateur.id}) }}"><i class="far fa-eye"></i></a> #}
+                    {# <a href="{{ path('reponse_utilisateur_edit', {'id': reponse_utilisateur.id}) }}"><i class="far fa-edit"></i></a> #}
+                    {{ include('reponse_utilisateur/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
@@ -28,6 +34,9 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('reponse_utilisateur_new') }}">Create new</a>
+    <div class="centerbtn">
+        {# <a href="{{ path('reponse_utilisateur_new') }}">Create new</a> #}
+        <a href="{{ path('admin') }}" class="btn orange">Retour</a>
+        </div>
+    </div>
 {% endblock %}

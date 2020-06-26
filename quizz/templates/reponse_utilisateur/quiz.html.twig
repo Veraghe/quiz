@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiz{% endblock %}
+
+{% block body %}
+    {# {% for question in questionnaire.questions %}
+            <div class="titreQuiz">
+                <h2>{{ question.libelleQuestion}}</h2> 
+            </div>
+        {% else %}
+            <p>Il n'y a pas de question &#128546;</p>
+        {% endfor %} #}
+        
+    
+    {{ form_start(formReponseUtilisateur)}}
+
+        {{ form_row(formReponseUtilisateur.utilisateur, {'attr' : {'placeholder':"Nom et prénom de l\'utilisateur"}}) }}
+        {{ form_row(formReponseUtilisateur.reponse, {'attr' : {'placeholder':"Ici les réponses ..."}}) }}
+        
+        <button type="submit" class="btn bleu">Valider</button>
+
+    {{ form_end(formReponseUtilisateur)}}
+{% endblock %}

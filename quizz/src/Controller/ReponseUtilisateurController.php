@@ -5,10 +5,13 @@ namespace App\Controller;
 use App\Entity\ReponseUtilisateur;
 use App\Form\ReponseUtilisateurType;
 use App\Repository\ReponseUtilisateurRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * @Route("/reponse/utilisateur")
@@ -16,12 +19,34 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReponseUtilisateurController extends AbstractController
 {
     /**
-     * @Route("/", name="reponse_utilisateur_index", methods={"GET"})
+     * @Route("/quiz", name="reponse_utilisateur_index", methods={"GET"})
+     * @param ReponseUtilisateur $reponseUtilisateur
+     * @return Response
      */
     public function index(ReponseUtilisateurRepository $reponseUtilisateurRepository): Response
     {
         return $this->render('reponse_utilisateur/index.html.twig', [
             'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
+        ]);
+    }
+    /**
+     * @Route("/reponseQuiz", name="reponse_utilisateur_quiz")
+     * @param ReponseUtilisateur $reponseUtilisateur
+     * @return Response
+     */
+    public function quiz(Request $request): Response
+    {
+        $quiz= new ReponseUtilisateur();
+
+        $form =$this->createFormBuilder($quiz)
+                    ->add('reponse')
+                    ->add('utilisateur')
+                    ->getForm();
+
+        // $form->handleRequest($request);
+        // dump($quiz);
+        return $this->render('reponse_utilisateur/quiz.html.twig',[
+            'formReponseUtilisateur'=> $form->createView(),
         ]);
     }
 

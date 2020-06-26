@@ -12,5 +12,6 @@
     {{ form_row(form.confirm_password,{'label' : 'Confirmation du mot de passe'})}}
     
     <button class="btn vert">{{ button_label|default('Valider') }}</button>
-{{ form_end(form) }}
+    {# Pour ne pas afficher le role pendant l'inscription : #}
+{# {{ form_end(form) }}  #}
 
