@@ -1,4 +1,15 @@
+{# Form on veut récupérer identifiant de l'utilisateur et ces réponses #}
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {# {{ form_widget(form) }} #}
+
+    {# Utilisateur : - S' il est connecté reprendre son identifiant dans le input #}
+    {#               - En anonyme un input vide, ou il doit compléter son identifiant #}
+    {{ form_row(form.Utilisateur) }}
+
+    {# Afficher les questions avec les réponses #}
+
+    {# Afficher les réponses en type radio ou checkbox #}
+    {{ form_row(form.Reponse) }}
+        
+    <button class="btn bleu">{{ button_label|default('Valider') }}</button>
 {{ form_end(form) }}
