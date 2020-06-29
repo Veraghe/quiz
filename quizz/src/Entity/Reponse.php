@@ -117,6 +117,6 @@ class Reponse
         return $this;
     }
     public function __toString() {
-    return $this->getLibelleReponse()."  ".$this->getValeurReponse();
+    return $this->getLibelleReponse();
     }
 }

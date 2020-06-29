@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Questionnaire;
 use App\Entity\Question;
+use App\Entity\ReponseUtilisateur;
 use App\Form\QuestionnaireType;
 use App\Form\QuestionType;
+use App\Form\ReponseUtilisateurType;
 use App\Repository\QuestionnaireRepository;
 use App\Repository\ReponseRepository;
 use App\Repository\QuestionRepository;
@@ -78,14 +80,27 @@ class QuestionnaireController extends AbstractController
         ]);
     }
     /**
-     * @Route("/{id}/quiz", name="question_quiz", methods={"GET"})
+     * @Route("/{id}/quiz", name="question_quiz", methods={"GET","POST"})
      * @param Questionnaire $questionnaire
      * @return Response
      */
     public function quiz(Questionnaire $questionnaire, Request $request): Response
     {
+        $reponseUtilisateur = new ReponseUtilisateur();
+        $form = $this->createForm(ReponseUtilisateurType::class, $reponseUtilisateur);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($reponseUtilisateur);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('home');
+        }
        return $this->render('question/quiz.html.twig',[
            'questionnaire' => $questionnaire,
+           'reponse_utilisateur' => $reponseUtilisateur,
+            'form' => $form->createView(),
         ]);
     }
 

@@ -5,8 +5,10 @@
 {% block body %}
 <div class="center container">
     <div class="ligne">
-        <div class="quiz">
-        <form action="" method="post">
+        <div class="quiz"> 
+        {{ form_start(form) }}
+            {{ form_row(form.Utilisateur) }}
+            {{ form_row(form.Reponse) }}
             {# S'il est connecté on récupère son Nom d'utilisateur, aussi non on demande le nom et prénom  #}
             {% if app.user %}
                 <input type="text" placeholder="Nom" value="{{ app.user.username }}" hidden>
@@ -48,10 +50,10 @@
                     <p>Il n'y a pas de question &#128546;</p>
             {% endfor %}
                 <div class="centerbtn">
-                    <input class="btn bleu" type="submit" value="Valider">
+                     <button class="btn bleu">{{ button_label|default('Valider') }}</button>
                     <a href="{{ path('home') }}" class="btn orange">Retour</a>
                 </div>
-            </form>
+            {{ form_end(form) }}
         </div>
     </div>
 </div>
