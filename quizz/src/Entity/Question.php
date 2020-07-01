@@ -41,9 +41,15 @@ class Question
      */
     private $Questionnaire;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ReponseUtilisateur::class, mappedBy="Question")
+     */
+    private $reponseUtilisateurs;
+
     public function __construct()
     {
         $this->reponses = new ArrayCollection();
+        $this->reponseUtilisateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -117,6 +123,37 @@ class Question
     }
     public function __toString() {
     return $this->getLibelleQuestion();
+    }
+
+    /**
+     * @return Collection|ReponseUtilisateur[]
+     */
+    public function getReponseUtilisateurs(): Collection
+    {
+        return $this->reponseUtilisateurs;
+    }
+
+    public function addReponseUtilisateur(ReponseUtilisateur $reponseUtilisateur): self
+    {
+        if (!$this->reponseUtilisateurs->contains($reponseUtilisateur)) {
+            $this->reponseUtilisateurs[] = $reponseUtilisateur;
+            $reponseUtilisateur->setQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReponseUtilisateur(ReponseUtilisateur $reponseUtilisateur): self
+    {
+        if ($this->reponseUtilisateurs->contains($reponseUtilisateur)) {
+            $this->reponseUtilisateurs->removeElement($reponseUtilisateur);
+            // set the owning side to null (unless already changed)
+            if ($reponseUtilisateur->getQuestion() === $this) {
+                $reponseUtilisateur->setQuestion(null);
+            }
+        }
+
+        return $this;
     }
 
 

@@ -11,6 +11,7 @@
             <tr>
                 <th>Id</th>
                 <th class="flexG">Utilisateur</th>
+                <th class="flexG">Question</th>
                 <th class="flexG">Réponse</th>
                 <th class="flexP"></th>
             </tr>
@@ -20,6 +21,7 @@
             <tr>
                 <td>{{ reponse_utilisateur.id }}</td>
                 <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
+                <td class="flexG">{{ reponse_utilisateur.Question}}</td>
                 <td class="flexG">{{ reponse_utilisateur.Reponse}}</td>
                 <td class="flexP">
                     {# <a href="{{ path('reponse_utilisateur_show', {'id': reponse_utilisateur.id}) }}"><i class="far fa-eye"></i></a> #}
@@ -29,7 +31,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="2">no records found</td>
+                <td colspan="2">Aucun enregistrement trouvé</td>
             </tr>
         {% endfor %}
         </tbody>

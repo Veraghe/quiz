@@ -29,6 +29,12 @@ class ReponseUtilisateur
      */
     private $Utilisateur;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="reponseUtilisateurs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Question;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,6 +60,18 @@ class ReponseUtilisateur
     public function setUtilisateur(?Utilisateur $Utilisateur): self
     {
         $this->Utilisateur = $Utilisateur;
+
+        return $this;
+    }
+
+    public function getQuestion(): ?Question
+    {
+        return $this->Question;
+    }
+
+    public function setQuestion(?Question $Question): self
+    {
+        $this->Question = $Question;
 
         return $this;
     }

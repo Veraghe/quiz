@@ -7,8 +7,10 @@
     <div class="ligne">
         <div class="quiz"> 
         {{ form_start(form) }}
+            
             {{ form_row(form.Utilisateur) }}
-            {{ form_row(form.Reponse) }}
+            {{ form_widget(form.Question) }}
+            {{ form_widget(form.Reponse) }}
             {# S'il est connecté on récupère son Nom d'utilisateur, aussi non on demande le nom et prénom  #}
             {% if app.user %}
                 <input type="text" placeholder="Nom" value="{{ app.user.username }}" hidden>
@@ -33,14 +35,17 @@
                 
                     {% for reponse in question.reponses %}
                         {% if {'id' : reponse.question}=={'id' : question.libelleQuestion} %} 
-                            <div class="reponseQuiz">
+                            <div class="reponseQuiz"> 
+                            {# {{ form_row(form.Reponse) }} #}
                             {# Afficher le bon type de Input selon la question #}
                              {% if question.typeDeQuestion =='radio' %}
                                 <input type="radio" name="reponses" id="{{reponse.libelleReponse}}" value="{{reponse.libelleReponse}}">
                                 <label for="{{reponse.libelleReponse}}">{{reponse.libelleReponse}}</label>
+                               
                              {% else %}   
                                 <input type="checkbox" name="reponses" id="{{reponse.libelleReponse}}" value="{{reponse.libelleReponse}}">
                                 <label for="{{reponse.libelleReponse}}">{{reponse.libelleReponse}}</label>
+                                
                             {% endif %}
                             </div> 
                         {% endif %}
