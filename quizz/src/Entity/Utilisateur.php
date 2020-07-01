@@ -221,6 +221,6 @@ class Utilisateur implements UserInterface
     }
 
     public function __toString() {
-    return $this->getNom()." ".$this->getPrenom();
+    return $this->getEmail();
     }
 }

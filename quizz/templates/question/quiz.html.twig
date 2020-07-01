@@ -11,32 +11,29 @@
             {{ form_row(form.Utilisateur) }}
             {{ form_widget(form.Question) }}
             {{ form_widget(form.Reponse) }}
+        {{ form_end(form) }}
             {# S'il est connecté on récupère son Nom d'utilisateur, aussi non on demande le nom et prénom  #}
             {% if app.user %}
-                <input type="text" placeholder="Nom" value="{{ app.user.username }}" hidden>
+                <input type="text" placeholder="Email" value="{{ app.user.username }}" hidden>
             {% else %}
             <div class="gauche quiz_identifiant">
                 <div>
-                    <label for="nom">Nom :</label>
-                    <input type="text"  name="nom" required >
-                </div>
-                <div>
-                    <label for="nom">Prénom :</label>
-                    <input type="text"  name="prenom" required>
+                    <label for="email">Email :</label>
+                    <input type="text"  name="email" required >
                 </div>
             </div>
             {% endif %}
 
 
-            {% for question in questionnaire.questions %}
+            {% for key, question in questionnaire.questions %}
                 <div class="titreQuiz">
-                    <h2>{{ question.libelleQuestion}}</h2> 
+                    <h2>{{key+1}} : {{ question.libelleQuestion}}</h2> 
                 </div>
                 
                     {% for reponse in question.reponses %}
+                    {# {{ form_widget(form.Reponse) }} #}
                         {% if {'id' : reponse.question}=={'id' : question.libelleQuestion} %} 
                             <div class="reponseQuiz"> 
-                            {# {{ form_row(form.Reponse) }} #}
                             {# Afficher le bon type de Input selon la question #}
                              {% if question.typeDeQuestion =='radio' %}
                                 <input type="radio" name="reponses" id="{{reponse.libelleReponse}}" value="{{reponse.libelleReponse}}">
@@ -50,7 +47,8 @@
                             </div> 
                         {% endif %}
                     {% endfor %}
-                
+                    {# calculer le nombre de question ! #}
+                {# <p>{{key+1}} / {{ question|length }}</p> #}
             {% else %}
                     <p>Il n'y a pas de question &#128546;</p>
             {% endfor %}
@@ -58,7 +56,7 @@
                      <button class="btn bleu">{{ button_label|default('Valider') }}</button>
                     <a href="{{ path('home') }}" class="btn orange">Retour</a>
                 </div>
-            {{ form_end(form) }}
+           
         </div>
     </div>
 </div>
