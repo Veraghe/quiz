@@ -360,3 +360,20 @@ p{
 .quiz_identifiant div{
     flex: 1;
 }
+
+/* ------------------------------- FOOTER-- */
+footer{
+    background-color: var(--color-bleu);
+    display: flex;
+    justify-content: center;
+    margin-top: 6vw;
+}
+footer img{
+    padding: 1vw 2vw;
+    width: 150px;
+}
+
+
+.container{
+    min-height: 70vh;
+}

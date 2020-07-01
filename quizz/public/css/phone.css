@@ -1,0 +1,124 @@
+/* ------------------------------------------------------------------------- */
+/* ----------------------------------------------MEDIA QUERIES 800---- */
+/* ------------------------------------------------------------------------- */
+
+@media screen and (max-width: 800px) {
+/* ------------------------------- NAV -- */
+    div.nav{
+    height: 100px;
+    }
+    .logo{
+        transform: scale(2.5);
+    }
+    div.nav ul{
+    flex: 5;
+}
+/* ------------------------------- CONNEXION -- */
+    .ligne{
+    flex-direction: column;
+    width: 80vw;
+    border-radius: 20px;
+    border: solid 3px var(--color-bleu-clair);
+    }
+    .gauche{
+        padding: 0 2vw 3vw 2vw;
+
+    }
+    .droite{
+
+        border-radius: 0 0 20px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 4vw 10vw;
+    }
+    .droite p{
+        font-size: 0.8em;
+        text-align: center;
+    }
+/* ---------BLOC ------------------------*/
+    .blocs{
+        flex-wrap: nowrap;
+    }
+/* ------------------------------- QUIZ-- */
+    .titreQuiz h2{
+        font-size: 1.6rem;
+    }
+    .titreQuiz{
+        margin: 4vw 0;
+        padding: 0 1vw;
+    }
+    div.centerbtn{
+        margin: 4vw 0;
+    }
+}
+
+/* ------------------------------------------------------------------------- */
+/* ----------------------------------------------MEDIA QUERIES 600---- */
+/* ------------------------------------------------------------------------- */
+
+@media screen and (max-width: 600px) {
+    .centrer{
+    width: 95vw;
+    }
+    .center {
+        width: 95vw;
+    }
+    h1{
+        margin-bottom: 2vw;
+    }
+/* ------------------------------- CONNEXION -- */
+    .espace{
+        flex: 0;
+    }
+/* ---------BLOC ------------------------*/
+    .blocs{
+        flex-direction: column;
+    }
+    a.btnBloc{
+        width: calc(100% - .5vw);
+    }
+    .blocAdmin{
+         width: calc(100% - .5vw);
+    }
+    fieldset{
+        width: 80vw;
+    }
+    .container{
+        padding: 0;
+    }
+}
+
+
+/* ------------------------------------------------------------------------- */
+/* ----------------------------------------------MEDIA QUERIES 400---- */
+/* ------------------------------------------------------------------------- */
+
+@media screen and (max-width: 400px) {
+
+    .logo{
+        transform: scale(2);
+        padding: 0 2vw 0 8vw ;
+    }
+    div.nav{
+    /* flex-direction: column; */
+    height: 200px;
+    } 
+    div.nav ul{
+    flex: 1;
+    flex-direction: column;
+    padding:  0;
+    }
+    div.nav ul li{
+        padding: 2vw 0;
+    }
+
+/* ---------QUIZ ------------------------*/
+    .reponseQuiz{
+    padding: 1vw 0 1vw 5vw;
+    }   
+    .titreQuiz{
+    padding: 2vw 5vw;
+    }
+}
