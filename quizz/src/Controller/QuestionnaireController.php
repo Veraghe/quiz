@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Questionnaire;
 use App\Entity\Question;
 use App\Entity\ReponseUtilisateur;
+use App\Entity\Utilisateur;
 use App\Form\QuestionnaireType;
 use App\Form\QuestionType;
 use App\Form\ReponseUtilisateurType;
@@ -17,6 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * @Route("/questionnaire")
@@ -103,6 +106,48 @@ class QuestionnaireController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    //     /**
+    //  * @Route("/{id}/quiz", name="question_quiz", methods={"GET","POST"})
+    //  * @param Questionnaire $questionnaire
+    //  * @return Response
+    //  */
+    // public function quiz($id, Questionnaire $questionnaire, Request $request, QuestionRepository $questionRepository): Response
+    // {   
+    //     $question = $questionRepository->findOneBy(['Questionnaire'=>$id]);
+
+    //     // $utilisateur = $this->getUtilisateur();
+
+    //     $reponses =[
+    //         // $question->getReponses() =>'reponse 1',
+    //         // $question->getReponses() =>'reponse 2',
+    //         // $question->getReponses() =>'reponse 3',
+    //         // $question->getReponses() =>'reponse 4'
+    //     ];
+    //     // dump($reponses);
+
+    //     $form = $this->createFormBuilder()
+    //     ->add('reponse', ChoiceType::class,[
+    //         'label'=>$question->getLibelleQuestion(),
+    //         'choices'=>$reponses,
+    //         'expanded'=>true,
+    //         'multiple'=>false,
+    //     ])
+    //     ->getForm();
+
+    //     $form->handleRequest($request);
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $data = $form->getData();
+            
+    //         dump($data);
+    //     }
+
+    //    return $this->render('question/quiz.html.twig',[
+    //        'questionnaire' => $questionnaire,
+    //     //    'reponse_utilisateur' => $reponseUtilisateur,
+    //         'form' => $form->createView(),
+    //     ]);
+    // }
 
     /**
      * @Route("/new", name="questionnaire_new", methods={"GET","POST"})

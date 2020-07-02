@@ -19,6 +19,22 @@ class ReponseUtilisateurRepository extends ServiceEntityRepository
         parent::__construct($registry, ReponseUtilisateur::class);
     }
 
+    public function getReponseForQuestion($question, $utilisateur){
+    // select ru.question_id, ru.utilisateur_id, ru.reponse_id from reponse_utilisateur as ru 
+        $qb = $this->createQueryBuilder('ru')
+            ->join('ru.id_question', 'q')
+            ->join('ru.resultat_id', 'res')
+            ->join('res.utilisateur_id', 'partQuiz')
+            ->join('partQuiz.utilisateur', 'part')
+            ->where('q.id = ?1')
+            ->andWhere('part.id = ?3')
+            ->setParameter(1, $question)
+            ->setParameter(2, $utilisateur)
+            ->getQuery();
+
+        return $qb->getArrayResult();
+    }
+
     // /**
     //  * @return ReponseUtilisateur[] Returns an array of ReponseUtilisateur objects
     //  */

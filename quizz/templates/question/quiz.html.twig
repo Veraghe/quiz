@@ -6,12 +6,13 @@
 <div class="center container">
     <div class="ligne">
         <div class="quiz"> 
-        {{ form_start(form) }}
+        <form action="" method="post">   
+        {# {{ form_start(form) }}
             
             {{ form_row(form.Utilisateur) }}
             {{ form_widget(form.Question) }}
             {{ form_widget(form.Reponse) }}
-        {{ form_end(form) }}
+        {{ form_end(form) }} #}
             {# S'il est connecté on récupère son Nom d'utilisateur, aussi non on demande le nom et prénom  #}
             {% if app.user %}
                 <input type="text" placeholder="Email" value="{{ app.user.username }}" hidden>
@@ -56,7 +57,7 @@
                      <button class="btn bleu">{{ button_label|default('Valider') }}</button>
                     <a href="{{ path('home') }}" class="btn orange">Retour</a>
                 </div>
-           
+           </form>
         </div>
     </div>
 </div>
