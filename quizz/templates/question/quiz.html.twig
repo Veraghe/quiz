@@ -6,12 +6,27 @@
 <div class="center container">
     <div class="ligne">
         <div class="quiz"> 
-         {{ form_start(form) }}
+         {# {{ form_start(form) }}
             
             {{ form_row(form.Utilisateur) }}
             {{ form_widget(form.Question) }}
             {{ form_widget(form.Reponse) }}
-        {{ form_end(form) }}
+        {{ form_end(form) }} #}
+
+        {{ form_start(form2) }}
+            {{ form_row(form2.utilisateur) }}
+
+            {# {% for key, question in questionnaire.questions %}
+                <div class="titreQuiz">
+                    <h2>{{key+1}} : {{ question.libelleQuestion}}</h2> 
+                </div>
+            {% endfor %} #}
+
+                {{ form_widget(form2.reponse) }}
+            
+            {{ form_widget(form2.valider , {'attr': {'class': 'btn bleu'}}) }}
+        {{ form_end(form2) }}
+
         <form action="" method="post">   
 
             {# S'il est connecté on récupère son Nom d'utilisateur, aussi non on demande le nom et prénom  #}

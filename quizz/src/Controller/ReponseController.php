@@ -27,7 +27,7 @@ class ReponseController extends AbstractController
         // dump($request->query->get('id'));
 
         $reponses = $reponseRepository->findBy(['question' => $request->query->get('id')]);
-        // dump($reponses);
+        dump($reponses);
 
         $questions=$questionRepository->findBy(['id' => $request->query->get('id')]);
         // dump($questions[0]->getQuestionnaire()->getId());
