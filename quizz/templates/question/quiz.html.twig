@@ -6,6 +6,7 @@
 <div class="center container">
     <div class="ligne">
         <div class="quiz"> 
+        
          {# {{ form_start(form) }}
             
             {{ form_row(form.Utilisateur) }}
@@ -16,13 +17,8 @@
         {{ form_start(form2) }}
             {{ form_row(form2.utilisateur) }}
 
-            {# {% for key, question in questionnaire.questions %}
-                <div class="titreQuiz">
-                    <h2>{{key+1}} : {{ question.libelleQuestion}}</h2> 
-                </div>
-            {% endfor %} #}
-
-                {{ form_widget(form2.reponse) }}
+            {{ form_widget(form2.question) }}
+            {{ form_widget(form2.reponse) }}
             
             {{ form_widget(form2.valider , {'attr': {'class': 'btn bleu'}}) }}
         {{ form_end(form2) }}

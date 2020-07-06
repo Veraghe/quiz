@@ -118,6 +118,8 @@ class QuestionnaireController extends AbstractController
             dump($question);
             $reponses = $reponseRepository->findBy(['question' => $question->getId()]);
             dump($reponses);
+            $question_affiche[$question->getLibelleQuestion()] = $question->getId();
+            
             $question_array = [];
             foreach ($reponses as $reponse)
             {
@@ -127,12 +129,9 @@ class QuestionnaireController extends AbstractController
             dump($question_array);
         }
 
-
-
-        
-        // foreach ( $questions as $question){
+    //   for($i=0;$i<2;$i++){ 
             //Data Class: Créer un formulaire sans classe pour afficher une seule question et ses 4 réponses
-            $defaultData = ['question' => 'Tapez votre question ici'];
+            $defaultData = ['question' => 'Ici la question'];
             $form2 = $this->createFormBuilder($defaultData)
             ->add('utilisateur', TextType::class, [
                     'constraints' => [
@@ -141,24 +140,28 @@ class QuestionnaireController extends AbstractController
                     ],
                 ])
 
-            //Si l'utilisateur le sélectionne "reponse 2", le formulaire retournera false pour ce champ.
-            ->add('reponse', ChoiceType::class,[
+            ->add('question', ChoiceType::class,[
+                'choices'  => [
+                    $question_affiche,
+        
+                ],
+            ])
+
+            ->add('reponse',  ChoiceType::class,[
                 'choices'  => [
                     $question_array,
-        
                 ],
                 'expanded'=> true,
                 //Si multiple = false (radio bouton), = true (checkbox)
                 'multiple'=>true
             ])
 
-            
 
         ->add('valider', SubmitType::class)
         ->getForm();
-    // }
+  
         $form2->handleRequest($request);
-
+        // }
         // dump($form2);
         
         if ($form2->isSubmitted() && $form2->isValid()) {
