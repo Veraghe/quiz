@@ -112,22 +112,30 @@ class QuestionnaireController extends AbstractController
         //     return $this->redirectToRoute('home');
         // }
 
-        $questions = $questionnaire->getQuestions();
-        foreach ( $questions as $question)
+        $questions =$questionnaire->getQuestions();
+        $affiche_question = [];
+        foreach ( $questions as $clef => $question)
         {
-            dump($question);
+            // dump($question);
             $reponses = $reponseRepository->findBy(['question' => $question->getId()]);
-            dump($reponses);
-            $question_affiche[$question->getLibelleQuestion()] = $question->getId();
+            // dump($reponses);
+           $affiche_question =$question->getLibelleQuestion();
+            dump($affiche_question);
             
             $question_array = [];
             foreach ($reponses as $reponse)
             {
-                $question_array[$reponse->getLibelleReponse()] = $reponse->getId();
+               $question_array[$reponse->getLibelleReponse()]= $reponse->getId();
 
+                $tab_reponse=[$question_array];
             }
-            dump($question_array);
-        }
+            // dump($question_array);
+             $tab_question=[$affiche_question];
+            dump($tab_question);
+       
+        // récupérer les données de $affiche_question et $question_array pour les utiliser dans le form
+        // pour le moment je récupère que les dernières données du foreach!!!
+       
 
     //   for($i=0;$i<2;$i++){ 
             //Data Class: Créer un formulaire sans classe pour afficher une seule question et ses 4 réponses
@@ -142,13 +150,18 @@ class QuestionnaireController extends AbstractController
 
             ->add('question', ChoiceType::class,[
                 'choices'  => [
-                    $question_affiche,
-        
+                    // $tab_question[0][0] => $affiche_question,
+                    // $tab_question[1][0] => $affiche_question,
+                    $affiche_question => $affiche_question,
                 ],
+                'expanded'=> true,
             ])
 
             ->add('reponse',  ChoiceType::class,[
                 'choices'  => [
+                    
+                    // $tab_reponse[0],
+                    // $tab_reponse[1],
                     $question_array,
                 ],
                 'expanded'=> true,
@@ -162,8 +175,7 @@ class QuestionnaireController extends AbstractController
   
         $form2->handleRequest($request);
         // }
-        // dump($form2);
-        
+    }
         if ($form2->isSubmitted() && $form2->isValid()) {
             //les données sont un tableau "utilisateur" et "reponse"
             $data = $form2->getData();

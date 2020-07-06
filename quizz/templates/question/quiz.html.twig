@@ -23,6 +23,7 @@
             {{ form_widget(form2.valider , {'attr': {'class': 'btn bleu'}}) }}
         {{ form_end(form2) }}
 
+
         <form action="" method="post">   
 
             {# S'il est connecté on récupère son Nom d'utilisateur, aussi non on demande le nom et prénom  #}
@@ -69,7 +70,7 @@
                      <button class="btn bleu">{{ button_label|default('Valider') }}</button>
                     <a href="{{ path('home') }}" class="btn orange">Retour</a>
                 </div>
-           </form>
+           </form> 
         </div>
     </div>
 </div>
