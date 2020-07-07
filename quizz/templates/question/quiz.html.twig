@@ -13,21 +13,25 @@
             {{ form_widget(form.Question) }}
             {{ form_widget(form.Reponse) }}
         {{ form_end(form) }} #}
-
+{# ------------------------------------------------------------------ #}
         {{ form_start(form2) }}
-            {{ form_row(form2.utilisateur) }}
+            {# {{ form_widget(form2) }}  #}
+           {{ form_row(form2.utilisateur) }}
 
 {# Créer une boucle pour afficher toutes les questions et réponses, s'il n'y a pas de question, rien afficher!!!  #}
-        {# {% for  %} #}
-            {# {% if %}  #}
-                {{ form_widget(form2.question) }}
-                {{ form_widget(form2.reponse) }}
-            </br>  
-                {{ form_widget(form2.question2) }}
-                {{ form_widget(form2.reponse2) }}
-            {# {% endif %}     #}
-        {# {% endfor %} #}
-            {{ form_widget(form2.valider , {'attr': {'class': 'btn bleu'}}) }}
+
+               {# {{ form_widget(form2.question0) }}
+               {{ form_widget(form2.reponse0) }} #}
+           {# </br>  #}
+                {# {{ form_widget(form2.question1) }}
+                {{ form_widget(form2.reponse1) }} #}
+
+            {% for i in 0..2 %}
+                {{ form_widget(form2.question.i) }}
+               {{ form_widget(form2.reponse.i) }}
+        {% endfor %}
+
+           {{ form_widget(form2.valider , {'attr': {'class': 'btn bleu'}}) }}
         {{ form_end(form2) }}
 
 

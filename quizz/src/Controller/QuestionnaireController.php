@@ -151,47 +151,42 @@ class QuestionnaireController extends AbstractController
                 ],
             ]);
         // ---------------------------------------------------------------------------
-        $formBuilder->add('question', ChoiceType::class,[
-            'choices'  => [
-                $tab_question[0] => $affiche_question,
-                // $affiche_question => $affiche_question,
-            ],
-            'expanded'=> true,
-            'attr' =>[
-                'class'=>'titreQuiz'
-            ]
-        ]);
 
-        $formBuilder->add('reponse',  ChoiceType::class,[
-            'choices'  => [
-                // $question_array,
-                $tab_reponse[0],
-            ],
-            'expanded'=> true,
-            //Si multiple = false (radio bouton), = true (checkbox)
-            'multiple'=>false
-        ]);
+            $key=1;
+            $i=0;
+            foreach ( $questions as $question)
+            {
+                // test:
+                // echo  $affiche_question =$question->getLibelleQuestion();
 
-        $formBuilder->add('question2', ChoiceType::class,[
-            'choices'  => [
-                $tab_question[1] => $affiche_question,
-                // $affiche_question => $affiche_question,
-            ],
-            'expanded'=> true,
-            'attr' =>[
-                'class'=>'titreQuiz'
-            ]
-        ]);
-
-        $formBuilder->add('reponse2',  ChoiceType::class,[
-            'choices'  => [
-                // $question_array,
-                $tab_reponse[1],
-            ],
-            'expanded'=> true,
-            'multiple'=>true
-        ]);
-    
+            $formBuilder->add('question'.$i, ChoiceType::class,[
+                'choices'  => [
+                    $key.": ".$tab_question[$i] => $affiche_question,
+                    // $key.": ".$affiche_question => $affiche_question,
+                ],
+                'expanded'=> true,
+                'attr' =>[
+                    'class'=>'titreQuiz'
+                ]
+            ]);
+            foreach ($reponses as $reponse)
+            {
+               
+            $formBuilder->add('reponse'.$i,  ChoiceType::class,[
+                'choices'  => [
+                    // $question_array,
+                    $tab_reponse[$i],
+                ],
+                'expanded'=> true,
+                //Si multiple = false (radio bouton), = true (checkbox)
+                'multiple'=>true
+            ]);
+            } 
+            $key++ ;
+            $i++;
+           // dump($formBuilder);
+        }
+        
 // ---------------------------------------------------------------------------
         $formBuilder->add('valider', SubmitType::class);
         $form2=$formBuilder->getForm();
@@ -249,7 +244,7 @@ class QuestionnaireController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="questionnaire_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit/questionnaire", name="questionnaire_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Questionnaire $questionnaire): Response
     {

@@ -333,6 +333,11 @@ select{
     border-radius: 20px 20px 0 0;
     width: 79.5vw;
     color: var(--color-blanc);
+    text-align: center;
+    font-weight: 400;
+    margin:2vw 0;
+    padding: 2vw 0;
+    font-size: 1.3rem;
 }
 .reponseQuiz{
     display: flex;
