@@ -93,6 +93,7 @@ class QuestionnaireController extends AbstractController
             'questions' => $questionRepository->findAll(),
         ]);
     }
+    //********************************************************************** */
     /**
      * @Route("/{id}/quiz", name="question_quiz", methods={"GET","POST"})
      * @param Questionnaire $questionnaire
@@ -126,56 +127,79 @@ class QuestionnaireController extends AbstractController
             foreach ($reponses as $reponse)
             {
                $question_array[$reponse->getLibelleReponse()]= $reponse->getId();
-
-                $tab_reponse=[$question_array];
+               
             }
             // dump($question_array);
-             $tab_question=[$affiche_question];
+
+            // Récupère dans un tableau les questions et les réponses 
+            $tab_reponse[$clef]=$question_array;
+            dump($tab_reponse);
+             $tab_question[$clef]=$affiche_question;
             dump($tab_question);
-       
+        }
         // récupérer les données de $affiche_question et $question_array pour les utiliser dans le form
         // pour le moment je récupère que les dernières données du foreach!!!
-       
 
-    //   for($i=0;$i<2;$i++){ 
+
             //Data Class: Créer un formulaire sans classe pour afficher une seule question et ses 4 réponses
-            $defaultData = ['question' => 'Ici la question'];
-            $form2 = $this->createFormBuilder($defaultData)
-            ->add('utilisateur', TextType::class, [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 3]),
-                    ],
-                ])
-
-            ->add('question', ChoiceType::class,[
-                'choices'  => [
-                    // $tab_question[0][0] => $affiche_question,
-                    // $tab_question[1][0] => $affiche_question,
-                    $affiche_question => $affiche_question,
+            //$defaultData = ['question' => 'Ici la question'];
+        $formBuilder = $this->createFormBuilder();
+        $formBuilder->add('utilisateur', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 3]),
                 ],
-                'expanded'=> true,
-            ])
+            ]);
+        // ---------------------------------------------------------------------------
+        $formBuilder->add('question', ChoiceType::class,[
+            'choices'  => [
+                $tab_question[0] => $affiche_question,
+                // $affiche_question => $affiche_question,
+            ],
+            'expanded'=> true,
+            'attr' =>[
+                'class'=>'titreQuiz'
+            ]
+        ]);
 
-            ->add('reponse',  ChoiceType::class,[
-                'choices'  => [
-                    
-                    // $tab_reponse[0],
-                    // $tab_reponse[1],
-                    $question_array,
-                ],
-                'expanded'=> true,
-                //Si multiple = false (radio bouton), = true (checkbox)
-                'multiple'=>true
-            ])
+        $formBuilder->add('reponse',  ChoiceType::class,[
+            'choices'  => [
+                // $question_array,
+                $tab_reponse[0],
+            ],
+            'expanded'=> true,
+            //Si multiple = false (radio bouton), = true (checkbox)
+            'multiple'=>false
+        ]);
 
+        $formBuilder->add('question2', ChoiceType::class,[
+            'choices'  => [
+                $tab_question[1] => $affiche_question,
+                // $affiche_question => $affiche_question,
+            ],
+            'expanded'=> true,
+            'attr' =>[
+                'class'=>'titreQuiz'
+            ]
+        ]);
 
-        ->add('valider', SubmitType::class)
-        ->getForm();
-  
+        $formBuilder->add('reponse2',  ChoiceType::class,[
+            'choices'  => [
+                // $question_array,
+                $tab_reponse[1],
+            ],
+            'expanded'=> true,
+            'multiple'=>true
+        ]);
+    
+// ---------------------------------------------------------------------------
+        $formBuilder->add('valider', SubmitType::class);
+        $form2=$formBuilder->getForm();
+
         $form2->handleRequest($request);
-        // }
-    }
+        
+
+
         if ($form2->isSubmitted() && $form2->isValid()) {
             //les données sont un tableau "utilisateur" et "reponse"
             $data = $form2->getData();
@@ -189,7 +213,7 @@ class QuestionnaireController extends AbstractController
             'form2' => $form2->createView(),
         ]);
     }
-
+//********************************************************************** */
 
     /**
      * @Route("/new", name="questionnaire_new", methods={"GET","POST"})

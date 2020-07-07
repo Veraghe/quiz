@@ -117,4 +117,30 @@ class ReponseUtilisateurController extends AbstractController
         return $this->redirectToRoute('reponse_utilisateur_index');
     }
     
+
+    /**
+     * @Route("/action", name="reponse_utilisateur_action", methods={"POST"})
+     */
+    public function action(Request $request, ReponseUtilisateur $reponseUtilisateur): Response
+    {
+
+        $defaultData = ['question' => 'Ici la question'];
+        $formRU = $this->createFormBuilder($defaultData)
+            ->add('email')
+
+            ->add('reponses');
+
+      $formRU->handleRequest($request);
+
+
+        if ($formRU->isSubmitted() && $formRU->isValid()) {
+            //les données sont un tableau "utilisateur" et "reponse"
+            $data = $formRU->getData();
+        }
+
+        return $this->render('question/quiz.html.twig', [
+            'reponse_utilisateur' => $reponseUtilisateur,
+            'formRU' => $formRU->createView(),
+        ]);
+    }
 }
