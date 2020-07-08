@@ -389,6 +389,11 @@ input#form_utilisateur{
     background-color: var(--color-bleu-clair);
     border: 0;
 }
+/* ------------------------------- RESULTAT-- */
+.reponseResultat{
+    display: flex;
+    flex-direction: column;
+}
 /* ------------------------------- FOOTER-- */
 footer{
     background-color: var(--color-bleu);

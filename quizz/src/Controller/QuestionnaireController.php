@@ -13,6 +13,7 @@ use App\Form\QuestionType;
 use App\Form\ReponseUtilisateurType;
 use App\Repository\QuestionnaireRepository;
 use App\Repository\ReponseRepository;
+use App\Repository\ReponsesUtilisateurRepository;
 use App\Repository\QuestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
@@ -144,9 +146,10 @@ class QuestionnaireController extends AbstractController
 
             //Data Class: Créer un formulaire sans classe pour afficher une seule question et ses 4 réponses
             //$defaultData = ['question' => 'Ici la question'];
-        $quiz=new ReponsesUtilisateur();
-        $formBuilder = $this->createFormBuilder($quiz);
-        // $formBuilder = $this->createFormBuilder();
+
+        // $quiz=new ReponsesUtilisateur();
+        // $formBuilder = $this->createFormBuilder($quiz);
+        $formBuilder = $this->createFormBuilder();
         $formBuilder->add('utilisateur', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
@@ -154,6 +157,12 @@ class QuestionnaireController extends AbstractController
                 ],
                 'label'=>"Email :"
             ]);
+        
+        // Récupère l'id question :
+        $formBuilder->add('question',HiddenType::class,[
+            'data'=>$affiche_question,
+        ]);
+        // dump($affiche_question);
         // ---------------------------------------------------------------------------
 
             $key=1;
@@ -188,7 +197,6 @@ class QuestionnaireController extends AbstractController
                 // } 
             $key++ ;
             $i++;
-            dump($affiche_question);
            // dump($formBuilder);
         }
         
@@ -206,7 +214,20 @@ class QuestionnaireController extends AbstractController
 
         if ($form2->isSubmitted() && $form2->isValid()) {
             //les données sont un tableau "utilisateur" et "reponse"
-            $data = $form2->getData();
+            // $data = $form2->getData();
+
+            // pour chaque question
+            // Créer une entité reponse_utilisateur vide
+            $ru = new reponseUtilisateur;
+              // peupler l'entité en question avec les données du form 
+              $ru->setReponse();
+              $ru->setUtilisateur();
+              $ru->setQuestion();
+              // enregistrer l'entité dans la BDD
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($ru);
+            $entityManager->flush();
 
             return $this->redirectToRoute('reponse_utilisateur_resultat');
         }
@@ -220,15 +241,17 @@ class QuestionnaireController extends AbstractController
         ]);
     }
 //********************************************************************** */
-    // /**
-    //  * @Route("/quiz/résultat", name="reponse_utilisateur_resultat", methods={"GET"})
-    //  */
-    // public function resultat()
-    // {
-    //     return $this->render('question/resultat.html.twig');
-    // }
+    /**
+     * @Route("/quiz/résultat", name="reponse_utilisateur_resultat", methods={"GET"})
+     */
+    public function resultat(ReponsesUtilisateurRepository $reponsesUtilisateurRepository)
+    {
+        return $this->render('question/resultat.html.twig',[
+            'reponses_utilisateurs' => $reponsesUtilisateurRepository->findAll(),
+        ]);
+    }
 
-
+//********************************************************************** */
     /**
      * @Route("/new", name="questionnaire_new", methods={"GET","POST"})
      */

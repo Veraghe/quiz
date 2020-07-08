@@ -32,6 +32,12 @@ class ReponsesUtilisateur
      */
     private $reponse1 = [];
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Questionnaire::class, inversedBy="reponsesUtilisateurs")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $questionnaire;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +75,18 @@ class ReponsesUtilisateur
     public function setReponse1(?array $reponse1): self
     {
         $this->reponse1 = $reponse1;
+
+        return $this;
+    }
+
+    public function getQuestionnaire(): ?Questionnaire
+    {
+        return $this->questionnaire;
+    }
+
+    public function setQuestionnaire(?Questionnaire $questionnaire): self
+    {
+        $this->questionnaire = $questionnaire;
 
         return $this;
     }
