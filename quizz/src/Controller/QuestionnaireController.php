@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Questionnaire;
 use App\Entity\Question;
 use App\Entity\ReponseUtilisateur;
+use App\Entity\ReponsesUtilisateur;
 use App\Entity\Reponse;
 use App\Entity\Utilisateur;
 use App\Form\QuestionnaireType;
@@ -143,12 +144,15 @@ class QuestionnaireController extends AbstractController
 
             //Data Class: Créer un formulaire sans classe pour afficher une seule question et ses 4 réponses
             //$defaultData = ['question' => 'Ici la question'];
-        $formBuilder = $this->createFormBuilder();
+        $quiz=new ReponsesUtilisateur();
+        $formBuilder = $this->createFormBuilder($quiz);
+        // $formBuilder = $this->createFormBuilder();
         $formBuilder->add('utilisateur', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
                     new Length(['min' => 3]),
                 ],
+                'label'=>"Email :"
             ]);
         // ---------------------------------------------------------------------------
 
@@ -156,39 +160,44 @@ class QuestionnaireController extends AbstractController
             $i=0;
             foreach ( $questions as $question)
             {
-                // test:
-                // echo  $affiche_question =$question->getLibelleQuestion();
-
-            $formBuilder->add('question'.$i, ChoiceType::class,[
-                'choices'  => [
-                    $key.": ".$tab_question[$i] => $affiche_question,
-                    // $key.": ".$affiche_question => $affiche_question,
-                ],
-                'expanded'=> true,
-                'attr' =>[
-                    'class'=>'titreQuiz'
-                ]
-            ]);
-            foreach ($reponses as $reponse)
-            {
-               
-            $formBuilder->add('reponse'.$i,  ChoiceType::class,[
-                'choices'  => [
-                    // $question_array,
-                    $tab_reponse[$i],
-                ],
-                'expanded'=> true,
-                //Si multiple = false (radio bouton), = true (checkbox)
-                'multiple'=>true
-            ]);
-            } 
+            // $formBuilder->add('question'.$i, ChoiceType::class,[
+            //     'choices'  => [
+            //         $key.": ".$tab_question[$i] => $tab_question[$i],
+            //         // $key.": ".$affiche_question => $affiche_question,
+            //     ],
+            //     'expanded'=> true,
+            //     'attr' =>[
+            //         'class'=>'titreQuiz'
+            //     ],
+            //     'label'=> ' '
+            // ]);
+                // foreach ($reponses as $reponse)
+                // {
+                
+                $formBuilder->add('reponse'.$i,  ChoiceType::class,[
+                    'choices'  => [
+                        // $question_array,
+                        $tab_reponse[$i],
+                    ],
+                    'expanded'=> true,
+                    //Si multiple = false (radio bouton), = true (checkbox)
+                    'multiple'=>true,
+                    'label'=>  $key.": ".$tab_question[$i],
+                    
+                ]);
+                // } 
             $key++ ;
             $i++;
+            dump($affiche_question);
            // dump($formBuilder);
         }
         
 // ---------------------------------------------------------------------------
-        $formBuilder->add('valider', SubmitType::class);
+        // $formBuilder->add('valider', SubmitType::class,[
+        //     'attr' =>[
+        //         'class'=>'bleu'
+        //             ],
+        // ]);
         $form2=$formBuilder->getForm();
 
         $form2->handleRequest($request);
@@ -198,6 +207,8 @@ class QuestionnaireController extends AbstractController
         if ($form2->isSubmitted() && $form2->isValid()) {
             //les données sont un tableau "utilisateur" et "reponse"
             $data = $form2->getData();
+
+            return $this->redirectToRoute('reponse_utilisateur_resultat');
         }
 
 
@@ -209,6 +220,14 @@ class QuestionnaireController extends AbstractController
         ]);
     }
 //********************************************************************** */
+    // /**
+    //  * @Route("/quiz/résultat", name="reponse_utilisateur_resultat", methods={"GET"})
+    //  */
+    // public function resultat()
+    // {
+    //     return $this->render('question/resultat.html.twig');
+    // }
+
 
     /**
      * @Route("/new", name="questionnaire_new", methods={"GET","POST"})

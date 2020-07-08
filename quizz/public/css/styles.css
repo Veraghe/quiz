@@ -328,7 +328,7 @@ select{
 }
 
 /* ------------------------------- QUIZ-- */
-.titreQuiz{
+/* .titreQuiz{
     background-color: var(--color-vert);
     border-radius: 20px 20px 0 0;
     width: 79.5vw;
@@ -338,34 +338,57 @@ select{
     margin:2vw 0;
     padding: 2vw 0;
     font-size: 1.3rem;
-}
-.reponseQuiz{
+} */
+/* .reponseQuiz{
     display: flex;
     flex-direction: row;
     align-items: center;
     padding: 1vw 0 1vw 30vw;
-}
-.reponseQuiz input{
+} */
+/* .reponseQuiz input{
     margin: 0 1vw;
 }
 .reponseQuiz label{
     margin-bottom: 0;
-}
+} */
 .quiz{
     display: flex;
     flex-direction: column ;
+    width: 100%;
 }
 p{
     text-align: center;
 }
-.quiz_identifiant{
+/* .quiz_identifiant{
     display: flex;
     flex-direction: row;
 }
 .quiz_identifiant div{
     flex: 1;
+} */
+fieldset.form-group{
+    border: 0;
+    padding: 0;
+    width: auto;
+}
+legend.col-form-label {
+    text-align: center;
+    background-color: var(--color-vert);
+    border-radius: 20px 20px 0 0;
+    color: var(--color-blanc);
+    font-weight: 400;
+    margin:2vw 0;
+    padding: 1.5vw 0;
+    font-size: 1.3rem;
 }
 
+div.form-check{
+    padding: 1vh 2vw;
+}
+input#form_utilisateur{
+    background-color: var(--color-bleu-clair);
+    border: 0;
+}
 /* ------------------------------- FOOTER-- */
 footer{
     background-color: var(--color-bleu);
