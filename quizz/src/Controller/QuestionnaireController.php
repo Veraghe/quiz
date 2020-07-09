@@ -15,6 +15,7 @@ use App\Repository\QuestionnaireRepository;
 use App\Repository\ReponseRepository;
 use App\Repository\ReponsesUtilisateurRepository;
 use App\Repository\QuestionRepository;
+use App\Repository\UtilisateurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
-
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -102,7 +103,7 @@ class QuestionnaireController extends AbstractController
      * @param Questionnaire $questionnaire
      * @return Response
      */
-    public function quiz(Questionnaire $questionnaire,QuestionnaireRepository $questionnaireRepository, Request $request, Reponse $reponse, QuestionRepository $questionRepository, ReponseRepository $reponseRepository): Response
+    public function quiz(Questionnaire $questionnaire,QuestionnaireRepository $questionnaireRepository, Request $request, Reponse $reponse, QuestionRepository $questionRepository, ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository): Response
     {
         // $reponseUtilisateur = new ReponseUtilisateur();
         // $form = $this->createForm(ReponseUtilisateurType::class, $reponseUtilisateur);
@@ -150,25 +151,25 @@ class QuestionnaireController extends AbstractController
         // $quiz=new ReponsesUtilisateur();
         // $formBuilder = $this->createFormBuilder($quiz);
         $formBuilder = $this->createFormBuilder();
-        $formBuilder->add('utilisateur', TextType::class, [
-                'constraints' => [
-                    new NotBlank(),
-                    new Length(['min' => 3]),
-                ],
-                'label'=>"Email :"
+        $formBuilder->add('utilisateur', IntegerType::class, [
+                // 'constraints' => [
+                //     new NotBlank(),
+                //     new Length(['min' => 3]),
+                // ],
+                'label'=>"Email (Pour le moment l'id Utilisateur !):"
             ]);
         
-        // Récupère l'id question :
-        $formBuilder->add('question',HiddenType::class,[
-            'data'=>$affiche_question,
-        ]);
-        // dump($affiche_question);
         // ---------------------------------------------------------------------------
 
             $key=1;
             $i=0;
             foreach ( $questions as $question)
             {
+            // Récupère l'id questionnaire :
+            $formBuilder->add('question',HiddenType::class,[
+            'data'=>$questionnaire->getId(),
+        ]);
+        dump($tab_question[$i]);
             // $formBuilder->add('question'.$i, ChoiceType::class,[
             //     'choices'  => [
             //         $key.": ".$tab_question[$i] => $tab_question[$i],
@@ -214,22 +215,38 @@ class QuestionnaireController extends AbstractController
 
         if ($form2->isSubmitted() && $form2->isValid()) {
             //les données sont un tableau "utilisateur" et "reponse"
-            // $data = $form2->getData();
+            $data = $form2->getData();
+            dump($data["utilisateur"]);
+
+            $objetUtilisateur=$utilisateurRepository->find($data["utilisateur"]);
+            $i=0;
+            foreach ($data["reponse".$i] as $reponse)
+            {
+                dump($data["reponse".$i]);
+                $Objet = $reponseRepository->find($reponse);
+                dump($Objet->getQuestion());
+
+           
 
             // pour chaque question
             // Créer une entité reponse_utilisateur vide
             $ru = new reponseUtilisateur;
-              // peupler l'entité en question avec les données du form 
-              $ru->setReponse();
-              $ru->setUtilisateur();
-              $ru->setQuestion();
-              // enregistrer l'entité dans la BDD
-            
+            // peupler l'entité en question avec les données du form 
+              $ru->setReponse($Objet);
+              $ru->setUtilisateur($objetUtilisateur);
+              $ru->setQuestion($Objet->getQuestion());
+            // enregistrer l'entité dans la BDD
+        dump($ru);
+
             $entityManager = $this->getDoctrine()->getManager();
+            //Cette méthode signale à Doctrine que l'objet doit être enregistré
             $entityManager->persist($ru);
+            $i++;
+            }
+            //Met à jour la base à partir des objets signalés à Doctrine.
             $entityManager->flush();
 
-            return $this->redirectToRoute('reponse_utilisateur_resultat');
+        //    return $this->redirectToRoute('reponse_utilisateur_index');
         }
 
 
