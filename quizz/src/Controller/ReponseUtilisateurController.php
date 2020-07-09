@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
- * @Route("/reponse/utilisateur")
+ * @Route("/reponse_utilisateur")
  */
 class ReponseUtilisateurController extends AbstractController
 {
@@ -29,26 +29,47 @@ class ReponseUtilisateurController extends AbstractController
             'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
         ]);
     }
-    /**
-     * @Route("/reponseQuiz", name="reponse_utilisateur_quiz")
+
+     /**
+     * @Route("/resultat", name="reponse_utilisateur_resultat", methods={"GET"})
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
      */
-    public function quiz(Request $request): Response
+    public function resultat(ReponseUtilisateurRepository $reponseUtilisateurRepository, Request $request): Response
     {
-        $quiz= new ReponseUtilisateur();
-
-        $form =$this->createFormBuilder($quiz)
-                    ->add('reponse')
-                    ->add('utilisateur')
-                    ->getForm();
-
-        // $form->handleRequest($request);
-        // dump($quiz);
-        return $this->render('reponse_utilisateur/quiz.html.twig',[
-            'formReponseUtilisateur'=> $form->createView(),
+        // récupère l'id de la personne connecté :
+        $utilisateur = $this -> getUser();
+        dump($utilisateur);
+        // afficher que les réponses de l'id Utilisateur connecé:
+        $reponses = $reponseUtilisateurRepository->findBy(['id' => $request->query->get('Reponse')]);
+        dump($reponses);
+        return $this->render('reponse_utilisateur/resultat.html.twig', [
+            // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
+            'reponse_utilisateurs' => $reponses,
         ]);
     }
+
+
+    // /**
+    //  * @Route("/reponseQuiz", name="reponse_utilisateur_quiz")
+    //  * @param ReponseUtilisateur $reponseUtilisateur
+    //  * @return Response
+    //  */
+    // public function quiz(Request $request): Response
+    // {
+    //     $quiz= new ReponseUtilisateur();
+
+    //     $form =$this->createFormBuilder($quiz)
+    //                 ->add('reponse')
+    //                 ->add('utilisateur')
+    //                 ->getForm();
+
+    //     // $form->handleRequest($request);
+    //     // dump($quiz);
+    //     return $this->render('reponse_utilisateur/quiz.html.twig',[
+    //         'formReponseUtilisateur'=> $form->createView(),
+    //     ]);
+    // }
 
     /**
      * @Route("/new", name="reponse_utilisateur_new", methods={"GET","POST"})
@@ -72,6 +93,7 @@ class ReponseUtilisateurController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
 
     /**
      * @Route("/{id}", name="reponse_utilisateur_show", methods={"GET"})
@@ -118,29 +140,32 @@ class ReponseUtilisateurController extends AbstractController
     }
     
 
-    /**
-     * @Route("/action", name="reponse_utilisateur_action", methods={"POST"})
-     */
-    public function action(Request $request, ReponseUtilisateur $reponseUtilisateur): Response
-    {
+    // /**
+    //  * @Route("/action", name="reponse_utilisateur_action", methods={"POST"})
+    //  */
+    // public function action(Request $request, ReponseUtilisateur $reponseUtilisateur): Response
+    // {
 
-        $defaultData = ['question' => 'Ici la question'];
-        $formRU = $this->createFormBuilder($defaultData)
-            ->add('email')
+    //     $defaultData = ['question' => 'Ici la question'];
+    //     $formRU = $this->createFormBuilder($defaultData)
+    //         ->add('email')
 
-            ->add('reponses');
+    //         ->add('reponses');
 
-      $formRU->handleRequest($request);
+    //   $formRU->handleRequest($request);
 
 
-        if ($formRU->isSubmitted() && $formRU->isValid()) {
-            //les données sont un tableau "utilisateur" et "reponse"
-            $data = $formRU->getData();
-        }
+    //     if ($formRU->isSubmitted() && $formRU->isValid()) {
+    //         //les données sont un tableau "utilisateur" et "reponse"
+    //         $data = $formRU->getData();
+    //     }
 
-        return $this->render('question/quiz.html.twig', [
-            'reponse_utilisateur' => $reponseUtilisateur,
-            'formRU' => $formRU->createView(),
-        ]);
-    }
+    //     return $this->render('question/quiz.html.twig', [
+    //         'reponse_utilisateur' => $reponseUtilisateur,
+    //         'formRU' => $formRU->createView(),
+    //     ]);
+    // }
+
+
+
 }

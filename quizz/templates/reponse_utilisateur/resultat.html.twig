@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultat{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Résultat</h1>
+
+    <table class="table">
+        <thead class="orange">
+            <tr>
+                <th class="flexG">Utilisateur</th>
+                <th class="flexG">Question</th>
+                <th class="flexG">Réponse</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reponse_utilisateur in reponse_utilisateurs %}
+            <tr>
+                <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
+                <td class="flexG">{{ reponse_utilisateur.Question}}</td>
+                <td class="flexG">{{ reponse_utilisateur.Reponse}}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="centerbtn">
+        <a href="{{ path('home') }}" class="btn orange">Retour</a>
+        </div>
+    </div>
+{% endblock %}

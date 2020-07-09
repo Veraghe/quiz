@@ -53,7 +53,7 @@ class QuestionnaireController extends AbstractController
             'questions' => $questionRepository->findAll(),
         ]);
     }
-
+//********************************************************************** */
     // /**
     //  * @Route("/{id}/listeQuestions", name="question_index", methods={"GET"})
     //  * @param Questionnaire $questionnaire
@@ -65,6 +65,7 @@ class QuestionnaireController extends AbstractController
     //         'questionnaire' => $questionnaire,
     //     ]);
     // }
+//********************************************************************** */
         /**
      * @Route("/{id}/edit", name="question_edit", methods={"GET","POST"})
      */
@@ -97,14 +98,15 @@ class QuestionnaireController extends AbstractController
             'questions' => $questionRepository->findAll(),
         ]);
     }
-    //********************************************************************** */
+//********************************************************************** */
     /**
      * @Route("/{id}/quiz", name="question_quiz", methods={"GET","POST"})
      * @param Questionnaire $questionnaire
      * @return Response
      */
-    public function quiz(Questionnaire $questionnaire,QuestionnaireRepository $questionnaireRepository, Request $request, Reponse $reponse, QuestionRepository $questionRepository, ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository): Response
+    public function quiz(Questionnaire $questionnaire,QuestionnaireRepository $questionnaireRepository, QuestionRepository $questionRepository, Reponse $reponse,  ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository, Request $request): Response
     {
+        // ------------------------Form ReponseUtilisateur (affichage avec listes déroulantes!)---------------------------------------------------
         // $reponseUtilisateur = new ReponseUtilisateur();
         // $form = $this->createForm(ReponseUtilisateurType::class, $reponseUtilisateur);
         // $form->handleRequest($request);
@@ -117,6 +119,7 @@ class QuestionnaireController extends AbstractController
         //     return $this->redirectToRoute('home');
         // }
 
+        // ------------------------Form ReponseUtilisateur ---------------------------------------------------
         $questions =$questionnaire->getQuestions();
         $affiche_question = [];
         foreach ( $questions as $clef => $question)
@@ -142,15 +145,10 @@ class QuestionnaireController extends AbstractController
             dump($tab_question);
         }
         // récupérer les données de $affiche_question et $question_array pour les utiliser dans le form
-        // pour le moment je récupère que les dernières données du foreach!!!
 
 
-            //Data Class: Créer un formulaire sans classe pour afficher une seule question et ses 4 réponses
-            //$defaultData = ['question' => 'Ici la question'];
-
-        // $quiz=new ReponsesUtilisateur();
-        // $formBuilder = $this->createFormBuilder($quiz);
         $formBuilder = $this->createFormBuilder();
+        // ------------------------Ajouter un utilisateur---------------------------------------------------
         $formBuilder->add('utilisateur', IntegerType::class, [
                 // 'constraints' => [
                 //     new NotBlank(),
@@ -159,7 +157,7 @@ class QuestionnaireController extends AbstractController
                 'label'=>"Email (Pour le moment l'id Utilisateur !):"
             ]);
         
-        // ---------------------------------------------------------------------------
+        // ------------------------Ajouter une réponse et une question---------------------------------------------------
 
             $key=1;
             $i=0;
@@ -202,11 +200,6 @@ class QuestionnaireController extends AbstractController
         }
         
 // ---------------------------------------------------------------------------
-        // $formBuilder->add('valider', SubmitType::class,[
-        //     'attr' =>[
-        //         'class'=>'bleu'
-        //             ],
-        // ]);
         $form2=$formBuilder->getForm();
 
         $form2->handleRequest($request);
@@ -219,36 +212,36 @@ class QuestionnaireController extends AbstractController
             dump($data["utilisateur"]);
 
             $objetUtilisateur=$utilisateurRepository->find($data["utilisateur"]);
-            $i=0;
-            foreach ($data["reponse".$i] as $reponse)
-            {
-                dump($data["reponse".$i]);
-                $Objet = $reponseRepository->find($reponse);
-                dump($Objet->getQuestion());
+            // $i=0;
+            for($j=0;$j<$i;$j++){
+                foreach ($data["reponse".$j] as $reponse)
+                {
+                    dump($data["reponse".$j]);
+                    $Objet = $reponseRepository->find($reponse);
+                    dump($Objet->getQuestion());
 
-           
+            
 
-            // pour chaque question
-            // Créer une entité reponse_utilisateur vide
-            $ru = new reponseUtilisateur;
-            // peupler l'entité en question avec les données du form 
-              $ru->setReponse($Objet);
-              $ru->setUtilisateur($objetUtilisateur);
-              $ru->setQuestion($Objet->getQuestion());
-            // enregistrer l'entité dans la BDD
-        dump($ru);
+                    // pour chaque question
+                    // Créer une entité reponse_utilisateur vide
+                    $ru = new reponseUtilisateur;
+                    // peupler l'entité en question avec les données du form 
+                    $ru->setReponse($Objet);
+                    $ru->setUtilisateur($objetUtilisateur);
+                    $ru->setQuestion($Objet->getQuestion());
+                    // enregistrer l'entité dans la BDD
+                    dump($ru);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            //Cette méthode signale à Doctrine que l'objet doit être enregistré
-            $entityManager->persist($ru);
-            $i++;
+                    $entityManager = $this->getDoctrine()->getManager();
+                    //Cette méthode signale à Doctrine que l'objet doit être enregistré
+                    $entityManager->persist($ru);
+                }
+                //Met à jour la base à partir des objets signalés à Doctrine.
+                $entityManager->flush();
             }
-            //Met à jour la base à partir des objets signalés à Doctrine.
-            $entityManager->flush();
-
-        //    return $this->redirectToRoute('reponse_utilisateur_index');
-        }
-
+           return $this->redirectToRoute('reponse_utilisateur_resultat');
+        
+    }
 
        return $this->render('question/quiz.html.twig',[
            'questionnaire' => $questionnaire,
@@ -258,15 +251,15 @@ class QuestionnaireController extends AbstractController
         ]);
     }
 //********************************************************************** */
-    /**
-     * @Route("/quiz/résultat", name="reponse_utilisateur_resultat", methods={"GET"})
-     */
-    public function resultat(ReponsesUtilisateurRepository $reponsesUtilisateurRepository)
-    {
-        return $this->render('question/resultat.html.twig',[
-            'reponses_utilisateurs' => $reponsesUtilisateurRepository->findAll(),
-        ]);
-    }
+    // /**
+    //  * @Route("/quiz/résultat", name="reponse_utilisateur_resultat", methods={"GET"})
+    //  */
+    // public function resultat(ReponsesUtilisateurRepository $reponsesUtilisateurRepository)
+    // {
+    //     return $this->render('question/resultat.html.twig',[
+    //         'reponses_utilisateurs' => $reponsesUtilisateurRepository->findAll(),
+    //     ]);
+    // }
 
 //********************************************************************** */
     /**
@@ -291,7 +284,7 @@ class QuestionnaireController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
+//********************************************************************** */
     /**
      * @Route("/{id}/show", name="questionnaire_show", methods={"GET"})
      */
@@ -301,7 +294,7 @@ class QuestionnaireController extends AbstractController
             'questionnaire' => $questionnaire,
         ]);
     }
-
+//********************************************************************** */
     /**
      * @Route("/{id}/edit/questionnaire", name="questionnaire_edit", methods={"GET","POST"})
      */
@@ -321,7 +314,7 @@ class QuestionnaireController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
+//********************************************************************** */
     /**
      * @Route("/{id}", name="questionnaire_delete", methods={"DELETE"})
      */
