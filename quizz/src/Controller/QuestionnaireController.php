@@ -32,6 +32,7 @@ use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -157,12 +158,7 @@ class QuestionnaireController extends AbstractController
             }
         //ou Creer un utilisateur avec un nouvelle id 
         else{
-            $formBuilder->add('utilisateur', TextType::class, [
-                // 'data'=>$this -> getUser()->getId(),
-                // 'constraints' => [
-                //     new NotBlank(),
-                //     new Length(['min' => 3]),
-                // ],
+            $formBuilder->add('utilisateur', EmailType::class, [
                 'label'=>"Email:"
             ]);
         }
@@ -242,7 +238,12 @@ class QuestionnaireController extends AbstractController
                     $ru = new reponseUtilisateur;
                     // peupler l'entité en question avec les données du form 
                     $ru->setReponse($Objet);
+                    // 
+                    if($this->getUser())
                     $ru->setUtilisateur($objetUtilisateur);
+                    else
+                    $ru->setUtilisateur();
+
                     $ru->setQuestion($Objet->getQuestion());
                     $ru->setDate(new \DateTime());
                     // enregistrer l'entité dans la BDD
