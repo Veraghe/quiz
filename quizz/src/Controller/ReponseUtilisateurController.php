@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ReponseUtilisateur;
 use App\Form\ReponseUtilisateurType;
 use App\Repository\ReponseUtilisateurRepository;
+use App\Repository\ReponseRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,17 +36,31 @@ class ReponseUtilisateurController extends AbstractController
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
      */
-    public function resultat(ReponseUtilisateurRepository $reponseUtilisateurRepository, Request $request): Response
+    public function resultat(ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, Request $request): Response
     {
         // récupère l'id de la personne connecté :
         $utilisateur = $this -> getUser()->getId();
-        dump($utilisateur);
+        // dump($utilisateur);
         // afficher que les réponses de l'id Utilisateur connecté:
         $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
-        dump($reponses);
+        // dump($reponses);
+
+        // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
+        for($i=0;$i<count($reponses);$i++){ 
+            $idReponse = $reponses[$i]->getReponse()->getId();
+        //    dump($idReponse);
+            // on veut la valeurReponse, des réponses répondues!
+            // chercher l'id de la réponse pour afficher sa valeur
+            $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
+            // dump($laReponse);
+            // Je dois avoir comme valeur 0 ou 1
+            $valeur[$i] = $laReponse[0]->getValeurReponse();
+            // dump($valeur);
+        }
         return $this->render('reponse_utilisateur/resultat.html.twig', [
             // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
             'reponse_utilisateurs' => $reponses,
+            'valeurReponse'=>$valeur,
         ]);
     }
 
@@ -54,15 +69,28 @@ class ReponseUtilisateurController extends AbstractController
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
      */
-    public function compte(ReponseUtilisateurRepository $reponseUtilisateurRepository, Request $request): Response
+    public function compte(ReponseUtilisateurRepository $reponseUtilisateurRepository, ReponseRepository $reponseRepository, Request $request): Response
     {
         // récupère l'id de la personne connecté :
         $utilisateur = $this -> getUser()->getId();
-        // chercher la valeurReponse, des réponses répondues!
-        // chercher l'id de la réponse pour afficher sa valeur
-        $valeur = $reponseUtilisateurRepository->findBy(['Reponse'=>$request->query->get('id')]);
+
         // afficher que les réponses de l'id Utilisateur connecté:
         $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
+       dump($reponses);
+    //    dump(count($reponses));
+    // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
+    for($i=0;$i<count($reponses);$i++){ 
+        $idReponse = $reponses[$i]->getReponse()->getId();
+    //    dump($idReponse);
+        // on veut la valeurReponse, des réponses répondues!
+        // chercher l'id de la réponse pour afficher sa valeur
+        $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
+        // dump($laReponse);
+        // Je dois avoir comme valeur 0 ou 1
+        $valeur[$i] = $laReponse[0]->getValeurReponse();
+        // dump($valeur);
+    }
+
         return $this->render('utilisateur/compte.html.twig', [
             'reponse_utilisateurs' => $reponses,
             'valeurReponse'=>$valeur,

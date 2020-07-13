@@ -70,9 +70,16 @@ class Utilisateur implements UserInterface
      */
     private $reponseUtilisateurs;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Session::class, inversedBy="utilisateurs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $session;
+
     public function __construct()
     {
         $this->reponseUtilisateurs = new ArrayCollection();
+        $this->utilisateurs = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -223,4 +230,18 @@ class Utilisateur implements UserInterface
     public function __toString() {
     return $this->getEmail();
     }
+
+    public function getSession(): ?Session
+    {
+        return $this->session;
+    }
+
+    public function setSession(?Session $session): self
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    
 }
