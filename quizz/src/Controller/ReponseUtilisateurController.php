@@ -38,10 +38,10 @@ class ReponseUtilisateurController extends AbstractController
     public function resultat(ReponseUtilisateurRepository $reponseUtilisateurRepository, Request $request): Response
     {
         // récupère l'id de la personne connecté :
-        $utilisateur = $this -> getUser();
+        $utilisateur = $this -> getUser()->getId();
         dump($utilisateur);
-        // afficher que les réponses de l'id Utilisateur connecé:
-        $reponses = $reponseUtilisateurRepository->findBy(['id' => $request->query->get('Reponse')]);
+        // afficher que les réponses de l'id Utilisateur connecté:
+        $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
         dump($reponses);
         return $this->render('reponse_utilisateur/resultat.html.twig', [
             // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),

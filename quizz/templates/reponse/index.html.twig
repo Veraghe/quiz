@@ -19,7 +19,12 @@
             <tr>
                 <td class="flexP">{{ reponse.id }}</td>
                 <td>{{ reponse.libelleReponse }}</td>
-                <td class="flexP">{{ reponse.valeurReponse }}</td>
+                {# <td class="flexP">{{ reponse.valeurReponse }}</td> #}
+                {% if reponse.valeurReponse  == 1 %}
+                    <td class="flexP">Vrai</td>
+                {% else %}
+                    <td class="flexP">Faux</td>
+                {% endif %}
                 <td class="flexP">
                     {# <a href="{{ path('reponse_show', {'id': reponse.id}) }}"><i class="far fa-eye"></i></a> #}
                     <a href="{{ path('reponse_edit', {'id': reponse.id}) }}"><i class="far fa-edit"></i></a>

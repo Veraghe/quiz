@@ -7,7 +7,11 @@
     <h1>Résultat</h1>
 
     <table class="table">
-        <thead class="orange">
+        {% if is_granted('ROLE_ADMIN') %}
+            <thead class="orange">
+        {% else %}
+            <thead class="vert">
+        {% endif %}
             <tr>
                 <th class="flexG">Utilisateur</th>
                 <th class="flexG">Question</th>
@@ -19,7 +23,12 @@
             <tr>
                 <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
                 <td class="flexG">{{ reponse_utilisateur.Question}}</td>
-                <td class="flexG">{{ reponse_utilisateur.Reponse}}</td>
+                {# Si la réponse est bonne afficher en vert et fause en orange#}
+                {# {% if valeurReponse == 0 %} #}
+                    <td class="flexG">{{ reponse_utilisateur.Reponse}}</td>
+                {# {% else %} #}
+                    {# <td class="flexG vert">{{ reponse_utilisateur.Reponse}}</td> #}
+                {# {% endif %} #}
             </tr>
         {% else %}
             <tr>

@@ -149,14 +149,25 @@ class QuestionnaireController extends AbstractController
 
         $formBuilder = $this->createFormBuilder();
         // ------------------------Ajouter un utilisateur---------------------------------------------------
-        $formBuilder->add('utilisateur', IntegerType::class, [
+        // Si, il est connecté, passé HiddenType est récupérer l'id 
+        if( $this->getUser() ){
+            $formBuilder->add('utilisateur', HiddenType::class, [
+                    'data'=>$this -> getUser()->getId(),
+                ]);
+            }
+        //ou Creer un utilisateur avec un nouvelle id 
+        else{
+            $formBuilder->add('utilisateur', TextType::class, [
+                // 'data'=>$this -> getUser()->getId(),
                 // 'constraints' => [
                 //     new NotBlank(),
                 //     new Length(['min' => 3]),
                 // ],
-                'label'=>"Email (Pour le moment l'id Utilisateur !):"
+                'label'=>"Email:"
             ]);
-        
+        }
+
+    
         // ------------------------Ajouter une réponse et une question---------------------------------------------------
 
             $key=1;
@@ -212,6 +223,7 @@ class QuestionnaireController extends AbstractController
             dump($data["utilisateur"]);
 
             $objetUtilisateur=$utilisateurRepository->find($data["utilisateur"]);
+        //    $objetUtilisateur= $this -> getUser()->getId();
             // $i=0;
             for($j=0;$j<$i;$j++){
                 foreach ($data["reponse".$j] as $reponse)

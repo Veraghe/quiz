@@ -19,10 +19,11 @@
         <tbody>
         {% for reponse_utilisateur in reponse_utilisateurs %}
             <tr>
-                <td>{{ reponse_utilisateur.id }}</td>
+                <td>{{ reponse_utilisateur.id }}<td>
                 <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
                 <td class="flexG">{{ reponse_utilisateur.Question}}</td>
                 <td class="flexG">{{ reponse_utilisateur.Reponse}}</td>
+
                 <td class="flexP">
                     {# <a href="{{ path('reponse_utilisateur_show', {'id': reponse_utilisateur.id}) }}"><i class="far fa-eye"></i></a> #}
                     {# <a href="{{ path('reponse_utilisateur_edit', {'id': reponse_utilisateur.id}) }}"><i class="far fa-edit"></i></a> #}
