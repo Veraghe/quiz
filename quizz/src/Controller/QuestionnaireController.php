@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Questionnaire;
 use App\Entity\Question;
 use App\Entity\ReponseUtilisateur;
-use App\Entity\ReponsesUtilisateur;
 use App\Entity\Reponse;
 use App\Entity\Utilisateur;
 use App\Form\QuestionnaireType;
@@ -27,6 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -166,7 +166,10 @@ class QuestionnaireController extends AbstractController
                 'label'=>"Email:"
             ]);
         }
-
+        // ------------------------Ajouter la date courante---------------------------------------------------
+        $formBuilder->add('date',HiddenType::class, [
+            
+        ]);
     
         // ------------------------Ajouter une réponse et une question---------------------------------------------------
 
@@ -232,7 +235,7 @@ class QuestionnaireController extends AbstractController
                     $Objet = $reponseRepository->find($reponse);
                     dump($Objet->getQuestion());
 
-            
+                    // $dateReponse->setDate(new \DateTime());
 
                     // pour chaque question
                     // Créer une entité reponse_utilisateur vide
@@ -241,6 +244,7 @@ class QuestionnaireController extends AbstractController
                     $ru->setReponse($Objet);
                     $ru->setUtilisateur($objetUtilisateur);
                     $ru->setQuestion($Objet->getQuestion());
+                    $ru->setDate(new \DateTime());
                     // enregistrer l'entité dans la BDD
                     dump($ru);
 

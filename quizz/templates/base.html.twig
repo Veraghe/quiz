@@ -24,12 +24,14 @@
                 <ul>
                     {% if is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ path('admin') }}"><i class="fas fa-user-alt"></i> Admin</a></li>
+                    {% elseif app.user %}
+                    <li><a href="{{ path('compte') }}"><i class="fas fa-user-alt"></i> Compte</a></li>
                     {% endif %}
 
                  
                     {% if app.user %}
                         <li>
-                            {{ app.user.username }}
+                            {{ app.user.prenom }}
                             <a href="{{ path('app_logout') }}">Se déconnecter</a>
                         </li>
                     {% else %}

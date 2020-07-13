@@ -49,6 +49,25 @@ class ReponseUtilisateurController extends AbstractController
         ]);
     }
 
+         /**
+     * @Route("/compte", name="compte", methods={"GET"})
+     * @param ReponseUtilisateur $reponseUtilisateur
+     * @return Response
+     */
+    public function compte(ReponseUtilisateurRepository $reponseUtilisateurRepository, Request $request): Response
+    {
+        // récupère l'id de la personne connecté :
+        $utilisateur = $this -> getUser()->getId();
+        // chercher la valeurReponse, des réponses répondues!
+        // chercher l'id de la réponse pour afficher sa valeur
+        $valeur = $reponseUtilisateurRepository->findBy(['Reponse'=>$request->query->get('id')]);
+        // afficher que les réponses de l'id Utilisateur connecté:
+        $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
+        return $this->render('utilisateur/compte.html.twig', [
+            'reponse_utilisateurs' => $reponses,
+            'valeurReponse'=>$valeur,
+        ]);
+    }
 
     // /**
     //  * @Route("/reponseQuiz", name="reponse_utilisateur_quiz")

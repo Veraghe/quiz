@@ -30,10 +30,6 @@ class Questionnaire
      */
     private $questions;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ReponsesUtilisateur::class, mappedBy="questionnaire")
-     */
-    private $reponsesUtilisateurs;
 
     public function __construct()
     {
@@ -95,34 +91,5 @@ class Questionnaire
         return $this->getLibelleQuestionnaire();
         }
 
-        /**
-         * @return Collection|ReponsesUtilisateur[]
-         */
-        public function getReponsesUtilisateurs(): Collection
-        {
-            return $this->reponsesUtilisateurs;
-        }
 
-        public function addReponsesUtilisateur(ReponsesUtilisateur $reponsesUtilisateur): self
-        {
-            if (!$this->reponsesUtilisateurs->contains($reponsesUtilisateur)) {
-                $this->reponsesUtilisateurs[] = $reponsesUtilisateur;
-                $reponsesUtilisateur->setQuestionnaire($this);
-            }
-
-            return $this;
-        }
-
-        public function removeReponsesUtilisateur(ReponsesUtilisateur $reponsesUtilisateur): self
-        {
-            if ($this->reponsesUtilisateurs->contains($reponsesUtilisateur)) {
-                $this->reponsesUtilisateurs->removeElement($reponsesUtilisateur);
-                // set the owning side to null (unless already changed)
-                if ($reponsesUtilisateur->getQuestionnaire() === $this) {
-                    $reponsesUtilisateur->setQuestionnaire(null);
-                }
-            }
-
-            return $this;
-        }
 }
