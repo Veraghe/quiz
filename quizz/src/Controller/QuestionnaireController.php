@@ -265,7 +265,7 @@ class QuestionnaireController extends AbstractController
             if($this->getUser())
                 return $this->redirectToRoute('reponse_utilisateur_resultat');
             else
-                return $this->redirectToRoute('home');
+                return $this->redirectToRoute('reponse_utilisateur_anonyme');
         
     }
 

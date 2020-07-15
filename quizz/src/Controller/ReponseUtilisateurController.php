@@ -128,26 +128,13 @@ class ReponseUtilisateurController extends AbstractController
         ]);
     }
 
-    // /**
-    //  * @Route("/reponseQuiz", name="reponse_utilisateur_quiz")
-    //  * @param ReponseUtilisateur $reponseUtilisateur
-    //  * @return Response
-    //  */
-    // public function quiz(Request $request): Response
-    // {
-    //     $quiz= new ReponseUtilisateur();
-
-    //     $form =$this->createFormBuilder($quiz)
-    //                 ->add('reponse')
-    //                 ->add('utilisateur')
-    //                 ->getForm();
-
-    //     // $form->handleRequest($request);
-    //     // dump($quiz);
-    //     return $this->render('reponse_utilisateur/quiz.html.twig',[
-    //         'formReponseUtilisateur'=> $form->createView(),
-    //     ]);
-    // }
+    /**
+     * @Route("/resultatAnonyme", name="reponse_utilisateur_anonyme")
+     */
+    public function anonyme(Request $request)
+    {
+        return $this->render('reponse_utilisateur/anonyme.html.twig');
+    }
 
     /**
      * @Route("/new", name="reponse_utilisateur_new", methods={"GET","POST"})

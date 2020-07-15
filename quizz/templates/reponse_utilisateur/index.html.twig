@@ -20,7 +20,11 @@
         {% for key, reponse_utilisateur in reponse_utilisateurs %}
             <tr>
                 <td>{{ reponse_utilisateur.id }}</td>
-                <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
+                {% if reponse_utilisateur.Utilisateur %}
+                    <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
+                {% else %}
+                    <td class="flexG">{{ reponse_utilisateur.Anonyme}}</td>
+                {% endif %}
                 <td class="flexG">{{ reponse_utilisateur.Question}}</td>
                 {% if valeurReponse[key] == 0 %}
                     <td class="flexG orange">{{ reponse_utilisateur.Reponse}}</td>
