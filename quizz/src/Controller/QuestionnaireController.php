@@ -7,6 +7,7 @@ use App\Entity\Question;
 use App\Entity\ReponseUtilisateur;
 use App\Entity\Reponse;
 use App\Entity\Utilisateur;
+use App\Entity\Anonyme;
 use App\Form\QuestionnaireType;
 use App\Form\QuestionType;
 use App\Form\ReponseUtilisateurType;
@@ -15,6 +16,7 @@ use App\Repository\ReponseRepository;
 use App\Repository\ReponsesUtilisateurRepository;
 use App\Repository\QuestionRepository;
 use App\Repository\UtilisateurRepository;
+use App\Repository\AnonymeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -105,7 +107,7 @@ class QuestionnaireController extends AbstractController
      * @param Questionnaire $questionnaire
      * @return Response
      */
-    public function quiz(Questionnaire $questionnaire,QuestionnaireRepository $questionnaireRepository, QuestionRepository $questionRepository, Reponse $reponse,  ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository, Request $request): Response
+    public function quiz(Questionnaire $questionnaire,QuestionnaireRepository $questionnaireRepository, QuestionRepository $questionRepository, Reponse $reponse,  ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository,AnonymeRepository $anonymeRepository, Request $request): Response
     {
         // ------------------------Form ReponseUtilisateur (affichage avec listes déroulantes!)---------------------------------------------------
         // $reponseUtilisateur = new ReponseUtilisateur();
@@ -146,7 +148,7 @@ class QuestionnaireController extends AbstractController
             dump($tab_question);
         }
         // récupérer les données de $affiche_question et $question_array pour les utiliser dans le form
-
+ 
 
         $formBuilder = $this->createFormBuilder();
         // ------------------------Ajouter un utilisateur---------------------------------------------------
@@ -158,7 +160,7 @@ class QuestionnaireController extends AbstractController
             }
         //ou Creer un utilisateur avec un nouvelle id 
         else{
-            $formBuilder->add('utilisateur', EmailType::class, [
+            $formBuilder->add('anonyme', EmailType::class, [
                 'label'=>"Email:"
             ]);
         }
@@ -177,20 +179,8 @@ class QuestionnaireController extends AbstractController
             $formBuilder->add('question',HiddenType::class,[
             'data'=>$questionnaire->getId(),
         ]);
-        dump($tab_question[$i]);
-            // $formBuilder->add('question'.$i, ChoiceType::class,[
-            //     'choices'  => [
-            //         $key.": ".$tab_question[$i] => $tab_question[$i],
-            //         // $key.": ".$affiche_question => $affiche_question,
-            //     ],
-            //     'expanded'=> true,
-            //     'attr' =>[
-            //         'class'=>'titreQuiz'
-            //     ],
-            //     'label'=> ' '
-            // ]);
-                // foreach ($reponses as $reponse)
-                // {
+        // dump($tab_question[$i]);
+
                 
                 $formBuilder->add('reponse'.$i,  ChoiceType::class,[
                     'choices'  => [
@@ -213,36 +203,52 @@ class QuestionnaireController extends AbstractController
         $form2=$formBuilder->getForm();
 
         $form2->handleRequest($request);
-        
 
 
         if ($form2->isSubmitted() && $form2->isValid()) {
             //les données sont un tableau "utilisateur" et "reponse"
             $data = $form2->getData();
-            dump($data["utilisateur"]);
-
+            // dump($data["utilisateur"]);
+            if($this->getUser())
             $objetUtilisateur=$utilisateurRepository->find($data["utilisateur"]);
+           
         //    $objetUtilisateur= $this -> getUser()->getId();
             // $i=0;
+        // ---------------------------------------
+        // Pour les utilisateurs qui ne sont pas inscrit:
+            // Créer une entité Anonyme 
+            // ------------------------------------------
+            // Au moment de remplir le quiz, créer new Anonyme(), avec son Email;
+            else {
+            $objetEmail=$data["anonyme"];
+            $a = new Anonyme();
+            $a -> setEmail($objetEmail);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($a);
+            $entityManager->flush();
+            dump($a);
+            // -------------Récupérer l'id de l'anonyme----------------------------
+            $objetAnonyme=$a;
+            // dump($objetAnonyme);
+            }
             for($j=0;$j<$i;$j++){
                 foreach ($data["reponse".$j] as $reponse)
                 {
                     dump($data["reponse".$j]);
                     $Objet = $reponseRepository->find($reponse);
                     dump($Objet->getQuestion());
-
                     // $dateReponse->setDate(new \DateTime());
 
                     // pour chaque question
                     // Créer une entité reponse_utilisateur vide
-                    $ru = new reponseUtilisateur;
+                    $ru = new reponseUtilisateur();
                     // peupler l'entité en question avec les données du form 
                     $ru->setReponse($Objet);
-                    // 
+                    // Si, il est connecté "utilisateur" sinon "anonyme":
                     if($this->getUser())
-                    $ru->setUtilisateur($objetUtilisateur);
+                        $ru->setUtilisateur($objetUtilisateur);
                     else
-                    $ru->setUtilisateur();
+                        $ru->setAnonyme($objetAnonyme);
 
                     $ru->setQuestion($Objet->getQuestion());
                     $ru->setDate(new \DateTime());
@@ -256,7 +262,8 @@ class QuestionnaireController extends AbstractController
                 //Met à jour la base à partir des objets signalés à Doctrine.
                 $entityManager->flush();
             }
-           return $this->redirectToRoute('reponse_utilisateur_resultat');
+            return $this->redirectToRoute('reponse_utilisateur_resultat');
+
         
     }
 
@@ -267,16 +274,6 @@ class QuestionnaireController extends AbstractController
             'form2' => $form2->createView(),
         ]);
     }
-//********************************************************************** */
-    // /**
-    //  * @Route("/quiz/résultat", name="reponse_utilisateur_resultat", methods={"GET"})
-    //  */
-    // public function resultat(ReponsesUtilisateurRepository $reponsesUtilisateurRepository)
-    // {
-    //     return $this->render('question/resultat.html.twig',[
-    //         'reponses_utilisateurs' => $reponsesUtilisateurRepository->findAll(),
-    //     ]);
-    // }
 
 //********************************************************************** */
     /**

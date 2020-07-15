@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Anonyme{% endblock %}
+
+{% block body %}
+    <h1>Edit Anonyme</h1>
+
+    {{ include('anonyme/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('anonyme_index') }}">back to list</a>
+
+    {{ include('anonyme/_delete_form.html.twig') }}
+{% endblock %}

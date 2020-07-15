@@ -279,6 +279,9 @@ td a {
     font-size: 0.8em;
     text-align: center;
 }
+.hidden{
+    display: none;
+}
 /* ------------------------------- END RECURENTES -- */
 
 /* ------------------------------- NAV -- */

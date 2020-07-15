@@ -24,10 +24,20 @@ class ReponseUtilisateurController extends AbstractController
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
      */
-    public function index(ReponseUtilisateurRepository $reponseUtilisateurRepository): Response
+    public function index(ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, Request $request): Response
     {
+        // On récupère toutes les réponses
+        $reponses = $reponseUtilisateurRepository->findAll();
+        // Plus desplication en dessous ;)
+        for($i=0;$i<count($reponses);$i++){ 
+            $idReponse = $reponses[$i]->getReponse()->getId();
+            $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
+            $valeur[$i] = $laReponse[0]->getValeurReponse();
+        }
         return $this->render('reponse_utilisateur/index.html.twig', [
-            'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
+            'valeurReponse'=>$valeur,
+            'reponse_utilisateurs' => $reponses,
+            
         ]);
     }
 
@@ -39,12 +49,18 @@ class ReponseUtilisateurController extends AbstractController
     public function resultat(ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, Request $request): Response
     {
         // récupère l'id de la personne connecté :
-        $utilisateur = $this -> getUser()->getId();
-        // dump($utilisateur);
-        // afficher que les réponses de l'id Utilisateur connecté:
-        $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
-        // dump($reponses);
-
+        if($this->getUser()){
+            $utilisateur = $this -> getUser()->getId();
+            // dump($utilisateur);
+            // afficher que les réponses de l'id Utilisateur connecté:
+            $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
+            // dump($reponses);
+        }
+        else {
+            // récupérer l'id Anonyme de la personne qui vient de répondre
+            $anonyme = 1;
+            $reponses = $reponseUtilisateurRepository->findBy(['Anonyme'=> $anonyme]);
+        }
         // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
         for($i=0;$i<count($reponses);$i++){ 
             $idReponse = $reponses[$i]->getReponse()->getId();

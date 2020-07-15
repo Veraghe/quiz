@@ -31,6 +31,7 @@ class UtilisateurType extends AbstractType
             ->add('confirm_password', PasswordType::class)
             ->add('nom')
             ->add('prenom')
+            ->add('session')
         ;
     }
 

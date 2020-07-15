@@ -25,7 +25,6 @@ class ReponseUtilisateur
 
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="reponseUtilisateurs")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $Utilisateur;
 
@@ -39,6 +38,11 @@ class ReponseUtilisateur
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $date;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Anonyme::class, inversedBy="reponseUtilisateurs")
+     */
+    private $Anonyme;
 
     public function getId(): ?int
     {
@@ -96,5 +100,17 @@ class ReponseUtilisateur
     public function __toString() {
         return $this->getDate();
         }
+
+    public function getAnonyme(): ?Anonyme
+    {
+        return $this->Anonyme;
+    }
+
+    public function setAnonyme(?Anonyme $Anonyme): self
+    {
+        $this->Anonyme = $Anonyme;
+
+        return $this;
+    }
 
 }

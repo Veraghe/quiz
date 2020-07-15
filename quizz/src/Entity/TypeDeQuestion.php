@@ -24,11 +24,11 @@ class TypeDeQuestion
      */
     private $libelleTypeDeQuestion;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Questionnaire::class, inversedBy="typeDeQuestions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $questionnaire;
+    // /**
+    //  * @ORM\ManyToOne(targetEntity=Questionnaire::class, inversedBy="typeDeQuestions")
+    //  * @ORM\JoinColumn(nullable=false)
+    //  */
+    // private $questionnaire;
 
     /**
      * @ORM\OneToMany(targetEntity=Question::class, mappedBy="typeDeQuestion")
