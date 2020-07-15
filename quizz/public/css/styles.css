@@ -68,9 +68,10 @@ li {
 
 }
 h1{
-    margin-top: 5vh;
+    margin: 5vh 0 2vh 0;
     font-weight: 400;
     font-size: 1.8em;
+
 }
 h2{
     text-align: center;

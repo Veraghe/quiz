@@ -8,7 +8,7 @@
     <p>{{ app.user.nom }} {{ app.user.prenom }}</p>
     <p>{{ app.user.username}}</p>
     <p>score: {{ app.user.score}}</p>
-    <h1>Tes réponses :</h1>
+    <h1>Tes réponses : {{resultat}}.</h1>
     <table class="table">
             <thead class="vert">
             <tr>
@@ -37,8 +37,10 @@
                 <td colspan="2">Aucun enregistrement trouvé</td>
             </tr>
         {% endfor %}
+        
         </tbody>
     </table>
+    
     <div class="centerbtn">
         <a href="{{ path('home') }}" class="btn orange">Retour</a>
         </div>

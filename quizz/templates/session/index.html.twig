@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Session index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Session</h1>
+
+    <table class="table">
+        <thead class="orange">
+            <tr>
+                <th class="flexP">Id</th>
+                <th class="flexG">LibelleSession</th>
+                <th class="flexP"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for session in sessions %}
+            <tr>
+                <td class="flexP">{{ session.id }}</td>
+                <td class="flexG">{{ session.libelleSession }}</td>
+                <td class="flexP">
+                    <a href="{{ path('session_show', {'id': session.id}) }}"><i class="far fa-eye"></i></a>
+                    <a href="{{ path('session_edit', {'id': session.id}) }}"><i class="far fa-edit"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucune session trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('session_new') }}" class="btn bleu">Ajouter</a>
+{% endblock %}

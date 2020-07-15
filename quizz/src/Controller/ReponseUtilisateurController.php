@@ -46,7 +46,7 @@ class ReponseUtilisateurController extends AbstractController
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
      */
-    public function resultat(ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, Request $request): Response
+    public function resultat( ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, Request $request): Response
     {
         // récupère l'id de la personne connecté :
         if($this->getUser()){
@@ -55,13 +55,15 @@ class ReponseUtilisateurController extends AbstractController
             // afficher que les réponses de l'id Utilisateur connecté:
             $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
             // dump($reponses);
-        }
+
+         }
         else {
             // récupérer l'id Anonyme de la personne qui vient de répondre
-            $anonyme = 1;
+            $anonyme = 1 ;
             $reponses = $reponseUtilisateurRepository->findBy(['Anonyme'=> $anonyme]);
         }
         // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
+        $valeurVrai=0;
         for($i=0;$i<count($reponses);$i++){ 
             $idReponse = $reponses[$i]->getReponse()->getId();
         //    dump($idReponse);
@@ -72,11 +74,16 @@ class ReponseUtilisateurController extends AbstractController
             // Je dois avoir comme valeur 0 ou 1
             $valeur[$i] = $laReponse[0]->getValeurReponse();
             // dump($valeur);
+            if($valeur[$i]==1)
+            $valeurVrai++;
         }
+        $resultat=$valeurVrai.'/'.count($reponses);
+   
         return $this->render('reponse_utilisateur/resultat.html.twig', [
             // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
             'reponse_utilisateurs' => $reponses,
             'valeurReponse'=>$valeur,
+            'resultat'=>$resultat,
         ]);
     }
 
@@ -93,8 +100,10 @@ class ReponseUtilisateurController extends AbstractController
         // afficher que les réponses de l'id Utilisateur connecté:
         $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
        dump($reponses);
+      
     //    dump(count($reponses));
     // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
+    $valeurVrai=0;
     for($i=0;$i<count($reponses);$i++){ 
         $idReponse = $reponses[$i]->getReponse()->getId();
     //    dump($idReponse);
@@ -104,12 +113,18 @@ class ReponseUtilisateurController extends AbstractController
         // dump($laReponse);
         // Je dois avoir comme valeur 0 ou 1
         $valeur[$i] = $laReponse[0]->getValeurReponse();
-        // dump($valeur);
-    }
+        dump($valeur);
+        if($valeur[$i]==1)
+        $valeurVrai++;
+    } 
+    
+    $resultat=$valeurVrai.'/'.count($reponses);
+    // dump($resultat);
 
         return $this->render('utilisateur/compte.html.twig', [
             'reponse_utilisateurs' => $reponses,
             'valeurReponse'=>$valeur,
+            'resultat'=>$resultat,
         ]);
     }
 
@@ -202,33 +217,6 @@ class ReponseUtilisateurController extends AbstractController
         return $this->redirectToRoute('reponse_utilisateur_index');
     }
     
-
-    // /**
-    //  * @Route("/action", name="reponse_utilisateur_action", methods={"POST"})
-    //  */
-    // public function action(Request $request, ReponseUtilisateur $reponseUtilisateur): Response
-    // {
-
-    //     $defaultData = ['question' => 'Ici la question'];
-    //     $formRU = $this->createFormBuilder($defaultData)
-    //         ->add('email')
-
-    //         ->add('reponses');
-
-    //   $formRU->handleRequest($request);
-
-
-    //     if ($formRU->isSubmitted() && $formRU->isValid()) {
-    //         //les données sont un tableau "utilisateur" et "reponse"
-    //         $data = $formRU->getData();
-    //     }
-
-    //     return $this->render('question/quiz.html.twig', [
-    //         'reponse_utilisateur' => $reponseUtilisateur,
-    //         'formRU' => $formRU->createView(),
-    //     ]);
-    // }
-
 
 
 }

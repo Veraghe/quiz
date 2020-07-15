@@ -262,8 +262,10 @@ class QuestionnaireController extends AbstractController
                 //Met à jour la base à partir des objets signalés à Doctrine.
                 $entityManager->flush();
             }
-            return $this->redirectToRoute('reponse_utilisateur_resultat');
-
+            if($this->getUser())
+                return $this->redirectToRoute('reponse_utilisateur_resultat');
+            else
+                return $this->redirectToRoute('home');
         
     }
 

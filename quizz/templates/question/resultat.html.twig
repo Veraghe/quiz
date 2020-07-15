@@ -3,39 +3,39 @@
 {% block title %}Résultat{% endblock %}
 
 {% block body %}
+    <h2>Résultat :</h2>
+    <table class="table">
+            <thead class="orange">
+                <tr>
+                    <th class="flexP">Id</th>
+                    <th>Utilisateur</th>
+                    <th>Réponse</th>
+                </tr>
+            </thead>
+            <tbody>
 
-<h2>Résultat :</h2>
-<table class="table">
-        <thead class="orange">
-            <tr>
-                <th class="flexP">Id</th>
-                <th>Utilisateur</th>
-                <th>Réponse</th>
-            </tr>
-        </thead>
-        <tbody>
+            {% for key,reponses_utilisateur in reponses_utilisateurs %}
+                <tr>
+                    <td class="flexP">{{ reponses_utilisateur.id }}</td>
+                    <td>{{ reponses_utilisateur.utilisateur }}</td>
 
-        {% for key,reponses_utilisateur in reponses_utilisateurs %}
-            <tr>
-                <td class="flexP">{{ reponses_utilisateur.id }}</td>
-                <td>{{ reponses_utilisateur.utilisateur }}</td>
+                    <td class="reponseResultat">
+                        {% for reponse in reponses_utilisateur.reponse0 %}
+                        <div>{{ reponse }}</div>
+                        {% endfor %}
 
-                <td class="reponseResultat">
-                    {% for reponse in reponses_utilisateur.reponse0 %}
-                    <div>{{ reponse }}</div>
-                    {% endfor %}
+                        {% for reponse in reponses_utilisateur.reponse1 %}
+                        <div>{{ reponse }}</div>
+                        {% endfor %}
+                    </td>
 
-                    {% for reponse in reponses_utilisateur.reponse1 %}
-                    <div>{{ reponse }}</div>
-                    {% endfor %}
-                </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucune réponse trouvée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">Aucune réponse trouvée</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 {% endblock %}
