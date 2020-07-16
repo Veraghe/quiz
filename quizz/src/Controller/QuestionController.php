@@ -26,7 +26,7 @@ class QuestionController extends AbstractController
     {
         // dump($request->query->get('id'));
         $question = $questionRepository->findBy(['Questionnaire' => $request->query->get('id')]);
-         
+         dump($question);
         return $this->render('question/index.html.twig',[
             'questions' => $question,
             'reponses' => $reponseRepository->findAll(),
@@ -34,10 +34,25 @@ class QuestionController extends AbstractController
     }
 
     /**
+     * @Route("/admin", name="question_admin", methods={"GET"})
+     * @param Question $question
+     * @return Response
+     */
+    public function questionAdmin(QuestionRepository $questionRepository, ReponseRepository $reponseRepository, Request $request): Response
+    {
+        return $this->render('question/index.html.twig',[
+            'questions' => $questionRepository->findAll(),
+            'reponses' => $reponseRepository->findAll(),
+        ]);
+    }
+
+    /**
      * @Route("/new", name="question_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(QuestionRepository $questionRepository,Request $request): Response
     {
+        // $question = $questionRepository->findBy(['Questionnaire' => $request->query->get('id')]);
+        //  dump($question);
         $question = new Question();
         $form = $this->createForm(QuestionType::class, $question);
         $form->handleRequest($request);
@@ -53,6 +68,7 @@ class QuestionController extends AbstractController
         return $this->render('question/new.html.twig', [
             'question' => $question,
             'form' => $form->createView(),
+            // 'id'=> 1
         ]);
     }
 

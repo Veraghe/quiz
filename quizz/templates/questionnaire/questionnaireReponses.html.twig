@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Questionnaire_Reponses{% endblock %}
+
+{% block body %}
+<div class="center container">
+    <h1>Réponses aux Questionnaires </h1>
+    <div class="blocs">
+        {% for questionnaire in questionnaires %}
+            <!--Liens doit mener aux questions du questionnaire !!!-->
+            <a href="{{ path('reponse_utilisateur_index', {'id': questionnaire.id}) }}" class="orange btnBloc">
+                <div class="bloc">
+                    <h3>{{ questionnaire.libelleQuestionnaire }}</h3>
+                </div>
+            </a>
+        {% else %}
+                <p>Il n'y a pas de questionnaire &#128546;</p>
+        {% endfor %}
+    </div>
+
+    <div class="centerbtn">
+        <a href="{{ path('admin') }}" class="btn orange">Retour</a>
+    </div>
+</div>
+{% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\ReponseUtilisateur;
 use App\Form\ReponseUtilisateurType;
 use App\Repository\ReponseUtilisateurRepository;
 use App\Repository\ReponseRepository;
+use App\Repository\QuestionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,16 +25,40 @@ class ReponseUtilisateurController extends AbstractController
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
      */
-    public function index(ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, Request $request): Response
+    public function index(QuestionRepository $questionRepository,ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, Request $request): Response
     {
-        // On récupère toutes les réponses
-        $reponses = $reponseUtilisateurRepository->findAll();
-        // Plus desplication en dessous ;)
-        for($i=0;$i<count($reponses);$i++){ 
-            $idReponse = $reponses[$i]->getReponse()->getId();
-            $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
-            $valeur[$i] = $laReponse[0]->getValeurReponse();
+        // ----------------On doit récupérer que les réponses qui sont relier aux questionnaires.---------------
+        // On commence part récupèrer les questions qui correspond aux questionnaire 
+        $questions = $questionRepository->findBy(['Questionnaire' => $request->query->get('id')]);
+        // dump($questions);
+        if(!empty($questions)){
+            // récupère l'id des questions
+            foreach($questions as $clef =>$question){
+                $idQuestion= $question->getId();    
+                // dump($idQuestion); 
+                $tab_question[$clef]=$idQuestion;
+                // dump($tab_question);
+            }
+            // afficher les réponses utilisateur part rapport à l'idQuestion
+            $reponses = $reponseUtilisateurRepository->findBy(['Question'=>$tab_question]);
+            // dump($reponses);
         }
+        else {
+            $reponses="";
+        }
+        // Plus desplication en dessous ;)
+        if (!empty($reponses)){
+            for($i=0;$i<count($reponses);$i++){ 
+                $idReponse = $reponses[$i]->getReponse()->getId();
+                $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
+                $valeur[$i] = $laReponse[0]->getValeurReponse();
+            }
+        }
+        // Si, il n'y a pas de réponses, il n'y a pas de valeur:
+        else {
+            $valeur="";
+        }
+        // dump($valeur);
         return $this->render('reponse_utilisateur/index.html.twig', [
             'valeurReponse'=>$valeur,
             'reponse_utilisateurs' => $reponses,
@@ -104,20 +129,24 @@ class ReponseUtilisateurController extends AbstractController
     //    dump(count($reponses));
     // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
     $valeurVrai=0;
-    for($i=0;$i<count($reponses);$i++){ 
-        $idReponse = $reponses[$i]->getReponse()->getId();
-    //    dump($idReponse);
-        // on veut la valeurReponse, des réponses répondues!
-        // chercher l'id de la réponse pour afficher sa valeur
-        $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
-        // dump($laReponse);
-        // Je dois avoir comme valeur 0 ou 1
-        $valeur[$i] = $laReponse[0]->getValeurReponse();
-        dump($valeur);
-        if($valeur[$i]==1)
-        $valeurVrai++;
-    } 
-    
+    if (!empty($reponses)){
+        for($i=0;$i<count($reponses);$i++){ 
+            $idReponse = $reponses[$i]->getReponse()->getId();
+        //    dump($idReponse);
+            // on veut la valeurReponse, des réponses répondues!
+            // chercher l'id de la réponse pour afficher sa valeur
+            $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
+            // dump($laReponse);
+            // Je dois avoir comme valeur 0 ou 1
+            $valeur[$i] = $laReponse[0]->getValeurReponse();
+            dump($valeur);
+            if($valeur[$i]==1)
+            $valeurVrai++;
+        } 
+    }
+    else {
+        $valeur="";
+    }   
     $resultat=$valeurVrai.'/'.count($reponses);
     // dump($resultat);
 

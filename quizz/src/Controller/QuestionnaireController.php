@@ -56,20 +56,9 @@ class QuestionnaireController extends AbstractController
             'questions' => $questionRepository->findAll(),
         ]);
     }
+
 //********************************************************************** */
-    // /**
-    //  * @Route("/{id}/listeQuestions", name="question_index", methods={"GET"})
-    //  * @param Questionnaire $questionnaire
-    //  * @return Response
-    //  */
-    // public function indexQuestion(Questionnaire $questionnaire): Response
-    // {
-    //     return $this->render('question/index.html.twig',[
-    //         'questionnaire' => $questionnaire,
-    //     ]);
-    // }
-//********************************************************************** */
-        /**
+    /**
      * @Route("/{id}/edit", name="question_edit", methods={"GET","POST"})
      */
     public function editQuestion(Request $request, Question $question): Response
@@ -97,6 +86,20 @@ class QuestionnaireController extends AbstractController
     public function home(QuestionnaireRepository $questionnaireRepository, QuestionRepository $questionRepository): Response
     {
         return $this->render('questionnaire/home.html.twig', [
+            'questionnaires' => $questionnaireRepository->findAll(),
+            'questions' => $questionRepository->findAll(),
+        ]);
+    }
+
+        //FONCTION: Accueil----------------------------------------------
+    /**
+     * @Route("/reponses/", name="questionnaire_reponses" , methods={"GET"})
+     * @param Questionnaire $questionnaire
+     * @return Response
+     */
+    public function questionnaireReponses(QuestionnaireRepository $questionnaireRepository, QuestionRepository $questionRepository): Response
+    {
+        return $this->render('questionnaire/questionnaireReponses.html.twig', [
             'questionnaires' => $questionnaireRepository->findAll(),
             'questions' => $questionRepository->findAll(),
         ]);
