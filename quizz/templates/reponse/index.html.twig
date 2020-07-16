@@ -40,8 +40,8 @@
 
     <div class="centerbtn">
         <a href="{{ path('reponse_new') }}" class="btn bleu">Ajouter</a>
-        {# {% for questionnaire in questionnaires %} #}
-            <a href="{{ path('question_index', {'id': questions}) }}" class="btn orange">Retour</a>
-        {# {% endfor %} #}
+        
+        <a href="{{ path('question_index', {'id': questions}) }}" class="btn orange">Retour</a>
+        
     </div>
 {% endblock %}

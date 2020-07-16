@@ -32,19 +32,21 @@ class QuestionController extends AbstractController
             'reponses' => $reponseRepository->findAll(),
         ]);
     }
-
-    /**
-     * @Route("/admin", name="question_admin", methods={"GET"})
+// *************************************************************************************
+        /**
+     * @Route("/questionAdmin", name="question_admin", methods={"GET"})
      * @param Question $question
      * @return Response
      */
     public function questionAdmin(QuestionRepository $questionRepository, ReponseRepository $reponseRepository, Request $request): Response
     {
+        // dump($request->query->get('id'));
         return $this->render('question/index.html.twig',[
             'questions' => $questionRepository->findAll(),
             'reponses' => $reponseRepository->findAll(),
         ]);
     }
+
 
     /**
      * @Route("/new", name="question_new", methods={"GET","POST"})
@@ -62,7 +64,7 @@ class QuestionController extends AbstractController
             $entityManager->persist($question);
             $entityManager->flush();
 
-            return $this->redirectToRoute('question_index');
+            return $this->redirectToRoute('question_admin');
         }
 
         return $this->render('question/new.html.twig', [
@@ -94,7 +96,7 @@ class QuestionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('question_index');
+            return $this->redirectToRoute('question_admin');
         }
 
         return $this->render('question/edit.html.twig', [
@@ -114,6 +116,6 @@ class QuestionController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('question_index');
+        return $this->redirectToRoute('question_admin');
     }
 }

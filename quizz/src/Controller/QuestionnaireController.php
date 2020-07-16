@@ -134,7 +134,9 @@ class QuestionnaireController extends AbstractController
             $reponses = $reponseRepository->findBy(['question' => $question->getId()]);
             // dump($reponses);
            $affiche_question =$question->getLibelleQuestion();
-            dump($affiche_question);
+           $affiche_type_de_question =$question->getTypeDeQuestion()->getId();
+            // dump($affiche_question);
+            // dump($affiche_type_de_question);
             
             $question_array = [];
             foreach ($reponses as $reponse)
@@ -146,9 +148,11 @@ class QuestionnaireController extends AbstractController
 
             // Récupère dans un tableau les questions et les réponses 
             $tab_reponse[$clef]=$question_array;
-            dump($tab_reponse);
+            // dump($tab_reponse);
              $tab_question[$clef]=$affiche_question;
-            dump($tab_question);
+            // dump($tab_question);
+            $tab_type_de_question[$clef]=$affiche_type_de_question;
+            dump($tab_type_de_question);
         }
         // récupérer les données de $affiche_question et $question_array pour les utiliser dans le form
  
@@ -174,17 +178,20 @@ class QuestionnaireController extends AbstractController
     
         // ------------------------Ajouter une réponse et une question---------------------------------------------------
 
-            $key=1;
-            $i=0;
-            foreach ( $questions as $question)
-            {
+        $key=1;
+        $i=0;
+        foreach ( $questions as $question)
+        {
             // Récupère l'id questionnaire :
             $formBuilder->add('question',HiddenType::class,[
             'data'=>$questionnaire->getId(),
-        ]);
-        // dump($tab_question[$i]);
+            ]);
+            // dump($tab_question[$i]);
 
-                
+            // Ajouter une condition pour le type de question
+            // Trouver une façon de récupèrer le type de question depuis la question
+            
+            if($tab_type_de_question[$i] ==4 ){        
                 $formBuilder->add('reponse'.$i,  ChoiceType::class,[
                     'choices'  => [
                         // $question_array,
@@ -196,7 +203,21 @@ class QuestionnaireController extends AbstractController
                     'label'=>  $key.": ".$tab_question[$i],
                     
                 ]);
-                // } 
+            }
+            else{
+                $formBuilder->add('reponse'.$i,  ChoiceType::class,[
+                    'choices'  => [
+                        // $question_array,
+                        $tab_reponse[$i],
+                    ],
+                    'expanded'=> true,
+                    //Si multiple = false (radio bouton), = true (checkbox)
+                    'multiple'=>false,
+                    'label'=>  $key.": ".$tab_question[$i],
+                    
+                ]);
+            }
+                 
             $key++ ;
             $i++;
            // dump($formBuilder);

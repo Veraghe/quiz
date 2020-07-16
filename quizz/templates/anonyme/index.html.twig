@@ -1,35 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Anonyme index{% endblock %}
+{% block title %}Anonyme{% endblock %}
 
 {% block body %}
-    <h1>Anonyme index</h1>
+    <div class="container">
+        <h1>Anonyme</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for anonyme in anonymes %}
-            <tr>
-                <td>{{ anonyme.id }}</td>
-                <td>{{ anonyme.Email }}</td>
-                <td>
-                    <a href="{{ path('anonyme_show', {'id': anonyme.id}) }}">show</a>
-                    <a href="{{ path('anonyme_edit', {'id': anonyme.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('anonyme_new') }}">Create new</a>
+        <table class="table">
+            <thead class="orange">
+                <tr>
+                    <th class="flexP">Id</th>
+                    <th class="flexG">Email</th>
+                    <th class="flexP"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for anonyme in anonymes %}
+                <tr>
+                    <td class="flexP">{{ anonyme.id }}</td>
+                    <td class="flexG">{{ anonyme.Email }}</td>
+                    <td class="flexP">
+                        {# <a href="{{ path('anonyme_show', {'id': anonyme.id}) }}">show</a>
+                        <a href="{{ path('anonyme_edit', {'id': anonyme.id}) }}">edit</a> #}
+                        {{ include('anonyme/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="centerbtn">
+            {# <a href="{{ path('anonyme_new') }}">Create new</a> #}
+            <a href="{{ path('btn_utilisateur') }}" class="btn orange">Retour</a>
+        </div>
+    </div>
 {% endblock %}

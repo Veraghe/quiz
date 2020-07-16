@@ -38,6 +38,14 @@ class UtilisateurController extends AbstractController
     }
 
     /**
+     * @Route("/btnUtilisateur", name="btn_utilisateur", methods={"GET"})
+     */
+    public function btnUtilisateur(UtilisateurRepository $utilisateurRepository): Response
+    {
+        return $this->render('utilisateur/btnUtilisateur.html.twig');
+    }
+
+    /**
      * @Route("/new", name="utilisateur_new", methods={"GET","POST"})
      */	
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response

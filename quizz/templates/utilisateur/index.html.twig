@@ -14,7 +14,7 @@
                 <th >Prénom</th>
                 <th class="flexG">Email</th>
                 <th class="flexG">Roles</th>
-                <th class="flexP">Score</th>
+                {# <th class="flexP">Score</th> #}
                 {# <th>Password</th> #}
                 <th class="flexP"></th>
             </tr>
@@ -27,7 +27,7 @@
                 <td >{{ utilisateur.prenom }}</td>
                 <td class="flexG">{{ utilisateur.email }}</td>
                 <td class="flexG">{{ utilisateur.roles ? utilisateur.roles|json_encode : '' }}</td>
-                 <td class="flexP">{{ utilisateur.score }}</td>
+                 {# <td class="flexP">{{ utilisateur.score }}</td> #}
                 {# <td ><div class="scroll">{{ utilisateur.password }}</div></td> #}
                 <td class="flexP">
                     <a href="{{ path('utilisateur_show', {'id': utilisateur.id}) }}"><i class="far fa-eye"></i></a>
@@ -43,7 +43,7 @@
     </table>
     <div class="centerbtn">
         <a href="{{ path('utilisateur_new') }}" class="btn bleu">Ajouter</a>
-        <a href="{{ path('admin') }}" class="btn orange">Retour</a>
+        <a href="{{ path('btn_utilisateur') }}" class="btn orange">Retour</a>
     </div>
 </div>
 {% endblock %}

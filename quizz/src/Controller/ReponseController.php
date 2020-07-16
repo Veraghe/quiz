@@ -30,7 +30,7 @@ class ReponseController extends AbstractController
         dump($reponses);
 
         $questions=$questionRepository->findBy(['id' => $request->query->get('id')]);
-        // dump($questions[0]->getQuestionnaire()->getId());
+        dump($questions[0]->getQuestionnaire()->getId());
 
 
         return $this->render('reponse/index.html.twig', [
@@ -42,7 +42,7 @@ class ReponseController extends AbstractController
 
         ]);
     }
-
+//********************************************************************** */
     /**
      * @Route("/new", name="reponse_new", methods={"GET","POST"})
      */
@@ -60,7 +60,7 @@ class ReponseController extends AbstractController
             // Doctrine examine tous les objets qu'elle parvient à voir s'ils doivent être conservés dans la base de données.
             $entityManager->flush();
 
-            return $this->redirectToRoute('reponse_index');
+            return $this->redirectToRoute('reponse_new');
         }
 
         return $this->render('reponse/new.html.twig', [
@@ -69,6 +69,7 @@ class ReponseController extends AbstractController
         ]);
     }
 
+//********************************************************************** */
     /**
      * @Route("/{id}", name="reponse_show", methods={"GET"})
      */
@@ -78,7 +79,7 @@ class ReponseController extends AbstractController
             'reponse' => $reponse,
         ]);
     }
-
+//********************************************************************** */
     /**
      * @Route("/{id}/edit", name="reponse_edit", methods={"GET","POST"})
      */
@@ -90,7 +91,7 @@ class ReponseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('reponse_index');
+            return $this->redirectToRoute('question_admin');
         }
 
 
@@ -99,7 +100,7 @@ class ReponseController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
+//********************************************************************** */
     /**
      * @Route("/{id}", name="reponse_delete", methods={"DELETE"})
      */
@@ -111,6 +112,6 @@ class ReponseController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('reponse_index');
+        return $this->redirectToRoute('question_admin');
     }
 }

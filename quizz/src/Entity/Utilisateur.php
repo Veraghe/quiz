@@ -60,10 +60,10 @@ class Utilisateur implements UserInterface
      */
     private $prenom;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $score;
+    // /**
+    //  * @ORM\Column(type="integer")
+    //  */
+    // private $score;
 
     /**
      * @ORM\OneToMany(targetEntity=ReponseUtilisateur::class, mappedBy="Utilisateur")
@@ -179,17 +179,17 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
-    public function getScore(): ?int
-    {
-        return $this->score;
-    }
+    // public function getScore(): ?int
+    // {
+    //     return $this->score;
+    // }
 
-    public function setScore(int $score): self
-    {
-        $this->score = $score;
+    // public function setScore(int $score): self
+    // {
+    //     $this->score = $score;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection|ReponseUtilisateur[]
