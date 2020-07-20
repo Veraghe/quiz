@@ -191,7 +191,21 @@ class QuestionnaireController extends AbstractController
             // Ajouter une condition pour le type de question
             // Trouver une façon de récupèrer le type de question depuis la question
             
-            // if($tab_type_de_question[$i] ==4 ){        
+            if($tab_type_de_question[$i] ==4 ){        
+                $formBuilder->add('reponse'.$i,  ChoiceType::class,[
+                    'choices'  => [
+                        // $question_array,
+                        $tab_reponse[$i],
+                    ],
+                    
+                    'expanded'=> true,
+                    //Si multiple = false (radio bouton), = true (checkbox)
+                    'multiple'=>true,
+                    'label'=>  $key.": ".$tab_question[$i],
+                    
+                ]);
+            }
+            else{
                 $formBuilder->add('reponse'.$i,  ChoiceType::class,[
                     'choices'  => [
                         // $question_array,
@@ -199,25 +213,13 @@ class QuestionnaireController extends AbstractController
                     ],
                     'expanded'=> true,
                     //Si multiple = false (radio bouton), = true (checkbox)
-                    'multiple'=>true,
+                    'multiple'=>false,
                     'label'=>  $key.": ".$tab_question[$i],
                     
                 ]);
-            // }
-            // else{
-            //     $formBuilder->add('reponse'.$i,  ChoiceType::class,[
-            //         'choices'  => [
-            //             // $question_array,
-            //             $tab_reponse[$i],
-            //         ],
-            //         'expanded'=> true,
-            //         //Si multiple = false (radio bouton), = true (checkbox)
-            //         'multiple'=>false,
-            //         'label'=>  $key.": ".$tab_question[$i],
-                    
-            //     ]);
-            // }
+            }
                  
+            
             $key++ ;
             $i++;
            // dump($formBuilder);
@@ -257,10 +259,38 @@ class QuestionnaireController extends AbstractController
             }
             // $i = nombre de question
             for($j=0;$j<$i;$j++){
-                foreach ($data["reponse".$j] as $reponse)
-                {
+                if(is_array($data["reponse".$j])){ 
+                    foreach ($data["reponse".$j] as $reponse)
+                    {
+                        dump($data["reponse".$j]);
+                        $Objet = $reponseRepository->find($reponse);
+                        dump($Objet->getQuestion());
+                        // $dateReponse->setDate(new \DateTime());
+
+                        // pour chaque question
+                        // Créer une entité reponse_utilisateur vide
+                        $ru = new reponseUtilisateur();
+                        // peupler l'entité en question avec les données du form 
+                        $ru->setReponse($Objet);
+                        // Si, il est connecté "utilisateur" sinon "anonyme":
+                        if($this->getUser())
+                            $ru->setUtilisateur($objetUtilisateur);
+                        else
+                            $ru->setAnonyme($objetAnonyme);
+
+                        $ru->setQuestion($Objet->getQuestion());
+                        $ru->setDate(new \DateTime());
+                        // enregistrer l'entité dans la BDD
+                        dump($ru);
+
+                        $entityManager = $this->getDoctrine()->getManager();
+                        //Cette méthode signale à Doctrine que l'objet doit être enregistré
+                        $entityManager->persist($ru);
+                    }
+                }
+                else {
                     dump($data["reponse".$j]);
-                    $Objet = $reponseRepository->find($reponse);
+                    $Objet = $reponseRepository->find($data["reponse".$j]);
                     dump($Objet->getQuestion());
                     // $dateReponse->setDate(new \DateTime());
 
