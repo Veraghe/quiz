@@ -191,7 +191,7 @@ class QuestionnaireController extends AbstractController
             // Ajouter une condition pour le type de question
             // Trouver une façon de récupèrer le type de question depuis la question
             
-            if($tab_type_de_question[$i] ==4 ){        
+            // if($tab_type_de_question[$i] ==4 ){        
                 $formBuilder->add('reponse'.$i,  ChoiceType::class,[
                     'choices'  => [
                         // $question_array,
@@ -203,26 +203,26 @@ class QuestionnaireController extends AbstractController
                     'label'=>  $key.": ".$tab_question[$i],
                     
                 ]);
-            }
-            else{
-                $formBuilder->add('reponse'.$i,  ChoiceType::class,[
-                    'choices'  => [
-                        // $question_array,
-                        $tab_reponse[$i],
-                    ],
-                    'expanded'=> true,
-                    //Si multiple = false (radio bouton), = true (checkbox)
-                    'multiple'=>false,
-                    'label'=>  $key.": ".$tab_question[$i],
+            // }
+            // else{
+            //     $formBuilder->add('reponse'.$i,  ChoiceType::class,[
+            //         'choices'  => [
+            //             // $question_array,
+            //             $tab_reponse[$i],
+            //         ],
+            //         'expanded'=> true,
+            //         //Si multiple = false (radio bouton), = true (checkbox)
+            //         'multiple'=>false,
+            //         'label'=>  $key.": ".$tab_question[$i],
                     
-                ]);
-            }
+            //     ]);
+            // }
                  
             $key++ ;
             $i++;
            // dump($formBuilder);
         }
-        
+        dump($i);
 // ---------------------------------------------------------------------------
         $form2=$formBuilder->getForm();
 
@@ -255,6 +255,7 @@ class QuestionnaireController extends AbstractController
             $objetAnonyme=$a;
             // dump($objetAnonyme);
             }
+            // $i = nombre de question
             for($j=0;$j<$i;$j++){
                 foreach ($data["reponse".$j] as $reponse)
                 {
