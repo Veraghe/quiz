@@ -1,0 +1,57 @@
+.draggable, .droppable{
+    height: 150px;
+    width: 150px;
+    display: inline-block;
+    border: solid 3px transparent;
+}
+.draggable{
+    cursor: move;
+}
+#orange{
+    background-color: orange;
+}
+#bleu{
+    background-color: blue;
+}
+#rose{
+    background-color: palevioletred;
+}
+#rouge{
+    background-color: red;
+}
+#vert{
+    background-color: green;
+}
+.orange{
+    border: solid 3px orange;
+}
+.bleu{
+    border: solid 3px blue;
+}
+.rose{
+    border: solid 3px palevioletred;
+}
+.rouge{
+    border: solid 3px red;
+}
+.vert{
+    border: solid 3px green;
+}
+
+/* *************DRAG & DROP related styling****************************** */
+.droppable.droppable-hover{
+    border-width:5px;
+    transform: scale(1.1);
+}
+.droppable.dropped{
+    border-style: solid;
+    color: #fff;
+}
+.droppable.dragged {
+    user-select: none;
+    opacity: 0.1;
+    cursor: default;
+}
+.draggable.draggable:hover{
+    opacity: 0.5;
+}

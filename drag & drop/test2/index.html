@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>test 2: drag & drop</title>
+        <link href="css/styles.css" rel="stylesheet" type="text/css" media="screen">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+
+        <meta content="IE=edge" http-equiv=X-UA-Compatible>
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+    </head>
+
+    <body> 
+        <section class="draggable-elements">
+            <!-- Rendre un élément déplaçable : draggable="true"-->
+            <div class="draggable" id="orange" draggable="true"></div>
+            <div class="draggable" id="bleu" draggable="true"></div>
+            <div class="draggable" id="rose" draggable="true"></div>
+            <div class="draggable" id="rouge" draggable="true"></div>
+            <div class="draggable" id="vert" draggable="true"></div>
+        </section>
+
+        <section class="droppable-elements">
+            <div class="droppable vert" data-draggable-id="vert"></div>
+            <div class="droppable orange" data-draggable-id="orange"></div>
+            <div class="droppable rouge" data-draggable-id="rouge"></div>
+            <div class="droppable bleu" data-draggable-id="bleu"></div>
+            <div class="droppable rose" data-draggable-id="rose"></div>
+        </section>
+
+        <script src="js/main.js"></script>
+
+    </body>
+
+</html>
