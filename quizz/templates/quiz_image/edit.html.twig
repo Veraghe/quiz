@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier QuizImage{% endblock %}
+
+{% block body %}
+    <div class="center container">
+        <fieldset>
+            <h1>Modifier QuizImage</h1>
+
+            {{ include('quiz_image/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+            {{ include('quiz_image/_delete_form.html.twig') }}
+
+            <a href="{{ path('quiz_image_index') }}"class="btn orange">Annulez !</a>
+
+        </fieldset>
+    </div>
+{% endblock %}

@@ -398,6 +398,56 @@ input#form_utilisateur{
     display: flex;
     flex-direction: column;
 }
+
+/* ------------------------------- quizImage-- */
+.quizImage{
+    width: 50vw;
+    margin: 0 auto;
+}
+#choises li img {
+    display: block;
+    z-index: 3;
+    width: 10vw;
+    height: 12vh;
+    transition: all .2s;
+}
+#choises li img:hover{
+    transform: scale(1.4);
+}
+li{
+    list-style-type: none;
+}
+#choises{
+    display: flex;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#choises li{
+    margin: 2vw;
+    width: 10vw;
+    height: 12vh;
+    cursor: pointer;
+}
+
+.reponseImage{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+#answers ul li{
+    margin: 2vw;
+    padding: 1vw;
+    width: 10vw;
+    height: 12vh;
+    border: dashed 3px var(--color-bleu-clair);
+}
+
+#answers p {
+    text-align: center;
+}
+
 /* ------------------------------- FOOTER-- */
 footer{
     background-color: var(--color-bleu);

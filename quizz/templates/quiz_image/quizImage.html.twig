@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiz Images{% endblock %}
+
+{% block body %}
+    <div class="container-quiz">
+        <ul id="choises">
+            <!-- pour la BDD, ajouter une boucle pour afficher toutes les images -->
+            {% for quiz_image in quiz_images %}
+            <li>
+                <img class="imageQuiz" src="{{ asset(quiz_image.image) }}" alt="">
+            </li>
+           {% endfor %}
+        </ul>
+        <div class="quizImage">
+            <div class="reponseImage" id="answers">
+                <!-- utiliser aussi ici une boucle pour afficher les réponsesImage dans le désordre -->
+                {% for quiz_image in quiz_images %}
+                <ul>
+                    <p>{{quiz_image.reponseImage}} :</p><li></li>
+                </ul> 
+                {% endfor %}
+            </div>
+        </div>
+     </div>
+        <!-- ajouter un bouton -->
+        <div class="centerbtn">
+            <button class="btn vert">valider</button>
+            <a href="{{ asset('home') }}" class="btn orange">Retour</a>
+            <a href="{{ path('quiz_image_index') }}" class="bleu btn">Gestion Quiz Images</a>   
+   
+        </div>
+        <!-- dans le controller : si, ils ont le même id c'est la bonne réponse -->
+     
+
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="{{ asset('js/main.js') }}"></script>   
+{% endblock %}

@@ -15,7 +15,7 @@
         }
     });
 
-    $("#answers li").droppable({
+    $("#answers ul li").droppable({
         drop: function (event, ui) {
             var dropped = ui.draggable;
             var droppedOn = this;

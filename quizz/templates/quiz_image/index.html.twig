@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiz Images{% endblock %}
+
+{% block body %}
+    <h1>Quiz Images</h1>
+
+    <table class="table">
+        <thead class="orange">
+            <tr>
+                <th class="flexP">Id</th>
+                <th class="flexP">Image</th>
+                <th>ReponseImage</th>
+                <th class="flexP"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for quiz_image in quiz_images %}
+            <tr>
+                <td class="flexP">{{ quiz_image.id }}</td>
+                <td class="flexP"><img class="imageQuiz" src="{{ asset(quiz_image.image) }}" alt=""></td>
+                <td>{{ quiz_image.reponseImage }}</td>
+                <td class="flexP">
+                    <a href="{{ path('quiz_image_show', {'id': quiz_image.id}) }}"><i class="far fa-edit"></i></a>
+                    <a href="{{ path('quiz_image_edit', {'id': quiz_image.id}) }}"><i class="fas fa-clipboard-list"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucune donnée trouvée &#128546;</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="centerbtn">
+        <a href="{{ path('quiz_image_new') }}" class="btn bleu">Ajouter</a>
+
+        <a href="{{ path('home') }}" class="btn orange">Retour</a>
+    </div>
+{% endblock %}
