@@ -1,0 +1,56 @@
+<html lang="fr">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>test 4: drag & drop</title>
+        <link href="css/styles.css" rel="stylesheet" type="text/css" media="screen">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+
+        <meta content="IE=edge" http-equiv=X-UA-Compatible>
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+    </head>
+
+    <body> 
+        <ul id="choises">
+            <!-- pour la BDD, ajouter une boucle pour afficher toutes les images -->
+            <!-- <li>
+                <img src="{{asset ...}}" />
+            </li> -->
+            <li>
+                <img src="images/alimentation.gif" />
+            </li>
+            <li>
+                <img src="images/carte mère.jpg" />
+            </li>
+            <li>
+                <img src="images/carte graphique.jpg" />
+            </li>
+            <li>
+                <img src="images/carte reseau.jpg" />
+            </li>
+        </ul>
+        <div class="reponseImage">
+            <!-- rassembler les deux pour avoir que l'id answers -->
+            <!-- utiliser aussi ici une boucle pour afficher les réponsesImage dans le désordre -->
+            <ul id="libelle">
+                <li>carte réseau :</li>
+                <li>carte graphique :</li>
+                <li>carte mère :</li>
+                <li>alimentation :</li>
+            </ul>
+            <ul id="answers">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <!-- ajouter un bouton -->
+        <!-- dans le controller : si, ils ont le même id c'est la bonne réponse -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script src="js/main.js"></script>
+
+    </body>
+
+</html>

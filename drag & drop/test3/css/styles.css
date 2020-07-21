@@ -1,0 +1,24 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#limitation{
+    width: 80vw;
+    height: 80vh;
+    border: solid 3px green;
+}
+
+
+
+body {
+    font-size: 32px;
+}
+
+#dropzone {
+    top: 150px;
+    width: 200px;
+    height: 200px;
+    background: cyan;
+    border: solid 1px;
+}
