@@ -8,21 +8,28 @@
             <!-- pour la BDD, ajouter une boucle pour afficher toutes les images -->
             {% for quiz_image in quiz_images %}
             <li>
-                <img class="imageQuiz" src="{{ asset(quiz_image.image) }}" alt="">
+                <img class="imageQuiz" src="{{ asset(quiz_image.image) }}" id="{{quiz_image.id}}" alt="">
             </li>
            {% endfor %}
         </ul>
+        {{ form_start(formQuizImage) }}
         <div class="quizImage">
             <div class="reponseImage" id="answers">
                 <!-- utiliser aussi ici une boucle pour afficher les réponsesImage dans le désordre -->
-                {% for quiz_image in quiz_images %}
+                {# {% for quiz_image in quiz_images_mélange %} #}
                 <ul>
-                    <p>{{quiz_image.reponseImage}} :</p><li></li>
+                    {# <p>{{quiz_image.reponseImage}} :</p> #}
+                    <li>
+                        {# <img class="imageQuiz" src="{{ form_widget(formQuizImage) }}" alt="">  #}
+                    {{ form_row(formQuizImage.image) }}
+                    </li>
                 </ul> 
-                {% endfor %}
+                {# {% endfor %} #}
             </div>
         </div>
      </div>
+    
+     {{ form_end(formQuizImage) }}
         <!-- ajouter un bouton -->
         <div class="centerbtn">
             <button class="btn vert">valider</button>

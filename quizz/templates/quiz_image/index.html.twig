@@ -18,6 +18,7 @@
         {% for quiz_image in quiz_images %}
             <tr>
                 <td class="flexP">{{ quiz_image.id }}</td>
+                {# <td>{{ asset(quiz_image.image) }}</td> #}
                 <td class="flexP"><img class="imageQuiz" src="{{ asset(quiz_image.image) }}" alt=""></td>
                 <td>{{ quiz_image.reponseImage }}</td>
                 <td class="flexP">

@@ -9,6 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * @Route("/quiz/image")
@@ -28,15 +31,49 @@ class QuizImageController extends AbstractController
     /**
      * @Route("/quizImage", name="quiz_image_quizImage", methods={"GET"})
      */
-    public function quizImage(QuizImageRepository $quizImageRepository): Response
+    public function quizImage(QuizImageRepository $quizImageRepository, Request $request): Response
     {
-        // $objetQuizImage = $quizImageRepository->findAll();
-        // dump($objetQuizImage);
-        // $rand = rand(0, count($objetQuizImage) -1);
-        // $objetQuizImageRand = shuffle($objetQuizImage[$rand]);
-        // dump($objetQuizImageRand);
+        $objetQuizImage = $quizImageRepository->findAll();
+        // mélanger l'emplacement des réponses
+        dump($objetQuizImage);
+        shuffle($objetQuizImage);
+        dump($objetQuizImage);
+
+    // On doit récupérer:
+        // l'id de base de l'emplacement.
+        $i=1;
+        foreach($objetQuizImage as $QuizImage){
+            $idQuizImage[$i]=$QuizImage->getId();
+            dump($idQuizImage);
+            $i++;
+        }
+        // l'id de l'image posée (Créer un formulaire pour enregistrer les réponsesImage)
+        $formBuilder = $this->createFormBuilder();
+        // dans mon add image j'aimerais récupérer l'id de l'image glissée!
+        $formBuilder -> add('image', TextType::class);
+        $formQuizImage=$formBuilder->getForm();
+        $formQuizImage->handleRequest($request);
+        
+        if($formQuizImage->isSubmitted() && $formQuizImage->isValid()){
+            $data = $formQuizImage->getData();
+            for($j=0;$j<$i;$j++){
+                $ru = new reponseUtilisateur();
+                // surement ajouter l'utilisateur et l'anonyme
+                $ru ->setImage(); //reponse de l'utilisateur
+                $ru ->setReponseImage($idQuizImage); //l'emplacement des cases avec son id
+
+                $entityManager= $this->getDoctrine()->getManager();
+                $entityManager->persist($ru);
+                $entityManager->flush(); 
+            }
+            return $this->redirectToRoute('home');    
+        }
+        
+
         return $this->render('quiz_image/quizImage.html.twig', [
             'quiz_images' => $quizImageRepository->findAll(),
+            'quiz_images_mélange' => $objetQuizImage,
+            'formQuizImage'=>$formQuizImage->createView(),
         ]);
     }
 
