@@ -401,7 +401,7 @@ input#form_utilisateur{
 
 /* ------------------------------- quizImage-- */
 .quizImage{
-    width: 50vw;
+    width: 60vw;
     margin: 0 auto;
 }
 #choises li img {
@@ -434,6 +434,10 @@ li{
 .reponseImage{
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
+}
+#answers ul{
+    display: flex;
     flex-wrap: wrap;
 }
 #answers ul li{

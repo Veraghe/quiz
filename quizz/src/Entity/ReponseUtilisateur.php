@@ -19,7 +19,7 @@ class ReponseUtilisateur
 
     /**
      * @ORM\ManyToOne(targetEntity=Reponse::class, inversedBy="reponseUtilisateurs")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $Reponse;
 
@@ -30,7 +30,7 @@ class ReponseUtilisateur
 
     /**
      * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="reponseUtilisateurs")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $Question;
 
@@ -43,6 +43,16 @@ class ReponseUtilisateur
      * @ORM\ManyToOne(targetEntity=Anonyme::class, inversedBy="reponseUtilisateurs")
      */
     private $Anonyme;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $reponseImage;
 
     public function getId(): ?int
     {
@@ -109,6 +119,30 @@ class ReponseUtilisateur
     public function setAnonyme(?Anonyme $Anonyme): self
     {
         $this->Anonyme = $Anonyme;
+
+        return $this;
+    }
+
+    public function getImage(): ?int
+    {
+        return $this->image;
+    }
+
+    public function setImage(?int $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getReponseImage(): ?int
+    {
+        return $this->reponseImage;
+    }
+
+    public function setReponseImage(?int $reponseImage): self
+    {
+        $this->reponseImage = $reponseImage;
 
         return $this;
     }

@@ -15,19 +15,39 @@
         }
     });
 
-    $("#answers ul li .form-group input ").droppable({
-        drop: function (event, ui) {
-            var dropped = ui.draggable;
-            var droppedOn = this;
+    function drop(emplacement, formQuizImage){
+        $(emplacement).droppable({
+            drop: function (event, ui) {
+                var dropped = ui.draggable;
+                // l'emplacement de la case pour déposer l'image
+                var droppedOn = this;
+                console.log(droppedOn);
+                // récupérer l'id de l'élément déposé
+                var id_objet = dropped.attr('id');
+                console.log(id_objet);
+                // récupérer l'emplacement de la case
+                var drop = $(this).attr('id');
+                console.log(drop);
 
-            if ($(droppedOn).children().length > 0) {
-                $(droppedOn).children().detach().prependTo($(lastPlace));
+                $(formQuizImage).val(id_objet);
+
+                // Autorise de déplacer plusieurs fois l'objet:
+                if ($(droppedOn).children().length > 0) {
+                    $(droppedOn).children().detach().prependTo($(lastPlace));
+                }
+
+                // l'objet se mets dans la case:
+                $(dropped).detach().css({
+                    top: 0,
+                    left: 0
+                }).prependTo($(droppedOn));
             }
+        }); 
+    }
+    for(i=0;i<9;i++){ 
+        drop("#answers ul .reponseQuizImage li#"+i, "#form_reponseImage"+i);
+    }
+  
 
-            $(dropped).detach().css({
-                top: 0,
-                left: 0
-            }).prependTo($(droppedOn));
-        }
-    });
 })(jQuery);
+

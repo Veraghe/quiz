@@ -16,29 +16,35 @@
         <div class="quizImage">
             <div class="reponseImage" id="answers">
                 <!-- utiliser aussi ici une boucle pour afficher les réponsesImage dans le désordre -->
-                {# {% for quiz_image in quiz_images_mélange %} #}
-                <ul>
-                    {# <p>{{quiz_image.reponseImage}} :</p> #}
-                    <li>
-                        {# <img class="imageQuiz" src="{{ form_widget(formQuizImage) }}" alt="">  #}
-                    {{ form_row(formQuizImage.image) }}
-                    </li>
+                <ul >
+                    {% for key,  quiz_image in quiz_images_mélange %}
+                        <div class="reponseQuizImage" >   
+                            <p>{{quiz_image.reponseImage}} :</p>
+                            {# <li id="{{quiz_image.id}}"> #}
+                            <li id="{{key}}"> 
+                                {# <img class="imageQuiz" src="{{ form_widget(formQuizImage) }}" alt="">  #}
+                            
+                            </li>
+                        </div>
+                    {% endfor %}
                 </ul> 
-                {# {% endfor %} #}
+                
             </div>
         </div>
      </div>
-    
-     {{ form_end(formQuizImage) }}
+    {{ form_widget(formQuizImage) }}
+     
         <!-- ajouter un bouton -->
         <div class="centerbtn">
-            <button class="btn vert">valider</button>
+            <button class="btn vert">{{ button_label|default('Valider') }}</button>
             <a href="{{ asset('home') }}" class="btn orange">Retour</a>
             <a href="{{ path('quiz_image_index') }}" class="bleu btn">Gestion Quiz Images</a>   
    
         </div>
         <!-- dans le controller : si, ils ont le même id c'est la bonne réponse -->
-     
+     {{ form_end(formQuizImage) }}
+
+     <b></b>
 
 
     
