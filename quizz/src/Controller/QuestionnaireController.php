@@ -34,10 +34,13 @@ use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+
+use Knp\Component\Pager\PaginatorInterface; // Nous appelons le bundle KNP Paginator
 /**
  * @Route("/questionnaire")
  */
@@ -110,7 +113,7 @@ class QuestionnaireController extends AbstractController
      * @param Questionnaire $questionnaire
      * @return Response
      */
-    public function quiz(Questionnaire $questionnaire,QuestionnaireRepository $questionnaireRepository, QuestionRepository $questionRepository, Reponse $reponse,  ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository,AnonymeRepository $anonymeRepository, Request $request): Response
+    public function quiz(Questionnaire $questionnaire,QuestionnaireRepository $questionnaireRepository, QuestionRepository $questionRepository, Reponse $reponse,  ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository,AnonymeRepository $anonymeRepository,  PaginatorInterface $paginator,Request $request): Response
     {
         // ------------------------Form ReponseUtilisateur (affichage avec listes déroulantes!)---------------------------------------------------
         // $reponseUtilisateur = new ReponseUtilisateur();
@@ -156,7 +159,7 @@ class QuestionnaireController extends AbstractController
         }
         // récupérer les données de $affiche_question et $question_array pour les utiliser dans le form
  
-
+        
         $formBuilder = $this->createFormBuilder();
         // ------------------------Ajouter un utilisateur---------------------------------------------------
         // Si, il est connecté, passé HiddenType est récupérer l'id 
@@ -205,7 +208,7 @@ class QuestionnaireController extends AbstractController
                     
                 ]);
             }
-            else{
+            elseif($tab_type_de_question[$i] ==3 ){
                 $formBuilder->add('reponse'.$i,  ChoiceType::class,[
                     'choices'  => [
                         // $question_array,
@@ -218,13 +221,21 @@ class QuestionnaireController extends AbstractController
                     
                 ]);
             }
+            else{
+                $formBuilder->add('reponse'.$i, TextareaType::class,[
+                    'label'=>  $key.": ".$tab_question[$i],
+                ]);
+            }
                  
             
             $key++ ;
             $i++;
            // dump($formBuilder);
-        }
+        
         dump($i);
+       
+
+    }
 // ---------------------------------------------------------------------------
         $form2=$formBuilder->getForm();
 

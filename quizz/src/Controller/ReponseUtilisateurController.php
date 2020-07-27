@@ -7,6 +7,7 @@ use App\Form\ReponseUtilisateurType;
 use App\Repository\ReponseUtilisateurRepository;
 use App\Repository\ReponseRepository;
 use App\Repository\QuestionRepository;
+use App\Repository\QuizImageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,7 +91,10 @@ class ReponseUtilisateurController extends AbstractController
         // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
         $valeurVrai=0;
         for($i=0;$i<count($reponses);$i++){ 
-            if( $reponses == null){
+            $questionReponse=$reponses[$i]->getReponse();
+            dump($questionReponse);
+            if( $questionReponse != null){
+            // if( $reponses == null){
                 $idReponse = $reponses[$i]->getReponse()->getId();
             //    dump($idReponse);
                 // on veut la valeurReponse, des réponses répondues!
@@ -104,7 +108,7 @@ class ReponseUtilisateurController extends AbstractController
                 $valeurVrai++;
             }
             else {
-                $valeur="";
+                $valeur[$i]="";
             }  
         }
         $resultat=$valeurVrai.'/'.count($reponses);
@@ -159,7 +163,7 @@ class ReponseUtilisateurController extends AbstractController
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
      */
-    public function compte(ReponseUtilisateurRepository $reponseUtilisateurRepository, ReponseRepository $reponseRepository, Request $request): Response
+    public function compte(ReponseUtilisateurRepository $reponseUtilisateurRepository, ReponseRepository $reponseRepository,QuizImageRepository $quizImageRepository, Request $request): Response
     {
         // récupère l'id de la personne connecté :
         $utilisateur = $this -> getUser()->getId();
@@ -172,7 +176,7 @@ class ReponseUtilisateurController extends AbstractController
     // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
     $valeurVrai=0;
     if (!empty($reponses)){
-        dump($reponses);
+        // dump($reponses);
 
         for($i=0;$i<count($reponses);$i++){ 
             // si c'est une question reponse
@@ -180,7 +184,7 @@ class ReponseUtilisateurController extends AbstractController
 
             if( $questionReponse != null){
                 $idReponse = $reponses[$i]->getReponse()->getId();
-                dump($idReponse);
+                // dump($idReponse);
                 // on veut la valeurReponse, des réponses répondues!
                 // chercher l'id de la réponse pour afficher sa valeur
                 $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
@@ -189,24 +193,50 @@ class ReponseUtilisateurController extends AbstractController
                 $valeur[$i] = $laReponse[0]->getValeurReponse();
                 if($valeur[$i]==1)
                 $valeurVrai++;
+
+                $image="";
+                $reponse="";
+                $valeurok[$i]="";
             }
             else{
                 $valeur[$i]="";
                 
                 $image[$i]=$reponses[$i]->getImage();
+                dump($image[$i]);
+
+                $imageQuiz=$quizImageRepository->findAll();
+                dump($imageQuiz);
+
                 $reponse[$i]=$reponses[$i]->getReponseImage();
+                dump($reponse[$i]);
+                // Voir pour afficher le nom de la réponses et l'image
+                    // por que ça soit plus parlant pour l'utilisateur, à la place des id !!
+                $test=$quizImageRepository->find($reponse[$i]);
+                dump($test->getReponseImage());
+
                 if($reponse[$i]!=null){
+                    // Si c'est la bonne réponse :
                     if($image[$i]==$reponse[$i] ){
                             $valeurVrai++;
+                            $valeurok[$i]=1;
+                            // dump($valeurok);
+                    }
+                    else{
+                        $valeurok[$i]=0;
                     }
                 }
                 
             }
-            dump($valeur);
+
+            // dump($valeur);
         } 
     }
     else {
+        // si, il n'y a pas c'est valeurs, rien mettre dedans!!
         $valeur="";
+        $valeurok="";
+        $image="";
+        $reponse="";
     }   
     $resultat=$valeurVrai.'/'.count($reponses);
     // dump($resultat);
@@ -214,6 +244,7 @@ class ReponseUtilisateurController extends AbstractController
         return $this->render('utilisateur/compte.html.twig', [
             'reponse_utilisateurs' => $reponses,
             'valeurReponse'=>$valeur,
+            'valeurok'=>$valeurok,
             'resultat'=>$resultat,
             'image'=>$image,
             'reponseQuizImage'=>$reponse,

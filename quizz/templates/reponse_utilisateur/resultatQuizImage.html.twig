@@ -22,15 +22,29 @@
         <tbody>
         {% for key, reponse_utilisateur in reponse_utilisateurs %}
             <tr>
-                <td>{{ reponse_utilisateur.Date|date('d-m-Y ') }}</td>
-                <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
-                <td>{{ reponse_utilisateur.Image}}</td>
+                {% if  image[key] == null %}
+                    <td class="none"></td>
+                {% else %}
+                    <td>{{ reponse_utilisateur.Date|date('d-m-Y ') }}</td>
+                 {% endif %}
+
+                {% if  image[key] == null %}
+                    <td class="none"></td>
+                {% else %}
+                    <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
+                 {% endif %}
+
+                {% if  image[key] == null %}
+                    <td class="none"></td>
+                {% else %}
+                    <td>{{ reponse_utilisateur.Image}}</td>
+                 {% endif %}
                 
                 {# Si la réponse est bonne afficher en vert et fause en orange#}
                 {% if image[key] != reponseQuizImage[key] %}
                     <td class="orange">{{ reponse_utilisateur.ReponseImage}}</td>
                 {% elseif  image[key] == null %}
-                    <td class="gris">{{ reponse_utilisateur.ReponseImage}}</td>
+                    <td class="none"></td>
                 {% else %}
                     <td class="vert">{{ reponse_utilisateur.ReponseImage}}</td>
                 {% endif %}

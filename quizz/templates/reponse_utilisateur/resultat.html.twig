@@ -22,16 +22,33 @@
         <tbody>
         {% for key, reponse_utilisateur in reponse_utilisateurs %}
             <tr>
-                <td>{{ reponse_utilisateur.Date|date('d-m-Y ') }}</td>
-                <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
-                <td class="flexG">{{ reponse_utilisateur.Question}}</td>
+                {% if valeurReponse[key]=="" %}
+                    <td class="none"></td>
+                {% else %}
+                    <td>{{ reponse_utilisateur.Date|date('d-m-Y ') }}</td>
+                {% endif %}
+
+                    
+                {% if valeurReponse[key]=="" %}
+                    <td class="none"></td>
+                {% else %}
+                    <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
+                {% endif %}
+
+                {% if valeurReponse[key]=="" %}
+                    <td class="none"></td>
+                {% else %}
+                    <td class="flexG">{{ reponse_utilisateur.Question}}</td>
+                {% endif %}
+
                 {# Si la réponse est bonne afficher en vert et fause en orange#}
-                {# {% if valeurReponse[key] == 0 %} #}
-                
+                {% if valeurReponse[key] == 0 %}
                     <td class="orange">{{ reponse_utilisateur.Reponse}}</td>
-                {# {% else %}
+                {% elseif valeurReponse[key]=="" %}
+                    <td class="none"></td>
+                {% else %}
                     <td class="vert">{{ reponse_utilisateur.Reponse}}</td>
-                {% endif %} #}
+                {% endif %}
             </tr>
         {% else %}
             <tr>

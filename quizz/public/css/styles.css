@@ -255,6 +255,9 @@ td a {
     border-right: var(--color-bleu-clair) solid 3px;
     border-left: var(--color-bleu-clair) solid 3px;
 }
+.none{
+    display: none;
+}
 /* ------------------------------- CONNEXION -- */
 .ligne{
     margin-top: 10vh;
@@ -384,7 +387,7 @@ fieldset.form-group{
     padding: 0;
     width: auto;
 }
-legend.col-form-label {
+legend.col-form-label, div.form-group label{
     text-align: center;
     background-color: var(--color-vert);
     border-radius: 20px 20px 0 0;
@@ -394,7 +397,9 @@ legend.col-form-label {
     padding: 1.5vw 0;
     font-size: 1.3rem;
 }
-
+div.form-group textarea{
+    height: 20vh;
+}
 div.form-check{
     padding: 1vh 2vw;
 }

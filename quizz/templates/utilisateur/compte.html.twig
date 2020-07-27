@@ -42,11 +42,13 @@
                 <td class="separation"></td>
 
                 <td>{{ reponse_utilisateur.Image}}</td>
-
-                {% if image[6] == reponseQuizImage[6] %}
-                    <td class="orange">{{ reponse_utilisateur.ReponseImage}}</td>
-                {% else %}
+                {#  #}
+                {% if valeurReponse[key] != "" %}
+                    <td class="gris"></td>
+                {% elseif valeurok[key] == 1 %}  
                     <td class="vert">{{ reponse_utilisateur.ReponseImage}}</td>
+                {% else %}
+                    <td class="orange">{{ reponse_utilisateur.ReponseImage}}</td>
                 {% endif %}
 
             </tr>
