@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Résultat{% endblock %}
+{% block title %}Résultat Quiz image{% endblock %}
 
 {% block body %}
 <div class="container">
-    <h1>Résultat : {{resultat}}.</h1>
+    <h1>Résultat Quiz image : {{resultat}}.</h1>
 
     <table class="table">
         {% if is_granted('ROLE_ADMIN') %}
@@ -15,7 +15,7 @@
             <tr>
                 <th>Date</th>
                 <th class="flexG">Utilisateur</th>
-                <th class="flexG">Question</th>
+                <th>Solution</th>
                 <th>Réponse</th>
             </tr>
         </thead>
@@ -24,14 +24,16 @@
             <tr>
                 <td>{{ reponse_utilisateur.Date|date('d-m-Y ') }}</td>
                 <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
-                <td class="flexG">{{ reponse_utilisateur.Question}}</td>
-                {# Si la réponse est bonne afficher en vert et fause en orange#}
-                {# {% if valeurReponse[key] == 0 %} #}
+                <td>{{ reponse_utilisateur.Image}}</td>
                 
-                    <td class="orange">{{ reponse_utilisateur.Reponse}}</td>
-                {# {% else %}
-                    <td class="vert">{{ reponse_utilisateur.Reponse}}</td>
-                {% endif %} #}
+                {# Si la réponse est bonne afficher en vert et fause en orange#}
+                {% if image[key] != reponseQuizImage[key] %}
+                    <td class="orange">{{ reponse_utilisateur.ReponseImage}}</td>
+                {% elseif  image[key] == null %}
+                    <td class="gris">{{ reponse_utilisateur.ReponseImage}}</td>
+                {% else %}
+                    <td class="vert">{{ reponse_utilisateur.ReponseImage}}</td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>

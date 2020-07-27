@@ -65,7 +65,7 @@ class ReponseUtilisateurController extends AbstractController
             
         ]);
     }
-
+    /*************************************************************** */
      /**
      * @Route("/resultat", name="reponse_utilisateur_resultat", methods={"GET"})
      * @param ReponseUtilisateur $reponseUtilisateur
@@ -90,17 +90,22 @@ class ReponseUtilisateurController extends AbstractController
         // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
         $valeurVrai=0;
         for($i=0;$i<count($reponses);$i++){ 
-            $idReponse = $reponses[$i]->getReponse()->getId();
-        //    dump($idReponse);
-            // on veut la valeurReponse, des réponses répondues!
-            // chercher l'id de la réponse pour afficher sa valeur
-            $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
-            // dump($laReponse);
-            // Je dois avoir comme valeur 0 ou 1
-            $valeur[$i] = $laReponse[0]->getValeurReponse();
-            // dump($valeur);
-            if($valeur[$i]==1)
-            $valeurVrai++;
+            if( $reponses == null){
+                $idReponse = $reponses[$i]->getReponse()->getId();
+            //    dump($idReponse);
+                // on veut la valeurReponse, des réponses répondues!
+                // chercher l'id de la réponse pour afficher sa valeur
+                $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
+                // dump($laReponse);
+                // Je dois avoir comme valeur 0 ou 1
+                $valeur[$i] = $laReponse[0]->getValeurReponse();
+                // dump($valeur);
+                if($valeur[$i]==1)
+                $valeurVrai++;
+            }
+            else {
+                $valeur="";
+            }  
         }
         $resultat=$valeurVrai.'/'.count($reponses);
    
@@ -111,8 +116,45 @@ class ReponseUtilisateurController extends AbstractController
             'resultat'=>$resultat,
         ]);
     }
+    /*************************************************************** */
+    /**
+     * @Route("/resultatQuizImage", name="reponse_utilisateur_resultat_quiz_image", methods={"GET"})
+     * @param ReponseUtilisateur $reponseUtilisateur
+     * @return Response
+     */
+    public function resultatQuizImage(ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, Request $request): Response
+    {
+        // récupère l'id de la personne connecté :
+        if($this->getUser()){
+            $utilisateur = $this -> getUser()->getId();
+            // afficher que les réponses de l'id Utilisateur connecté:
+            $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);   
+        }
+        $valeurVrai=0;
+        $total=0;
+        // afficher les images et les réponseImage
+        for($i=0;$i<count($reponses);$i++){
+            $image[$i]=$reponses[$i]->getImage();
+            $reponse[$i]=$reponses[$i]->getReponseImage();
+            if($reponse[$i]!=null){
+                $total++;
+                if($image[$i]==$reponse[$i] ){
+                        $valeurVrai++;
+                }
+            }
+        }
+        $resultat=$valeurVrai.'/'.$total;
+        return $this->render('reponse_utilisateur/resultatQuizImage.html.twig', [
+            // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
+            'reponse_utilisateurs' => $reponses,
+            'image'=>$image,
+            'reponseQuizImage'=>$reponse,
+            'resultat'=>$resultat,
+        ]);
+    }
 
-         /**
+    /*************************************************************** */
+    /**
      * @Route("/compte", name="compte", methods={"GET"})
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
@@ -124,24 +166,43 @@ class ReponseUtilisateurController extends AbstractController
 
         // afficher que les réponses de l'id Utilisateur connecté:
         $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
-       dump($reponses);
+    //    dump($reponses);
       
     //    dump(count($reponses));
     // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
     $valeurVrai=0;
     if (!empty($reponses)){
+        dump($reponses);
+
         for($i=0;$i<count($reponses);$i++){ 
-            $idReponse = $reponses[$i]->getReponse()->getId();
-        //    dump($idReponse);
-            // on veut la valeurReponse, des réponses répondues!
-            // chercher l'id de la réponse pour afficher sa valeur
-            $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
-            // dump($laReponse);
-            // Je dois avoir comme valeur 0 ou 1
-            $valeur[$i] = $laReponse[0]->getValeurReponse();
+            // si c'est une question reponse
+            $questionReponse=$reponses[$i]->getReponse();
+
+            if( $questionReponse != null){
+                $idReponse = $reponses[$i]->getReponse()->getId();
+                dump($idReponse);
+                // on veut la valeurReponse, des réponses répondues!
+                // chercher l'id de la réponse pour afficher sa valeur
+                $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
+                // dump($laReponse);
+                // Je dois avoir comme valeur 0 ou 1
+                $valeur[$i] = $laReponse[0]->getValeurReponse();
+                if($valeur[$i]==1)
+                $valeurVrai++;
+            }
+            else{
+                $valeur[$i]="";
+                
+                $image[$i]=$reponses[$i]->getImage();
+                $reponse[$i]=$reponses[$i]->getReponseImage();
+                if($reponse[$i]!=null){
+                    if($image[$i]==$reponse[$i] ){
+                            $valeurVrai++;
+                    }
+                }
+                
+            }
             dump($valeur);
-            if($valeur[$i]==1)
-            $valeurVrai++;
         } 
     }
     else {
@@ -154,9 +215,11 @@ class ReponseUtilisateurController extends AbstractController
             'reponse_utilisateurs' => $reponses,
             'valeurReponse'=>$valeur,
             'resultat'=>$resultat,
+            'image'=>$image,
+            'reponseQuizImage'=>$reponse,
         ]);
     }
-
+    /*************************************************************** */
     /**
      * @Route("/resultatAnonyme", name="reponse_utilisateur_anonyme")
      */
@@ -164,7 +227,7 @@ class ReponseUtilisateurController extends AbstractController
     {
         return $this->render('reponse_utilisateur/anonyme.html.twig');
     }
-
+    /*************************************************************** */
     /**
      * @Route("/new", name="reponse_utilisateur_new", methods={"GET","POST"})
      */

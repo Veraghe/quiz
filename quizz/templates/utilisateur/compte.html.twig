@@ -13,7 +13,11 @@
             <thead class="vert">
             <tr>
                 <th>Date</th>
+                <th class="separation"></th>
                 <th class="flexG">Question</th>
+                <th >Réponse</th>
+                <th class="separation"></th>
+                <th>Image</th>
                 <th >Réponse</th>
             </tr>
         </thead>
@@ -22,14 +26,27 @@
         {% for key, reponse_utilisateur in reponse_utilisateurs %}
             <tr>
                 <td>{{ reponse_utilisateur.Date|date('d-m-Y ') }}</td>
+                <td class="separation"></td>
                 <td class="flexG">{{ reponse_utilisateur.Question}}</td>
                 {# Si la réponse est bonne afficher en vert et fause en orange#}
 
                 {% if valeurReponse[key] == 0 %}
                 
                     <td class="orange">{{ reponse_utilisateur.Reponse}}</td>
+                {% elseif valeurReponse[key] == "" %}
+                    <td class="gris">{{ reponse_utilisateur.Reponse}}</td>
                 {% else %}
                     <td class="vert">{{ reponse_utilisateur.Reponse}}</td>
+                {% endif %}
+
+                <td class="separation"></td>
+
+                <td>{{ reponse_utilisateur.Image}}</td>
+
+                {% if image[6] == reponseQuizImage[6] %}
+                    <td class="orange">{{ reponse_utilisateur.ReponseImage}}</td>
+                {% else %}
+                    <td class="vert">{{ reponse_utilisateur.ReponseImage}}</td>
                 {% endif %}
 
             </tr>

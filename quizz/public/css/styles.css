@@ -112,6 +112,9 @@ h4{
  a.btnBloc:hover{
     box-shadow: var(--color-ombre);
 }
+.gris{
+   background-color: var(--color-bleu-clair);
+}
 .vert{
     background-color: var(--color-vert);
 }
@@ -245,6 +248,12 @@ td a {
 }
 .reponses p span{
     flex: 0.3;
+}
+.separation{
+    background-color: var(--color-blanc);
+    flex: 0.01;
+    border-right: var(--color-bleu-clair) solid 3px;
+    border-left: var(--color-bleu-clair) solid 3px;
 }
 /* ------------------------------- CONNEXION -- */
 .ligne{

@@ -38,20 +38,21 @@ class QuizImageController extends AbstractController
     public function quizImage(QuizImageRepository $quizImageRepository,UtilisateurRepository $utilisateurRepository,Request $request): Response
     {
         $objetQuizImage = $quizImageRepository->findAll();
+        $objetEmplacementImage = $quizImageRepository->findAll();
         // mélanger l'emplacement des réponses
-        dump($objetQuizImage);
+        // dump($objetQuizImage);
         shuffle($objetQuizImage);
-        dump($objetQuizImage);
+        // dump($objetQuizImage);
 
     // On doit récupérer:
         // l'id de base de l'emplacement.
         $i=0;
-        foreach($objetQuizImage as $QuizImage){
+        foreach($objetEmplacementImage as $QuizImage){
             $idQuizImage[$i]=$QuizImage->getId();
             dump($idQuizImage);
             $i++;
         }
-        dump($i);
+        // dump($i);
         // l'id de l'image posée (Créer un formulaire pour enregistrer les réponsesImage)
         $formBuilder = $this->createFormBuilder();
         // ------------------------Ajouter un utilisateur---------------------------------------------------
@@ -74,7 +75,6 @@ class QuizImageController extends AbstractController
         // dans mon add image j'aimerais récupérer l'id de l'image glissée!
         for($k=0; $k<$i ;$k++){
             $formBuilder -> add('reponseImage'.$k, HiddenType::class,[
-                // 'data'=>
             ]);
         }
     
@@ -92,13 +92,15 @@ class QuizImageController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($a);
                 $entityManager->flush();
-                dump($a);
+                // dump($a);
                 // -------------Récupérer l'id de l'anonyme----------------------------
                 $objetAnonyme=$a;
             }
-            $i=$i-1;
+            // $i=$i-1;
+            // dump($i);
             for($j=0;$j<$i;$j++){
                 dump($data["reponseImage".$j]);
+                $objetReponseImage=$data["reponseImage".$j];
                 $ru = new reponseUtilisateur();
                 if($this->getUser())
                 $ru->setUtilisateur($objetUtilisateur);
@@ -107,23 +109,26 @@ class QuizImageController extends AbstractController
 
                 $ru->setDate(new \DateTime());
                 $idQuiz=$idQuizImage[$j];
-                dump($idQuiz);
+                // dump($idQuiz);
                 $ru ->setImage($idQuiz); //l'emplacement des cases avec son id
 //--------------// récuperer l'id de l'objet déposé !!!!
-                $ru ->setReponseImage(1); //reponse de l'utilisateur
-                dump($ru);
+                $ru ->setReponseImage($objetReponseImage); //reponse de l'utilisateur
+                // dump($ru);
 
-                // $entityManager= $this->getDoctrine()->getManager();
-                // $entityManager->persist($ru);
-                // $entityManager->flush(); 
+                $entityManager= $this->getDoctrine()->getManager();
+                $entityManager->persist($ru);
+                $entityManager->flush(); 
             }
-            // return $this->redirectToRoute('home');    
+            if($this->getUser())
+                return $this->redirectToRoute('reponse_utilisateur_resultat_quiz_image');    
+            else
+                return $this->redirectToRoute('home');
         }
         
 
         return $this->render('quiz_image/quizImage.html.twig', [
-            'quiz_images' => $quizImageRepository->findAll(),
-            'quiz_images_mélange' => $objetQuizImage,
+            'quiz_images' => $objetQuizImage,
+            'quiz_images_mélange' => $quizImageRepository->findAll(),
             'formQuizImage'=>$formQuizImage->createView(),
         ]);
     }
