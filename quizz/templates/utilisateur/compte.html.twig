@@ -15,7 +15,7 @@
                 <th>Date</th>
                 <th class="separation"></th>
                 <th class="flexG">Question</th>
-                <th >Réponse</th>
+                <th class="flexG">Réponse</th>
                 <th class="separation"></th>
                 <th>Image</th>
                 <th >Réponse</th>
@@ -32,11 +32,13 @@
 
                 {% if valeurReponse[key] == 0 %}
                 
-                    <td class="orange">{{ reponse_utilisateur.Reponse}}</td>
+                    <td class="orange flexG">{{ reponse_utilisateur.Reponse}}</td>
                 {% elseif valeurReponse[key] == "" %}
-                    <td class="gris">{{ reponse_utilisateur.Reponse}}</td>
+                    <td class="gris flexG"></td>
+                {% elseif valeurReponse[key] == 2 %}
+                    <td class="bleu flexG">{{ reponse_utilisateur.ReponseTextarea}}</td>
                 {% else %}
-                    <td class="vert">{{ reponse_utilisateur.Reponse}}</td>
+                    <td class="vert flexG">{{ reponse_utilisateur.Reponse}}</td>
                 {% endif %}
 
                 <td class="separation"></td>

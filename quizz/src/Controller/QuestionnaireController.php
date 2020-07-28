@@ -133,7 +133,7 @@ class QuestionnaireController extends AbstractController
         $affiche_question = [];
         foreach ( $questions as $clef => $question)
         {
-            // dump($question);
+            dump($question);
             $reponses = $reponseRepository->findBy(['question' => $question->getId()]);
             // dump($reponses);
            $affiche_question =$question->getLibelleQuestion();
@@ -183,6 +183,7 @@ class QuestionnaireController extends AbstractController
 
         $key=1;
         $i=0;
+        $t=0;
         foreach ( $questions as $question)
         {
             // Récupère l'id questionnaire :
@@ -222,9 +223,12 @@ class QuestionnaireController extends AbstractController
                 ]);
             }
             else{
-                $formBuilder->add('reponse'.$i, TextareaType::class,[
+                $formBuilder->add('reponseTextarea'.$t, TextareaType::class,[
                     'label'=>  $key.": ".$tab_question[$i],
                 ]);
+                dump($tab_question[$i]);
+                $i--;
+                $t++;
             }
                  
             
@@ -246,6 +250,7 @@ class QuestionnaireController extends AbstractController
             //les données sont un tableau "utilisateur" et "reponse"
             $data = $form2->getData();
             // dump($data["utilisateur"]);
+            
             if($this->getUser())
             $objetUtilisateur=$utilisateurRepository->find($data["utilisateur"]);
            
@@ -270,19 +275,22 @@ class QuestionnaireController extends AbstractController
             }
             // $i = nombre de question
             for($j=0;$j<$i;$j++){
+                // format checkbox, les valeurs entre dans un tableau:
                 if(is_array($data["reponse".$j])){ 
                     foreach ($data["reponse".$j] as $reponse)
                     {
-                        dump($data["reponse".$j]);
+                        // dump($data["reponse".$j]);
                         $Objet = $reponseRepository->find($reponse);
-                        dump($Objet->getQuestion());
+                        // dump($Objet->getQuestion());
                         // $dateReponse->setDate(new \DateTime());
 
                         // pour chaque question
                         // Créer une entité reponse_utilisateur vide
                         $ru = new reponseUtilisateur();
                         // peupler l'entité en question avec les données du form 
+
                         $ru->setReponse($Objet);
+
                         // Si, il est connecté "utilisateur" sinon "anonyme":
                         if($this->getUser())
                             $ru->setUtilisateur($objetUtilisateur);
@@ -292,7 +300,7 @@ class QuestionnaireController extends AbstractController
                         $ru->setQuestion($Objet->getQuestion());
                         $ru->setDate(new \DateTime());
                         // enregistrer l'entité dans la BDD
-                        dump($ru);
+                        // dump($ru);
 
                         $entityManager = $this->getDoctrine()->getManager();
                         //Cette méthode signale à Doctrine que l'objet doit être enregistré
@@ -300,38 +308,64 @@ class QuestionnaireController extends AbstractController
                     }
                 }
                 else {
-                    dump($data["reponse".$j]);
+                    // dump($data["reponse".$j]);
                     $Objet = $reponseRepository->find($data["reponse".$j]);
-                    dump($Objet->getQuestion());
+           
+                    // dump($Objet->getQuestion());
                     // $dateReponse->setDate(new \DateTime());
 
                     // pour chaque question
                     // Créer une entité reponse_utilisateur vide
                     $ru = new reponseUtilisateur();
-                    // peupler l'entité en question avec les données du form 
+                    // peupler l'entité en question avec les données du form
+                        // si c'est un type checkbox ou radio bouton, on ajoute une reponse
+                        // mais si c'est un textarea on ajoute une reponseTextareae (voir plus bas)
                     $ru->setReponse($Objet);
+                    $ru->setQuestion($Objet->getQuestion());
                     // Si, il est connecté "utilisateur" sinon "anonyme":
                     if($this->getUser())
                         $ru->setUtilisateur($objetUtilisateur);
                     else
                         $ru->setAnonyme($objetAnonyme);
 
-                    $ru->setQuestion($Objet->getQuestion());
                     $ru->setDate(new \DateTime());
                     // enregistrer l'entité dans la BDD
                     dump($ru);
 
-                    $entityManager = $this->getDoctrine()->getManager();
-                    //Cette méthode signale à Doctrine que l'objet doit être enregistré
-                    $entityManager->persist($ru);
+                    // $entityManager = $this->getDoctrine()->getManager();
+                    // //Cette méthode signale à Doctrine que l'objet doit être enregistré
+                    // $entityManager->persist($ru);
                 }
                 //Met à jour la base à partir des objets signalés à Doctrine.
-                $entityManager->flush();
+                // $entityManager->flush();
             }
-            if($this->getUser())
-                return $this->redirectToRoute('reponse_utilisateur_resultat');
-            else
-                return $this->redirectToRoute('reponse_utilisateur_anonyme');
+            dump($t);
+            // pour enregistrer les textarea 
+            for($j=0;$j<$t;$j++){
+                
+                $objetReponseTextarea=$data["reponseTextarea".$j];
+                dump($objetReponseTextarea);
+                $objetQuestion=$objetReponseTextarea->getQuestion();
+                dump($objetQuestion);
+                
+                $ru = new reponseUtilisateur();
+                if($this->getUser())
+                    $ru->setUtilisateur($objetUtilisateur);
+                else
+                    $ru->setAnonyme($objetAnonyme);
+                $ru->setDate(new \DateTime());
+                $ru->setReponseTextarea($objetReponseTextarea);
+//--------------// ajouter la question par rapport à la reponseTextarea !!
+                // $ru->setQuestion();
+                dump($ru);
+                // $entityManager = $this->getDoctrine()->getManager();
+                // $entityManager->persist($ru);
+                // $entityManager->flush();
+            }
+            // if($this->getUser())
+            //     return $this->redirectToRoute('reponse_utilisateur_resultat');
+            // else
+            //     return $this->redirectToRoute('reponse_utilisateur_anonyme');
         
     }
 

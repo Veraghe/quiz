@@ -54,6 +54,11 @@ class ReponseUtilisateur
      */
     private $reponseImage;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $reponseTextarea;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -143,6 +148,18 @@ class ReponseUtilisateur
     public function setReponseImage(?int $reponseImage): self
     {
         $this->reponseImage = $reponseImage;
+
+        return $this;
+    }
+
+    public function getReponseTextarea(): ?string
+    {
+        return $this->reponseTextarea;
+    }
+
+    public function setReponseTextarea(?string $reponseTextarea): self
+    {
+        $this->reponseTextarea = $reponseTextarea;
 
         return $this;
     }

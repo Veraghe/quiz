@@ -181,7 +181,8 @@ class ReponseUtilisateurController extends AbstractController
         for($i=0;$i<count($reponses);$i++){ 
             // si c'est une question reponse
             $questionReponse=$reponses[$i]->getReponse();
-
+            $reponseTextarea=$reponses[$i]->getReponseTextarea();
+            // *******Question/Reponse***************************
             if( $questionReponse != null){
                 $idReponse = $reponses[$i]->getReponse()->getId();
                 // dump($idReponse);
@@ -198,6 +199,18 @@ class ReponseUtilisateurController extends AbstractController
                 $reponse="";
                 $valeurok[$i]="";
             }
+            // *******Question/ReponseTextarea***************************
+            elseif($reponseTextarea != null){
+                $valeur[$i]=2;
+                $image="";
+                $reponse="";
+                $valeurok[$i]="";
+                dump('testTextarea');
+                $idReponseTextarea = $reponses[$i]->getReponseTextarea();
+                dump($idReponseTextarea);
+
+            }
+            // *******QuizImage***************************
             else{
                 $valeur[$i]="";
                 
