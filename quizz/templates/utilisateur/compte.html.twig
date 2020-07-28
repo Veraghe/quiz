@@ -10,7 +10,7 @@
     {# <p>score: {{ app.user.score}}</p> #}
     <h1>Tes réponses : {{resultat}}.</h1>
     <table class="table">
-            <thead class="vert">
+        <thead class="vert">
             <tr>
                 <th>Date</th>
                 <th class="separation"></th>
@@ -25,16 +25,23 @@
        
         {% for key, reponse_utilisateur in reponse_utilisateurs %}
             <tr>
+                {% if valeurReponse[key] == "" %}
+                <td class="none"></td>
+                {% else %}
                 <td>{{ reponse_utilisateur.Date|date('d-m-Y ') }}</td>
                 <td class="separation"></td>
                 <td class="flexG">{{ reponse_utilisateur.Question}}</td>
+                {% endif %}
+
+            
+                
                 {# Si la réponse est bonne afficher en vert et fause en orange#}
 
                 {% if valeurReponse[key] == 0 %}
                 
                     <td class="orange flexG">{{ reponse_utilisateur.Reponse}}</td>
                 {% elseif valeurReponse[key] == "" %}
-                    <td class="gris flexG"></td>
+                    <td class="gris flexG none"></td>
                 {% elseif valeurReponse[key] == 2 %}
                     <td class="bleu flexG">{{ reponse_utilisateur.ReponseTextarea}}</td>
                 {% else %}
@@ -56,10 +63,28 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="2">Aucun enregistrement trouvé</td>
+                <td colspan="2">Aucun quiz trouvé</td>
             </tr>
         {% endfor %}
-        
+        <tr class="separationH"></tr>
+         {% for key, reponseQuizImage in reponseQuizImages %}
+         <tr class="imagequizCompte">
+                <td class="flexP"><img class="imageQuiz imageCompte" src="{{ asset(reponseQuizImage.Image) }}" alt=""></td>
+                {#  #}
+                {% if valeurReponse[key] != "" %}
+                    <td class="gris"></td>
+                {% elseif valeurok[key] == 1 %}  
+                    <td class="vert">{{ reponseQuizImage.ReponseImage}}</td>
+            
+                {% else %}
+                    <td class="orange">{{ reponseQuizImage.ReponseImage}}</td>
+                {% endif %}
+            </tr>
+         {% else %}
+            <tr>
+                <td colspan="2">Aucun quiz image trouvé</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
     

@@ -255,8 +255,21 @@ td a {
     border-right: var(--color-bleu-clair) solid 3px;
     border-left: var(--color-bleu-clair) solid 3px;
 }
+.separationH{
+    height: 20px;
+    border-top: solid 3px var(--color-bleu-clair);
+    border-bottom: solid 3px var(--color-bleu-clair);
+}
 .none{
     display: none;
+}
+tr.imagequizCompte{
+    width: 50%;
+    float: left;
+    min-height: 100px;
+}
+.imageCompte{
+    height: 100px;
 }
 /* ------------------------------- CONNEXION -- */
 .ligne{
@@ -387,7 +400,7 @@ fieldset.form-group{
     padding: 0;
     width: auto;
 }
-legend.col-form-label, div.form-group label{
+legend.col-form-label, .labelTextarea{
     text-align: center;
     background-color: var(--color-vert);
     border-radius: 20px 20px 0 0;

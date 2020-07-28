@@ -131,8 +131,11 @@ class QuestionnaireController extends AbstractController
         // ------------------------Form ReponseUtilisateur ---------------------------------------------------
         $questions =$questionnaire->getQuestions();
         $affiche_question = [];
+        $qt=0;
         foreach ( $questions as $clef => $question)
         {
+
+            
             dump($question);
             $reponses = $reponseRepository->findBy(['question' => $question->getId()]);
             // dump($reponses);
@@ -140,7 +143,15 @@ class QuestionnaireController extends AbstractController
            $affiche_type_de_question =$question->getTypeDeQuestion()->getId();
             // dump($affiche_question);
             // dump($affiche_type_de_question);
+
             
+            
+            if($affiche_type_de_question==2){
+                $idQuestionTextarea[$qt]=$question;
+                dump($idQuestionTextarea);
+                $qt++;
+            }
+
             $question_array = [];
             foreach ($reponses as $reponse)
             {
@@ -153,7 +164,7 @@ class QuestionnaireController extends AbstractController
             $tab_reponse[$clef]=$question_array;
             // dump($tab_reponse);
              $tab_question[$clef]=$affiche_question;
-            // dump($tab_question);
+            dump($tab_question);
             $tab_type_de_question[$clef]=$affiche_type_de_question;
             dump($tab_type_de_question);
         }
@@ -184,6 +195,7 @@ class QuestionnaireController extends AbstractController
         $key=1;
         $i=0;
         $t=0;
+        $r=0;
         foreach ( $questions as $question)
         {
             // Récupère l'id questionnaire :
@@ -196,7 +208,7 @@ class QuestionnaireController extends AbstractController
             // Trouver une façon de récupèrer le type de question depuis la question
             
             if($tab_type_de_question[$i] ==4 ){        
-                $formBuilder->add('reponse'.$i,  ChoiceType::class,[
+                $formBuilder->add('reponse'.$r,  ChoiceType::class,[
                     'choices'  => [
                         // $question_array,
                         $tab_reponse[$i],
@@ -208,9 +220,10 @@ class QuestionnaireController extends AbstractController
                     'label'=>  $key.": ".$tab_question[$i],
                     
                 ]);
+                $r++;
             }
             elseif($tab_type_de_question[$i] ==3 ){
-                $formBuilder->add('reponse'.$i,  ChoiceType::class,[
+                $formBuilder->add('reponse'.$r,  ChoiceType::class,[
                     'choices'  => [
                         // $question_array,
                         $tab_reponse[$i],
@@ -221,19 +234,18 @@ class QuestionnaireController extends AbstractController
                     'label'=>  $key.": ".$tab_question[$i],
                     
                 ]);
+                $r++;
             }
             else{
                 $formBuilder->add('reponseTextarea'.$t, TextareaType::class,[
                     'label'=>  $key.": ".$tab_question[$i],
+                    'label_attr'=> ['class'=>'labelTextarea'],
                 ]);
                 dump($tab_question[$i]);
-                $i--;
                 $t++;
             }
-                 
-            
+            $i++;     
             $key++ ;
-            $i++;
            // dump($formBuilder);
         
         dump($i);
@@ -273,8 +285,8 @@ class QuestionnaireController extends AbstractController
             $objetAnonyme=$a;
             // dump($objetAnonyme);
             }
-            // $i = nombre de question
-            for($j=0;$j<$i;$j++){
+            // $r = nombre de question avec des reponses en checkbox ou radio bouton
+            for($j=0;$j<$r;$j++){
                 // format checkbox, les valeurs entre dans un tableau:
                 if(is_array($data["reponse".$j])){ 
                     foreach ($data["reponse".$j] as $reponse)
@@ -332,12 +344,12 @@ class QuestionnaireController extends AbstractController
                     // enregistrer l'entité dans la BDD
                     dump($ru);
 
-                    // $entityManager = $this->getDoctrine()->getManager();
-                    // //Cette méthode signale à Doctrine que l'objet doit être enregistré
-                    // $entityManager->persist($ru);
+                    $entityManager = $this->getDoctrine()->getManager();
+                    //Cette méthode signale à Doctrine que l'objet doit être enregistré
+                    $entityManager->persist($ru);
                 }
                 //Met à jour la base à partir des objets signalés à Doctrine.
-                // $entityManager->flush();
+                $entityManager->flush();
             }
             dump($t);
             // pour enregistrer les textarea 
@@ -345,8 +357,6 @@ class QuestionnaireController extends AbstractController
                 
                 $objetReponseTextarea=$data["reponseTextarea".$j];
                 dump($objetReponseTextarea);
-                $objetQuestion=$objetReponseTextarea->getQuestion();
-                dump($objetQuestion);
                 
                 $ru = new reponseUtilisateur();
                 if($this->getUser())
@@ -356,16 +366,16 @@ class QuestionnaireController extends AbstractController
                 $ru->setDate(new \DateTime());
                 $ru->setReponseTextarea($objetReponseTextarea);
 //--------------// ajouter la question par rapport à la reponseTextarea !!
-                // $ru->setQuestion();
+                $ru->setQuestion($idQuestionTextarea[$j]);
                 dump($ru);
-                // $entityManager = $this->getDoctrine()->getManager();
-                // $entityManager->persist($ru);
-                // $entityManager->flush();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($ru);
+                $entityManager->flush();
             }
-            // if($this->getUser())
-            //     return $this->redirectToRoute('reponse_utilisateur_resultat');
-            // else
-            //     return $this->redirectToRoute('reponse_utilisateur_anonyme');
+            if($this->getUser())
+                return $this->redirectToRoute('reponse_utilisateur_resultat');
+            else
+                return $this->redirectToRoute('reponse_utilisateur_anonyme');
         
     }
 

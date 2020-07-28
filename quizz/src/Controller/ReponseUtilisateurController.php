@@ -195,15 +195,15 @@ class ReponseUtilisateurController extends AbstractController
                 if($valeur[$i]==1)
                 $valeurVrai++;
 
-                $image="";
-                $reponse="";
+                // $image="";
+                $quizImage="";
                 $valeurok[$i]="";
             }
             // *******Question/ReponseTextarea***************************
             elseif($reponseTextarea != null){
                 $valeur[$i]=2;
-                $image="";
-                $reponse="";
+                // $image="";
+                $quizImage="";
                 $valeurok[$i]="";
                 dump('testTextarea');
                 $idReponseTextarea = $reponses[$i]->getReponseTextarea();
@@ -224,9 +224,8 @@ class ReponseUtilisateurController extends AbstractController
                 dump($reponse[$i]);
                 // Voir pour afficher le nom de la réponses et l'image
                     // por que ça soit plus parlant pour l'utilisateur, à la place des id !!
-                $test=$quizImageRepository->find($reponse[$i]);
-                dump($test->getReponseImage());
-
+                $quizImage[$i]=$quizImageRepository->find($reponse[$i]);
+                
                 if($reponse[$i]!=null){
                     // Si c'est la bonne réponse :
                     if($image[$i]==$reponse[$i] ){
@@ -248,8 +247,8 @@ class ReponseUtilisateurController extends AbstractController
         // si, il n'y a pas c'est valeurs, rien mettre dedans!!
         $valeur="";
         $valeurok="";
-        $image="";
-        $reponse="";
+        // $image="";
+        $quizImage="";
     }   
     $resultat=$valeurVrai.'/'.count($reponses);
     // dump($resultat);
@@ -259,8 +258,8 @@ class ReponseUtilisateurController extends AbstractController
             'valeurReponse'=>$valeur,
             'valeurok'=>$valeurok,
             'resultat'=>$resultat,
-            'image'=>$image,
-            'reponseQuizImage'=>$reponse,
+            // 'image'=>$image,
+            'reponseQuizImages'=>$quizImage,
         ]);
     }
     /*************************************************************** */
