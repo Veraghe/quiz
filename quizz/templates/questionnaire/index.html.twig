@@ -21,6 +21,9 @@
         {% else %}
                 <p>Il n'y a pas de questionnaire &#128546;</p>
         {% endfor %}
+        <div class="blocAdmin">
+            <a href="{{ path('quiz_image_index') }}" class=""><h3>Gestion Quiz Images</h3></a>  
+        </div>
     </div>
     <div class="centerbtn">
         <a href="{{ path('questionnaire_new') }}" class="btn bleu">Ajouter</a>

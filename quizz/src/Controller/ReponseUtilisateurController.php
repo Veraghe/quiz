@@ -42,26 +42,29 @@ class ReponseUtilisateurController extends AbstractController
             }
             // afficher les réponses utilisateur part rapport à l'idQuestion
             $reponses = $reponseUtilisateurRepository->findBy(['Question'=>$tab_question]);
-            // dump($reponses);
+//----------// ajouter les types textarea !!
+            dump($reponses);
         }
         else {
             $reponses="";
         }
-        // Plus desplication en dessous ;)
-        if (!empty($reponses)){
-            for($i=0;$i<count($reponses);$i++){ 
-                $idReponse = $reponses[$i]->getReponse()->getId();
-                $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
-                $valeur[$i] = $laReponse[0]->getValeurReponse();
-            }
-        }
-        // Si, il n'y a pas de réponses, il n'y a pas de valeur:
-        else {
-            $valeur="";
-        }
+        // Plus d'explication en dessous ;)
+        // if (!empty($reponses)){
+        //     for($i=0;$i<count($reponses);$i++){ 
+        //         $idReponse = $reponses[$i]->getReponse()->getId();
+        //         dump($idReponse);
+        //         $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
+        //         dump($laReponse);
+        //         $valeur[$i] = $laReponse[0]->getValeurReponse();
+        //     }
+        // }
+        // // Si, il n'y a pas de réponses, il n'y a pas de valeur:
+        // else {
+        //     $valeur="";
+        // }
         // dump($valeur);
         return $this->render('reponse_utilisateur/index.html.twig', [
-            'valeurReponse'=>$valeur,
+            // 'valeurReponse'=>$valeur,
             'reponse_utilisateurs' => $reponses,
             
         ]);
@@ -205,9 +208,8 @@ class ReponseUtilisateurController extends AbstractController
                 // $image="";
                 $quizImage="";
                 $valeurok[$i]="";
-                dump('testTextarea');
                 $idReponseTextarea = $reponses[$i]->getReponseTextarea();
-                dump($idReponseTextarea);
+                // dump($idReponseTextarea);
 
             }
             // *******QuizImage***************************
@@ -224,7 +226,8 @@ class ReponseUtilisateurController extends AbstractController
                 dump($reponse[$i]);
                 // Voir pour afficher le nom de la réponses et l'image
                     // por que ça soit plus parlant pour l'utilisateur, à la place des id !!
-                $quizImage[$i]=$quizImageRepository->find($reponse[$i]);
+                // $quizImage=$quizImageRepository->find($reponse[$i]);
+                // dump($quizImage);
                 
                 if($reponse[$i]!=null){
                     // Si c'est la bonne réponse :
@@ -248,7 +251,7 @@ class ReponseUtilisateurController extends AbstractController
         $valeur="";
         $valeurok="";
         // $image="";
-        $quizImage="";
+        // $quizImage="";
     }   
     $resultat=$valeurVrai.'/'.count($reponses);
     // dump($resultat);
@@ -259,7 +262,7 @@ class ReponseUtilisateurController extends AbstractController
             'valeurok'=>$valeurok,
             'resultat'=>$resultat,
             // 'image'=>$image,
-            'reponseQuizImages'=>$quizImage,
+            // 'reponseQuizImages'=>$quizImage,
         ]);
     }
     /*************************************************************** */
