@@ -14,6 +14,7 @@
                 <th class="flexG">Utilisateur</th>
                 <th class="flexG">Question</th>
                 <th class="flexG">Réponse</th>
+                <th class="flexG">Réponse Texte</th>
                 <th class="flexP"></th>
             </tr>
         </thead>
@@ -29,11 +30,14 @@
                 {% endif %}
                 <td class="flexG">{{ reponse_utilisateur.Question}}</td>
                 
-                {# {% if valeurReponse[key] == 0 %} #}
+                {% if valeurReponse[key] == 0 %}
                     <td class="flexG orange">{{ reponse_utilisateur.Reponse}}</td>
-                {# {% else %}
+                {# {% elseif valeurReponse[key] == 2 %} #}
+                   
+                {% else %}
                     <td class="flexG vert">{{ reponse_utilisateur.Reponse}}</td>
-                {% endif %} #}
+                {% endif %}
+                 <td class="bleu flexG">{{ reponse_utilisateur.ReponseTextarea}}</td>
                 
                 <td class="flexP">
                     {# <a href="{{ path('reponse_utilisateur_show', {'id': reponse_utilisateur.id}) }}"><i class="far fa-eye"></i></a> #}
@@ -49,6 +53,7 @@
         {% endfor %}
         </tbody>
     </table>
+    {{ knp_pagination_render(reponse_utilisateurs) }}
     <div class="centerbtn">
         {# <a href="{{ path('reponse_utilisateur_new') }}">Create new</a> #}
         <a href="{{ path('questionnaire_reponses') }}" class="btn orange">Retour</a>

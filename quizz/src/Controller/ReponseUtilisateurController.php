@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Knp\Component\Pager\PaginatorInterface; // Nous appelons le bundle KNP Paginator
+
 /**
  * @Route("/reponse_utilisateur")
  */
@@ -26,11 +28,12 @@ class ReponseUtilisateurController extends AbstractController
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
      */
-    public function index(QuestionRepository $questionRepository,ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, Request $request): Response
+    public function index(QuestionRepository $questionRepository,ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, PaginatorInterface $paginator, Request $request): Response
     {
         // ----------------On doit récupérer que les réponses qui sont relier aux questionnaires.---------------
         // On commence part récupèrer les questions qui correspond aux questionnaire 
         $questions = $questionRepository->findBy(['Questionnaire' => $request->query->get('id')]);
+        // dump($questions);
         // dump($questions);
         if(!empty($questions)){
             // récupère l'id des questions
@@ -43,29 +46,45 @@ class ReponseUtilisateurController extends AbstractController
             // afficher les réponses utilisateur part rapport à l'idQuestion
             $reponses = $reponseUtilisateurRepository->findBy(['Question'=>$tab_question]);
 //----------// ajouter les types textarea !!
-            dump($reponses);
+            // dump($reponses);
         }
         else {
             $reponses="";
         }
         // Plus d'explication en dessous ;)
-        // if (!empty($reponses)){
-        //     for($i=0;$i<count($reponses);$i++){ 
-        //         $idReponse = $reponses[$i]->getReponse()->getId();
-        //         dump($idReponse);
-        //         $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
-        //         dump($laReponse);
-        //         $valeur[$i] = $laReponse[0]->getValeurReponse();
-        //     }
-        // }
-        // // Si, il n'y a pas de réponses, il n'y a pas de valeur:
-        // else {
-        //     $valeur="";
-        // }
-        // dump($valeur);
+        if (!empty($reponses)){
+            for($i=0;$i<count($reponses);$i++){ 
+                $questionReponse=$reponses[$i]->getReponse();
+                $reponseTextarea=$reponses[$i]->getReponseTextarea();
+                // dump($reponseTextarea);
+                if( $questionReponse != null){
+                    $idReponse = $reponses[$i]->getReponse()->getId();
+                    // dump($idReponse);
+                    $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
+                    // dump($laReponse);
+                    $valeur[$i] = $laReponse[0]->getValeurReponse();
+                }
+                // // *******Question/ReponseTextarea***************************
+                else{
+                    $valeur[$i]=2;
+                }
+
+            }
+        }
+        // Si, il n'y a pas de réponses, il n'y a pas de valeur:
+        else {
+            $valeur="";
+        }
+        $reponsePagination=$paginator->paginate(
+            $reponses,
+            $request->query->getInt('page',1),
+            15
+        );
+        dump($reponsePagination);
+        dump($valeur);
         return $this->render('reponse_utilisateur/index.html.twig', [
-            // 'valeurReponse'=>$valeur,
-            'reponse_utilisateurs' => $reponses,
+            'reponse_utilisateurs' => $reponsePagination,
+            'valeurReponse'=>$valeur,
             
         ]);
     }

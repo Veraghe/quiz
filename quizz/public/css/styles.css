@@ -486,6 +486,19 @@ li{
     width: 100%;
     height: 100px;
 }
+/* ------------------------------- Pagination-- */
+.active a{
+    background-color: var(--color-bleu);
+    color: white;
+}
+.active a:hover{
+    background-color: var(--color-bleu);
+    color: white;
+}
+li.page-item a:hover{
+    background-color: var(--color-bleu-clair);
+    color: var(--color-noir);
+}
 /* ------------------------------- FOOTER-- */
 footer{
     background-color: var(--color-bleu);
