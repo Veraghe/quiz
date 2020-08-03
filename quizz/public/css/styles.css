@@ -311,7 +311,7 @@ tr.imagequizCompte{
 /* ------------------------------- END RECURENTES -- */
 
 /* ------------------------------- NAV -- */
-nav {
+nav.principal {
     background-color:var(--color-bleu);
 }
 div.nav{
@@ -410,8 +410,12 @@ legend.col-form-label, .labelTextarea{
     padding: 1.5vw 0;
     font-size: 1.3rem;
 }
+.labelTextarea{
+    margin: 0 0 2vw 0;
+    width: 100%;
+}
 div.form-group textarea{
-    height: 20vh;
+    height: 25vh;
 }
 div.form-check{
     padding: 1vh 2vw;
@@ -499,6 +503,32 @@ li.page-item a:hover{
     background-color: var(--color-bleu-clair);
     color: var(--color-noir);
 }
+
+
+.form-group {
+  display: none;
+}
+
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+.step.finish {
+  background-color: #4CAF50;
+}
+
+
 /* ------------------------------- FOOTER-- */
 footer{
     background-color: var(--color-bleu);
@@ -515,3 +545,4 @@ footer img{
 .container{
     min-height: 70vh;
 }
+

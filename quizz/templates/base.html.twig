@@ -17,7 +17,7 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        <nav>
+        <nav class="principal">
             <div class="centrer nav">
                 <a href="{{ path('home') }}"><img class="logo" src="{{ asset('images/logo.svg') }}" alt="logo"></a>
                 <div class="espace"></div>
@@ -52,6 +52,8 @@
             <img src="{{ asset('images/trellium.png') }}" alt="logo">
             <img src="{{ asset('images/afpa.png') }}" alt="logo">
         </footer>
+
+        <script src="{{ asset('js/pagination.js') }}"></script> 
         {% block javascripts %}
         
         {% endblock %}

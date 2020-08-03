@@ -7,94 +7,27 @@
     <div class="ligne">
         <div class="quiz"> 
         
-         {# {{ form_start(form) }}
-            
-            {{ form_row(form.Utilisateur) }}
-            {{ form_widget(form.Question) }}
-            {{ form_widget(form.Reponse) }}
-        {{ form_end(form) }} #}
-{# ------------------------------------------------------------------ #}
         {{ form_start(form2) }}
             {{ form_widget(form2) }} 
-{# --------------------- #}            
-           {# {{ form_row(form2.utilisateur) }} #}
 
-{# --------------------- affiche les réponses une à une #}
+         
+            <!-- Cercles qui indiquent les étapes du formulaire: -->
+            <div >
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+            </div>
 
-               {# {{ form_widget(form2.question0) }}  #}
-                {# {{ form_row(form2.reponse0) }} #}
-            </br> 
-                {# {{ form_widget(form2.question1) }}  #}
-                {# {{ form_row(form2.reponse1) }} #}
+            <div class="centerbtn">
+                <button class="btn vert" type="button" id="nextBtn" onclick="nextPrev(1)">Suivant</button>
 
-{# --------------------- essayer de faire une boucle#}
-
-{# loop.length :Contient le nombre d'éléments dans la séquence de boucle.  #}
-            {# {% for i in form2|length %} #}
-                {# {{ form_widget(form2.questionloop.index0) }}
-               {{ form_widget(form2.reponseloop.index0) }}
-
-               {{ form_widget(form2.question[loop.index]) }}
-               {{ form_widget(form2.reponse[loop.index]) }} #}
-            {# {% endfor %} #}
-
-{# --------------------- #}
-           {# {{ form_widget(form2.valider , {'attr': {'class': 'btn bleu'}}) }} #}
-               <div class="centerbtn">
-                     <button class="btn bleu">{{ button_label|default('Valider') }}</button>
-
-                    <a href="{{ path('home') }}" class="btn orange">Retour</a>
-                </div>
+                <button class="btn bleu" id="validBtn">{{ button_label|default('Valider') }}</button>
+                <a href="{{ path('home') }}" class="btn orange">Retour</a>
+            </div>
         {{ form_end(form2) }}
 
-
-      <!--   <form action="" method="post">    #}
-
-            {# S'il est connecté on récupère son Nom d'utilisateur, aussi non on demande le nom et prénom  #}
-             {% if app.user %}
-                <input type="text" placeholder="Email" value="{{ app.user.username }}" hidden>
-            {% else %}
-            <div class="gauche quiz_identifiant">
-                <div>
-                    <label for="email">Email :</label>
-                    <input type="text"  name="email" required >
-                </div>
-            </div>
-            {% endif %}
-
-
-           {% for key, question in questionnaire.questions %}
-                <div class="titreQuiz">
-                    <h2>{{loop.index}} : {{ question.libelleQuestion}}</h2> 
-                </div>
-                
-                    {% for reponse in question.reponses %}
-                    {# {{ form_widget(form.Reponse) }} #}
-                        {% if {'id' : reponse.question}=={'id' : question.libelleQuestion} %} 
-                            <div class="reponseQuiz"> 
-                            {# Afficher le bon type de Input selon la question #}
-                             {% if question.typeDeQuestion =='radio' %}
-                                <input type="radio" name="reponses" id="{{reponse.libelleReponse}}" value="{{reponse.libelleReponse}}">
-                                <label for="{{reponse.libelleReponse}}">{{reponse.libelleReponse}}</label>
-                               
-                             {% else %}   
-                                <input type="checkbox" name="reponses" id="{{reponse.libelleReponse}}" value="{{reponse.libelleReponse}}">
-                                <label for="{{reponse.libelleReponse}}">{{reponse.libelleReponse}}</label>
-                                
-                            {% endif %}
-                            </div> 
-                        {% endif %}
-                    {% endfor %}
-                    {# calculer le nombre de question ! #}
-                {# <p>{{key+1}} / {{ question|length }}</p> #}
-            {% else %}
-                    <p>Il n'y a pas de question &#128546;</p>
-            {% endfor %}
-                <div class="centerbtn">
-                     <button class="btn bleu">{{ button_label|default('Valider') }}</button>
-                    <a href="{{ path('home') }}" class="btn orange">Retour</a>
-                </div>
-           </form> -->
         </div>
     </div>
 </div>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <title>Pagination</title>
+</head>
+
+<body>
+    <div class="container">
+        <form action="" id="regForm">
+            <div class="form">
+                <!-- -------------------------------------------- -->
+                <fieldset class="form-group">
+                    <legend class="col-form-label required">Premier question</legend>
+                    <div class="form_reponse0">
+                        <div class="form_check">
+                            <input type="radio" id="form_reponse0_0"  name="form[reponse0]" class="form-check-input" required="required" value="1">
+                            <label for="form_reponse0_0" class="form-check-label">1ère réponse</label>
+                        </div>
+                        <div class="form_check"></div>
+                            <input type="radio" id="form_reponse0_1" name="form[reponse0]" class="form-check-input" required="required" value="2">
+                            <label for="form_reponse0_1" class="form-check-label">2ème réponse</label>
+                        </div>
+                        <div class="form_check">
+                            <input type="radio" id="form_reponse0_2" name="form[reponse0]" class="form-check-input" required="required" value="3">
+                            <label for="form_reponse0_2" class="form-check-label">3ème réponse</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <!-- -------------------------------------------- -->
+                <fieldset class="form-group">
+                    <legend class="col-form-label required">Deuxième question</legend>
+                    <div class="form_reponse0">
+                        <div class="form_check">
+                            <input type="checkbox" id="form_reponse1_0" name="form[reponse1]" class="form-check-input" required="required" value="4">
+                            <label for="form_reponse1_0" class="form-check-label">1ère réponse</label>
+                        </div>
+                        <div class="form_check"></div>
+                        <input type="checkbox" id="form_reponse1_1" name="form[reponse1]" class="form-check-input" required="required" value="5">
+                        <label for="form_reponse1_1" class="form-check-label">2ème réponse</label>
+                    </div>
+                    <div class="form_check">
+                        <input type="checkbox" id="form_reponse1_2" name="form[reponse1]" class="form-check-input" required="required" value="6">
+                        <label for="form_reponse1_2" class="form-check-label">3ème réponse</label>
+                    </div>
+                    </div>
+                </fieldset>
+                <!-- -------------------------------------------- -->
+                <div class="form-group">
+                    <label for="form_reponseTextarea0" class="labelTextarea">Troisième question</label>
+                    <textarea name="form[reponseTextarea0]" id="form_reponseTextarea0" class="form-control" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+        </form>
+
+        <div style="overflow:auto;">
+            <div style="float:right;">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Précédent</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Suivant</button>
+            </div>
+        </div>
+
+        <!-- Cercles qui indiquent les étapes du formulaire: -->
+        <div style="text-align:center;margin-top:40px;">
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <!-- <span class="step"></span> -->
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
