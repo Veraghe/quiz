@@ -167,7 +167,9 @@ class QuestionnaireController extends AbstractController
             dump($tab_question);
             $tab_type_de_question[$clef]=$affiche_type_de_question;
             dump($tab_type_de_question);
+
         }
+        $clef++;
         // récupérer les données de $affiche_question et $question_array pour les utiliser dans le form
  
         
@@ -213,11 +215,10 @@ class QuestionnaireController extends AbstractController
                         // $question_array,
                         $tab_reponse[$i],
                     ],
-                    
                     'expanded'=> true,
                     //Si multiple = false (radio bouton), = true (checkbox)
                     'multiple'=>true,
-                    'label'=>  $key.": ".$tab_question[$i],
+                    'label'=>  $key." / ".$clef." : ".$tab_question[$i],
                     
                 ]);
                 $r++;
@@ -231,20 +232,20 @@ class QuestionnaireController extends AbstractController
                     'expanded'=> true,
                     //Si multiple = false (radio bouton), = true (checkbox)
                     'multiple'=>false,
-                    'label'=>  $key.": ".$tab_question[$i],
+                    'label'=>  $key." / ".$clef." : ".$tab_question[$i],
                     
                 ]);
                 $r++;
             }
             else{
                 $formBuilder->add('reponseTextarea'.$t, TextareaType::class,[
-                    'label'=>  $key.": ".$tab_question[$i],
+                    'label'=>  $key." / ".$clef." : ".$tab_question[$i],
                     'label_attr'=> ['class'=>'labelTextarea'],
                 ]);
                 dump($tab_question[$i]);
                 $t++;
             }
-            $i++;     
+            $i++;   
             $key++ ;
            // dump($formBuilder);
         
@@ -252,6 +253,7 @@ class QuestionnaireController extends AbstractController
        
 
     }
+    $key--;
 // ---------------------------------------------------------------------------
         $form2=$formBuilder->getForm();
 
@@ -384,6 +386,7 @@ class QuestionnaireController extends AbstractController
         //    'reponse_utilisateur' => $reponseUtilisateur,
             // 'form' => $form->createView(),
             'form2' => $form2->createView(),
+            'key'=> $key,
         ]);
     }
 

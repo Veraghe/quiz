@@ -32,7 +32,7 @@ function nextPrev(n) {
     // Masquer la page actuelle:
     form[currentTab].style.display = "none";
     // Augmente ou diminue la page actuelle de 1:
-    currentTab = currentTab + n;
+    currentTab += n;
     // si vous avez atteint la fin du formulaire ...:
     if (currentTab >= form.length) {
         //... le formulaire est soumis:
@@ -47,9 +47,11 @@ function nextPrev(n) {
 function validateForm() {
 
     // Cette fonction s'occupe de la validation des champs du formulaire
-    var form, input, i, valid = true;
+    var form,form2, input, textarea, i, valid = true;
     form = document.getElementsByClassName("form-group");
-    input = form[currentTab].getElementsByTagName("input");
+    form2 = document.getElementsByClassName("form-check");
+    // input = form[currentTab].getElementsByTagName("input");
+    input = form2[currentTab].getElementsByClassName("form-check-input");
     textarea = form[currentTab].getElementsByTagName("textarea");
 
     // Une boucle qui vérifie chaque champ d'entrée dans l'onglet courant:

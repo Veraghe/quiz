@@ -505,8 +505,14 @@ li.page-item a:hover{
 }
 
 
-.form-group {
+.quiz form .form-group {
   display: none;
+}
+
+.stepContainer{
+    flex-direction: row;
+    justify-content: center;
+    padding-bottom: 2vh;
 }
 
 .step {
@@ -527,7 +533,9 @@ li.page-item a:hover{
 .step.finish {
   background-color: #4CAF50;
 }
-
+.invalid{
+    background-color: var(--color-bleu-clair);
+}
 
 /* ------------------------------- FOOTER-- */
 footer{

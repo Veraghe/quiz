@@ -12,7 +12,7 @@
 
          
             <!-- Cercles qui indiquent les étapes du formulaire: -->
-            <div >
+            <div class="stepContainer" >
                 <span class="step"></span>
                 <span class="step"></span>
                 <span class="step"></span>
@@ -25,7 +25,8 @@
 
                 <button class="btn bleu" id="validBtn">{{ button_label|default('Valider') }}</button>
                 <a href="{{ path('home') }}" class="btn orange">Retour</a>
-            </div>
+                {# ajouter le nombre de question #}
+            </div> 
         {{ form_end(form2) }}
 
         </div>
