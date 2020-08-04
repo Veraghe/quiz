@@ -31,20 +31,28 @@
                 
             </div>
         </div>
-     </div>
-    {{ form_widget(formQuizImage) }}
+        {{ form_widget(formQuizImage) }}
+     
+    
      
         <!-- ajouter un bouton -->
         <div class="centerbtn">
             <button class="btn vert">{{ button_label|default('Valider') }}</button>
-            <a href="{{ asset('home') }}" class="btn orange">Retour</a>
+            {# <a href="{{ asset('home') }}" class="btn orange">Retour</a> #}
              
    
         </div>
         <!-- dans le controller : si, ils ont le même id c'est la bonne réponse -->
      {{ form_end(formQuizImage) }}
+    </div>
 
-     <b></b>
+    <div class="container-quiz_phone">
+        </br>
+        <p>Le quiz Image n'est pas disponible sur ce format d'écran. </p>
+        </br>
+        <p>Merci de votre compréhension</p>
+    </div>
+     
 
 
     

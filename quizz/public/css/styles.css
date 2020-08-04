@@ -193,7 +193,7 @@ form{
 form div{
     display: flex;
     flex-direction: column;
-    padding: 0 1vw;
+    /* padding: 0 1vw; */
 }
 input{
     background-color: var(--color-bleu-clair);
@@ -319,7 +319,7 @@ div.nav{
     align-items: center;
 }
 div.nav a{
-    flex: 0.5;
+    flex: 0.4;
 }
 div.nav ul{
     flex: 2;
@@ -357,29 +357,6 @@ select{
 }
 
 /* ------------------------------- QUIZ-- */
-/* .titreQuiz{
-    background-color: var(--color-vert);
-    border-radius: 20px 20px 0 0;
-    width: 79.5vw;
-    color: var(--color-blanc);
-    text-align: center;
-    font-weight: 400;
-    margin:2vw 0;
-    padding: 2vw 0;
-    font-size: 1.3rem;
-} */
-/* .reponseQuiz{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 1vw 0 1vw 30vw;
-} */
-/* .reponseQuiz input{
-    margin: 0 1vw;
-}
-.reponseQuiz label{
-    margin-bottom: 0;
-} */
 .quiz{
     display: flex;
     flex-direction: column ;
@@ -388,13 +365,6 @@ select{
 p{
     text-align: center;
 }
-/* .quiz_identifiant{
-    display: flex;
-    flex-direction: row;
-}
-.quiz_identifiant div{
-    flex: 1;
-} */
 fieldset.form-group{
     border: 0;
     padding: 0;
@@ -418,7 +388,7 @@ div.form-group textarea{
     height: 25vh;
 }
 div.form-check{
-    padding: 1vh 2vw;
+    padding: 1vh 10vw;
 }
 input#form_utilisateur{
     background-color: var(--color-bleu-clair);
@@ -431,16 +401,11 @@ input#form_utilisateur{
 }
 
 /* ------------------------------- quizImage-- */
-.quizImage{
-    width: 60vw;
-    margin: 0 auto;
-}
 #choises li img {
     display: block;
     z-index: 3;
-    width: 10vw;
-    height: 12vh;
-    transition: all .2s;
+    width: 100px;
+    height: 100px;
 }
 #choises li img:hover{
     transform: scale(1.2);
@@ -453,35 +418,42 @@ li{
     margin: 0;
     padding: 0;
     flex-wrap: wrap;
+    width: 50%;
+    float: left;
     justify-content: center;
 }
 #choises li{
     margin: 2vw;
-    width: 10vw;
-    height: 12vh;
+    width: 100px;
+    height: 100px;
     cursor: pointer;
 }
 
 .reponseImage{
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+}
+.reponseQuizImage{
+    width: 33%;
+    align-items: center;
 }
 #answers ul{
     display: flex;
     flex-wrap: wrap;
+    
 }
 #answers ul li{
-    margin: 2vw;
-    padding: 1vw;
-    width: 12vw;
-    height: 14vh;
+    padding: 10px;
+    width: 120px;
+    height: 120px;
     border: dashed 3px var(--color-bleu-clair);
     cursor: pointer;
+    margin-bottom: 1vw;
 }
 
 #answers p {
+    margin-top: 1vw;
     text-align: center;
+    font-size: 0.8rem;
 }
 #answers ul li .form-group label{
     display: none;
@@ -489,6 +461,9 @@ li{
 #answers ul li .form-group input{
     width: 100%;
     height: 100px;
+} 
+.container-quiz_phone{
+    display: none;
 }
 /* ------------------------------- Pagination-- */
 .active a{

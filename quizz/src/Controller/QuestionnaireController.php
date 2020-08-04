@@ -184,7 +184,7 @@ class QuestionnaireController extends AbstractController
         //ou Creer un utilisateur avec un nouvelle id 
         else{
             $formBuilder->add('anonyme', EmailType::class, [
-                'label'=>"Email:"
+                'label'=>"Email:",
             ]);
         }
         // ------------------------Ajouter la date courante---------------------------------------------------
