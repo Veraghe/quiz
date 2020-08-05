@@ -14,7 +14,6 @@
         {% endif %}
             <tr>
                 <th>Date</th>
-                <th class="flexG">Utilisateur</th>
                 <th class="flexG">Question</th>
                 <th>Réponse</th>
             </tr>
@@ -28,12 +27,6 @@
                     <td>{{ reponse_utilisateur.Date|date('d-m-Y ') }}</td>
                 {% endif %}
 
-                    
-                {% if valeurReponse[key]=="" %}
-                    <td class="none"></td>
-                {% else %}
-                    <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
-                {% endif %}
 
                 {% if valeurReponse[key]=="" %}
                     <td class="none"></td>
@@ -44,8 +37,10 @@
                 {# Si la réponse est bonne afficher en vert et fause en orange#}
                 {% if valeurReponse[key] == 0 %}
                     <td class="orange">{{ reponse_utilisateur.Reponse}}</td>
-                {% elseif valeurReponse[key]=="" %}
-                    <td class="none"></td>
+                {% elseif valeurReponse[key]== 2 %}
+                    <td class="bleu">{{ reponse_utilisateur.ReponseTextarea}}</td>
+                {% elseif valeurReponse[key] == "" %}
+                    <td class="gris none"></td>
                 {% else %}
                     <td class="vert">{{ reponse_utilisateur.Reponse}}</td>
                 {% endif %}

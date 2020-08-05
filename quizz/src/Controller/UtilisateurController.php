@@ -36,6 +36,16 @@ class UtilisateurController extends AbstractController
             'utilisateurs' => $utilisateurRepository->findAll(),
         ]);
     }
+    
+    /**
+     * @Route("/profilAdmin", name="profil_admin")
+     */
+    public function profilAdmin(UtilisateurRepository $utilisateurRepository): Response
+    {
+        return $this->render('utilisateur/profil.html.twig', [
+            
+        ]);
+    }
 
     /**
      * @Route("/btnUtilisateur", name="btn_utilisateur", methods={"GET"})

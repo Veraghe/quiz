@@ -10,6 +10,10 @@ var textarea = document.getElementsByTagName('textarea');
 for (let i = 0; i < textarea.length; i++) 
 textarea[i].addEventListener("click", modifBtnSuite)
 
+var input = document.getElementsByTagName('input');
+for (let i = 0; i < input.length; i++)
+    input[i].addEventListener("click", modifBtnSuite)
+
 function modifBtnSuite(){ 
     var suiteValide = document.getElementById("nextBtn");
     suiteValide.disabled = false;

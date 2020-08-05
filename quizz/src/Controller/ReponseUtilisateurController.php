@@ -112,9 +112,12 @@ class ReponseUtilisateurController extends AbstractController
         }
         // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
         $valeurVrai=0;
+        $totalResultat=0;
         for($i=0;$i<count($reponses);$i++){ 
             $questionReponse=$reponses[$i]->getReponse();
             dump($questionReponse);
+            $reponseTextarea=$reponses[$i]->getReponseTextarea();
+            // *******Question/Reponse***************************
             if( $questionReponse != null){
             // if( $reponses == null){
                 $idReponse = $reponses[$i]->getReponse()->getId();
@@ -128,18 +131,32 @@ class ReponseUtilisateurController extends AbstractController
                 // dump($valeur);
                 if($valeur[$i]==1)
                 $valeurVrai++;
+
+                $valeurok[$i]="";
+                $totalResultat++;
+            }
+            // *******Question/ReponseTextarea***************************
+            elseif($reponseTextarea != null){
+                $valeur[$i]=2;
+                // $image="";
+                $quizImage="";
+                $valeurok[$i]="";
+                $idReponseTextarea = $reponses[$i]->getReponseTextarea();
+                // dump($idReponseTextarea);
+
             }
             else {
                 $valeur[$i]="";
             }  
         }
-        $resultat=$valeurVrai.'/'.count($reponses);
+        $resultat=$valeurVrai.'/'.$totalResultat;
    
         return $this->render('reponse_utilisateur/resultat.html.twig', [
             // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
             'reponse_utilisateurs' => $reponses,
             'valeurReponse'=>$valeur,
             'resultat'=>$resultat,
+            'valeurok'=>$valeurok,
         ]);
     }
     /*************************************************************** */
@@ -197,6 +214,7 @@ class ReponseUtilisateurController extends AbstractController
     //    dump(count($reponses));
     // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
     $valeurVrai=0;
+    $totalResultat=0;
     if (!empty($reponses)){
         // dump($reponses);
 
@@ -220,6 +238,7 @@ class ReponseUtilisateurController extends AbstractController
                 // $image="";
                 $quizImage="";
                 $valeurok[$i]="";
+                $totalResultat++;
             }
             // *******Question/ReponseTextarea***************************
             elseif($reponseTextarea != null){
@@ -245,9 +264,10 @@ class ReponseUtilisateurController extends AbstractController
                 dump($reponse[$i]);
                 // Voir pour afficher le nom de la réponses et l'image
                     // por que ça soit plus parlant pour l'utilisateur, à la place des id !!
-                // $quizImage=$quizImageRepository->find($reponse[$i]);
-                // dump($quizImage);
+                $quizImage=$quizImageRepository->find($reponse[$i]);
+                dump($quizImage);
                 
+                $totalResultat++;
                 if($reponse[$i]!=null){
                     // Si c'est la bonne réponse :
                     if($image[$i]==$reponse[$i] ){
@@ -272,7 +292,7 @@ class ReponseUtilisateurController extends AbstractController
         // $image="";
         // $quizImage="";
     }   
-    $resultat=$valeurVrai.'/'.count($reponses);
+    $resultat=$valeurVrai.'/'.$totalResultat;
     // dump($resultat);
 
         return $this->render('utilisateur/compte.html.twig', [

@@ -17,7 +17,11 @@
 
             {{ include('utilisateur/_form.html.twig') }}
 
-            <a href="{{ path('utilisateur_index') }}" class="btn orange">Annulez !</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('utilisateur_index') }}" class="btn orange">Annulez !</a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn orange">Annulez !</a>
+            {% endif %}
            </fieldset>
     </div>
 {% endblock %}
