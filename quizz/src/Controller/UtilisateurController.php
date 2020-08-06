@@ -43,7 +43,6 @@ class UtilisateurController extends AbstractController
     public function profilAdmin(UtilisateurRepository $utilisateurRepository): Response
     {
         return $this->render('utilisateur/profil.html.twig', [
-            
         ]);
     }
 

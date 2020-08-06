@@ -1,10 +1,12 @@
 {{ form_start(form) }}
-
+   
     {{ form_row(form.question)}}
-    {{ form_row(form.libelleReponse)}}
-    {{ form_row(form.valeurReponse, {'label': 'Valeur réponse (0: Faux / 1: Vrai)'})}}
+    {{ form_row(form.libelleReponse, {'label': 'Réponse :'})}}
+    {{ form_row(form.valeurReponse, {'label': '0: Faux / 1: Vrai'})}}
 
     <button class="btn vert">{{ button_label|default('Valider') }}</button>
-{{ form_end(form) }}
+
+{{ form_end(form) }} 
 
     {# voir pour ajouter les quatres réponses en même temps #}
+    {# Créer un formulaire personnalisé #}

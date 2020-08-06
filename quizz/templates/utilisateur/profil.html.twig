@@ -4,5 +4,9 @@
 
 {% block body %}
     <h1>Profil</h1>
-    
+    <p>{{ app.user.nom }} {{ app.user.prenom }}</p>
+    <p>{{ app.user.username}}</p>
+    <div class="centerbtn">
+        <a href="{{ path('btn_utilisateur') }}" class="btn orange">Retour</a>
+    </div>
 {% endblock %}

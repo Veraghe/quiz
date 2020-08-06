@@ -13,6 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+
 /**
  * @Route("/reponse")
  */
@@ -42,7 +46,7 @@ class ReponseController extends AbstractController
 
         ]);
     }
-//********************************************************************** */
+// ********************************************************************** */
     /**
      * @Route("/new", name="reponse_new", methods={"GET","POST"})
      */

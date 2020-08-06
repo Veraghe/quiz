@@ -136,7 +136,7 @@ class QuestionnaireController extends AbstractController
         {
 
             
-            dump($question);
+            // dump($question);
             $reponses = $reponseRepository->findBy(['question' => $question->getId()]);
             // dump($reponses);
            $affiche_question =$question->getLibelleQuestion();
@@ -148,7 +148,7 @@ class QuestionnaireController extends AbstractController
             
             if($affiche_type_de_question==2){
                 $idQuestionTextarea[$qt]=$question;
-                dump($idQuestionTextarea);
+                // dump($idQuestionTextarea);
                 $qt++;
             }
 
@@ -164,9 +164,9 @@ class QuestionnaireController extends AbstractController
             $tab_reponse[$clef]=$question_array;
             // dump($tab_reponse);
              $tab_question[$clef]=$affiche_question;
-            dump($tab_question);
+            // dump($tab_question);
             $tab_type_de_question[$clef]=$affiche_type_de_question;
-            dump($tab_type_de_question);
+            // dump($tab_type_de_question);
 
         }
         $clef++;
@@ -184,7 +184,7 @@ class QuestionnaireController extends AbstractController
         //ou Creer un utilisateur avec un nouvelle id 
         else{
             $formBuilder->add('anonyme', EmailType::class, [
-                'label'=>"Email:",
+                'label'=>" Email:",
             ]);
         }
         // ------------------------Ajouter la date courante---------------------------------------------------
@@ -242,14 +242,14 @@ class QuestionnaireController extends AbstractController
                     'label'=>  $key." / ".$clef." : ".$tab_question[$i],
                     'label_attr'=> ['class'=>'labelTextarea'],
                 ]);
-                dump($tab_question[$i]);
+                // dump($tab_question[$i]);
                 $t++;
             }
             $i++;   
             $key++ ;
            // dump($formBuilder);
         
-        dump($i);
+        // dump($i);
        
 
     }
