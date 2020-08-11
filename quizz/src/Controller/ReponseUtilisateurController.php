@@ -8,6 +8,7 @@ use App\Repository\ReponseUtilisateurRepository;
 use App\Repository\ReponseRepository;
 use App\Repository\QuestionRepository;
 use App\Repository\QuizImageRepository;
+use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,15 +76,17 @@ class ReponseUtilisateurController extends AbstractController
         else {
             $valeur="";
         }
-        $reponsePagination=$paginator->paginate(
-            $reponses,
-            $request->query->getInt('page',1),
-            15
-        );
-        dump($reponsePagination);
-        dump($valeur);
+        // $reponsePagination=$paginator->paginate(
+        //     $reponses,
+        //     $request->query->getInt('page',1),
+        //     15
+        // );
+        // dump($reponsePagination);
+        // dump($valeur);
+
+        // afficher les réponses du quiz image
         return $this->render('reponse_utilisateur/index.html.twig', [
-            'reponse_utilisateurs' => $reponsePagination,
+            'reponse_utilisateurs' => $reponses,
             'valeurReponse'=>$valeur,
             
         ]);
@@ -157,6 +160,55 @@ class ReponseUtilisateurController extends AbstractController
             'valeurReponse'=>$valeur,
             'resultat'=>$resultat,
             'valeurok'=>$valeurok,
+        ]);
+    }
+    /*************************************************************** */
+    /**
+     * @Route("/indexQuizImage", name="index_quiz_image", methods={"GET"})
+     * @param ReponseUtilisateur $reponseUtilisateur
+     * @return Response
+     */
+    public function indexQuizImage(ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository,QuizImageRepository $quizImageRepository, Request $request): Response
+    {
+        // récupère l'id de la personne connecté :
+        if($this->getUser()){
+            $utilisateur = $utilisateurRepository->findAll();
+            dump($utilisateur);
+            // afficher que les réponses de l'id Utilisateur connecté:
+            $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);   
+            dump($reponses);
+        }
+        // $reponses=5;
+        $valeurVrai=0;
+        $total=0;
+        // afficher les images et les réponseImage
+        for($i=0;$i<count($reponses);$i++){
+           
+                $image[$i]=$reponses[$i]->getImage();
+                $reponse[$i]=$reponses[$i]->getReponseImage();
+                // dump($image);
+
+            if($reponses[$i]!=null){
+                $afficheImage=$quizImageRepository->findBy(['image'=> $reponses]);
+                dump($afficheImage);
+            }
+            if($reponse[$i]!=null){
+                $total++;
+                if($image[$i]==$reponse[$i] ){
+                        $valeurVrai++;
+                }
+            }
+        }
+        $resultat=$valeurVrai.'/'.$total;
+        // voir pour afficher les images au lieu des chiffres
+        // dump($image);
+        // $afficheImage= $quizImageRepository->findBy();
+        return $this->render('reponse_utilisateur/indexQuizImage.html.twig', [
+            // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
+            'reponse_utilisateurs' => $reponses,
+            'image'=>$image,
+            'reponseQuizImage'=>$reponse,
+            'resultat'=>$resultat,
         ]);
     }
     /*************************************************************** */

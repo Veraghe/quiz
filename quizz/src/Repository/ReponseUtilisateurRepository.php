@@ -36,14 +36,14 @@ class ReponseUtilisateurRepository extends ServiceEntityRepository
     }
 
     // select * from reponse_utilisateur where date = curdate()
-    public function findReponseByDate()
-    {
-        return $this->createQueryBuilder('reponse_utilisateur')
-            ->Where('date = curdate()')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    // public function findReponseByDate()
+    // {
+    //     return $this->createQueryBuilder('reponse_utilisateur')
+    //         ->Where('date = curdate()')
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
 
     // /**
     //  * @return ReponseUtilisateur[] Returns an array of ReponseUtilisateur objects

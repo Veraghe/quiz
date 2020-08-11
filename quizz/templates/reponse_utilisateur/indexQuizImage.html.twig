@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultat Quiz image{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Résultat Quiz image </h1>
+
+    <table class="table">
+        {% if is_granted('ROLE_ADMIN') %}
+            <thead class="orange">
+        {% else %}
+            <thead class="vert">
+        {% endif %}
+            <tr>
+                <th>Date</th>
+                <th class="flexG">Utilisateur</th>
+                <th>Solution</th>
+                <th>Réponse</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for key, reponse_utilisateur in reponse_utilisateurs %}
+            <tr>
+                {% if  image[key] == null %}
+                    <td class="none"></td>
+                {% else %}
+                    <td>{{ reponse_utilisateur.Date|date('d-m-Y ') }}</td>
+                 {% endif %}
+
+                {% if  image[key] == null %}
+                    <td class="none"></td>
+                {% else %}
+                    <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
+                 {% endif %}
+
+                {% if  image[key] == null %}
+                    <td class="none"></td>
+                {% else %}
+                    <td>{{ reponse_utilisateur.Image}}</td>
+                 {% endif %}
+                
+                {# Si la réponse est bonne afficher en vert et fause en orange#}
+                {% if image[key] != reponseQuizImage[key] %}
+                    <td class="orange">{{ reponse_utilisateur.ReponseImage}}</td>
+                {% elseif  image[key] == null %}
+                    <td class="none"></td>
+                {% else %}
+                    <td class="vert">{{ reponse_utilisateur.ReponseImage}}</td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <div class="centerbtn">
+            <a href="{{ path('home') }}" class="btn orange">Retour</a>
+        </div>
+    </div>
+{% endblock %}
