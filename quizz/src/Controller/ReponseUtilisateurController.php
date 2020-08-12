@@ -168,7 +168,7 @@ class ReponseUtilisateurController extends AbstractController
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
      */
-    public function indexQuizImage(ReponseUtilisateurRepository $reponseUtilisateurRepository,ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository,QuizImageRepository $quizImageRepository, Request $request): Response
+    public function indexQuizImage(ReponseUtilisateurRepository $reponseUtilisateurRepository, ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository,QuizImageRepository $quizImageRepository, Request $request): Response
     {
         // récupère l'id de la personne connecté :
         if($this->getUser()){
@@ -188,10 +188,7 @@ class ReponseUtilisateurController extends AbstractController
                 $reponse[$i]=$reponses[$i]->getReponseImage();
                 // dump($image);
 
-            if($reponses[$i]!=null){
-                $afficheImage=$quizImageRepository->findBy(['image'=> $reponses]);
-                dump($afficheImage);
-            }
+
             if($reponse[$i]!=null){
                 $total++;
                 if($image[$i]==$reponse[$i] ){
@@ -201,14 +198,31 @@ class ReponseUtilisateurController extends AbstractController
         }
         $resultat=$valeurVrai.'/'.$total;
         // voir pour afficher les images au lieu des chiffres
-        // dump($image);
-        // $afficheImage= $quizImageRepository->findBy();
+        dump($image);
+        $quizImage=$quizImageRepository->findAll();
+        dump($quizImage);
+        for($i=0;$i<count($quizImage);$i++){ 
+            $idQuizImage[$i]=$quizImage[$i]->getId();
+            dump($idQuizImage);
+        }
+        for($i=0;$i<count($reponses);$i++){ 
+
+            if($idQuizImage[0] == $image[$i]){
+                // $imageFinal[$i]=$quizImage[$i]->getImage();
+                // dump($imageFinal);
+                dump('test');
+            }
+
+        }
+        $test = $quizImageRepository->findBy(['id' => $request->query->get('id')]);
+        dump($test);
         return $this->render('reponse_utilisateur/indexQuizImage.html.twig', [
             // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
             'reponse_utilisateurs' => $reponses,
             'image'=>$image,
             'reponseQuizImage'=>$reponse,
             'resultat'=>$resultat,
+            'quizImages'=>$quizImageRepository->findAll(),
         ]);
     }
     /*************************************************************** */

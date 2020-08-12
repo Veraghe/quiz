@@ -3,10 +3,11 @@
 {% block title %}Résultat Quiz image{% endblock %}
 
 {% block body %}
-<div class="container">
+
+
     <h1>Résultat Quiz image </h1>
 
-    <table class="table">
+    <table class="table aideBase">
         {% if is_granted('ROLE_ADMIN') %}
             <thead class="orange">
         {% else %}
@@ -56,8 +57,18 @@
         {% endfor %}
         </tbody>
     </table>
-        <div class="centerbtn">
-            <a href="{{ path('home') }}" class="btn orange">Retour</a>
-        </div>
+    <div class="centerbtn">
+        <a href="{{ path('questionnaire_reponses') }}" class="btn orange">Retour</a>
+    </div>
+
+    <div class="aide-container">
+        {% for quizImage in quizImages %}
+            <div class="aide">
+                <b>{{ quizImage.id}}</b>
+                 <p>{{ quizImage.reponseImage}}</p>
+            </div>
+        {% else %}
+                <p>Aucun enregistrement trouvé</p>
+        {% endfor %}
     </div>
 {% endblock %}

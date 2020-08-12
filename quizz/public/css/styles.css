@@ -465,6 +465,33 @@ li{
 .container-quiz_phone{
     display: none;
 }
+
+
+.aideBase{
+    position: relative;
+}
+
+.aide-container{
+    background-color: white;
+    position: fixed;
+    width: 100px;
+    top:15vh;
+    right: 2vw;
+    padding: 10px;
+}
+
+
+.aide{
+    text-align: center;
+    padding: 0.5vh;
+}
+.aide b{
+    background-color: var(--color-bleu-clair);
+    padding: 0 1vw;
+}
+.aide p{
+    font-size: 0.8rem;
+}
 /* ------------------------------- Pagination-- */
 .active a{
     background-color: var(--color-bleu);
