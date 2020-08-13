@@ -13,7 +13,6 @@ use App\Form\QuestionType;
 use App\Form\ReponseUtilisateurType;
 use App\Repository\QuestionnaireRepository;
 use App\Repository\ReponseRepository;
-use App\Repository\ReponsesUtilisateurRepository;
 use App\Repository\QuestionRepository;
 use App\Repository\UtilisateurRepository;
 use App\Repository\AnonymeRepository;
@@ -21,24 +20,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Knp\Component\Pager\PaginatorInterface; // Nous appelons le bundle KNP Paginator
 /**
@@ -115,40 +102,17 @@ class QuestionnaireController extends AbstractController
      */
     public function quiz(Questionnaire $questionnaire,QuestionnaireRepository $questionnaireRepository, QuestionRepository $questionRepository, Reponse $reponse,  ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository,AnonymeRepository $anonymeRepository,  PaginatorInterface $paginator,Request $request): Response
     {
-        // ------------------------Form ReponseUtilisateur (affichage avec listes déroulantes!)---------------------------------------------------
-        // $reponseUtilisateur = new ReponseUtilisateur();
-        // $form = $this->createForm(ReponseUtilisateurType::class, $reponseUtilisateur);
-        // $form->handleRequest($request);
-
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     $entityManager = $this->getDoctrine()->getManager();
-        //     $entityManager->persist($reponseUtilisateur);
-        //     $entityManager->flush();
-
-        //     return $this->redirectToRoute('home');
-        // }
-
         // ------------------------Form ReponseUtilisateur ---------------------------------------------------
         $questions =$questionnaire->getQuestions();
         $affiche_question = [];
         $qt=0;
         foreach ( $questions as $clef => $question)
         {
-
-            
-            // dump($question);
             $reponses = $reponseRepository->findBy(['question' => $question->getId()]);
-            // dump($reponses);
-           $affiche_question =$question->getLibelleQuestion();
-           $affiche_type_de_question =$question->getTypeDeQuestion()->getId();
-            // dump($affiche_question);
-            // dump($affiche_type_de_question);
-
-            
-            
+            $affiche_question =$question->getLibelleQuestion();
+            $affiche_type_de_question =$question->getTypeDeQuestion()->getId();
             if($affiche_type_de_question==2){
                 $idQuestionTextarea[$qt]=$question;
-                // dump($idQuestionTextarea);
                 $qt++;
             }
 
@@ -156,18 +120,11 @@ class QuestionnaireController extends AbstractController
             foreach ($reponses as $reponse)
             {
                $question_array[$reponse->getLibelleReponse()]= $reponse->getId();
-               
             }
-            // dump($question_array);
-
             // Récupère dans un tableau les questions et les réponses 
             $tab_reponse[$clef]=$question_array;
-            // dump($tab_reponse);
              $tab_question[$clef]=$affiche_question;
-            // dump($tab_question);
             $tab_type_de_question[$clef]=$affiche_type_de_question;
-            // dump($tab_type_de_question);
-
         }
         $clef++;
         // récupérer les données de $affiche_question et $question_array pour les utiliser dans le form
@@ -188,9 +145,7 @@ class QuestionnaireController extends AbstractController
             ]);
         }
         // ------------------------Ajouter la date courante---------------------------------------------------
-        $formBuilder->add('date',HiddenType::class, [
-            
-        ]);
+        $formBuilder->add('date',HiddenType::class, []);
     
         // ------------------------Ajouter une réponse et une question---------------------------------------------------
 
@@ -204,7 +159,6 @@ class QuestionnaireController extends AbstractController
             $formBuilder->add('question',HiddenType::class,[
             'data'=>$questionnaire->getId(),
             ]);
-            // dump($tab_question[$i]);
 
             // Ajouter une condition pour le type de question
             // Trouver une façon de récupèrer le type de question depuis la question
@@ -212,7 +166,6 @@ class QuestionnaireController extends AbstractController
             if($tab_type_de_question[$i] ==4 ){        
                 $formBuilder->add('reponse'.$r,  ChoiceType::class,[
                     'choices'  => [
-                        // $question_array,
                         $tab_reponse[$i],
                     ],
                     'expanded'=> true,
@@ -226,11 +179,9 @@ class QuestionnaireController extends AbstractController
             elseif($tab_type_de_question[$i] ==3 ){
                 $formBuilder->add('reponse'.$r,  ChoiceType::class,[
                     'choices'  => [
-                        // $question_array,
                         $tab_reponse[$i],
                     ],
                     'expanded'=> true,
-                    //Si multiple = false (radio bouton), = true (checkbox)
                     'multiple'=>false,
                     'label'=>  $key." / ".$clef." : ".$tab_question[$i],
                     
@@ -242,34 +193,23 @@ class QuestionnaireController extends AbstractController
                     'label'=>  $key." / ".$clef." : ".$tab_question[$i],
                     'label_attr'=> ['class'=>'labelTextarea'],
                 ]);
-                // dump($tab_question[$i]);
                 $t++;
             }
             $i++;   
             $key++ ;
-           // dump($formBuilder);
-        
-        // dump($i);
-       
-
     }
     $key--;
 // ---------------------------------------------------------------------------
         $form2=$formBuilder->getForm();
-
         $form2->handleRequest($request);
-
 
         if ($form2->isSubmitted() && $form2->isValid()) {
             //les données sont un tableau "utilisateur" et "reponse"
             $data = $form2->getData();
-            // dump($data["utilisateur"]);
             
             if($this->getUser())
             $objetUtilisateur=$utilisateurRepository->find($data["utilisateur"]);
-           
-        //    $objetUtilisateur= $this -> getUser()->getId();
-            // $i=0;
+
         // ---------------------------------------
         // Pour les utilisateurs qui ne sont pas inscrit:
             // Créer une entité Anonyme 
@@ -285,7 +225,6 @@ class QuestionnaireController extends AbstractController
             dump($a);
             // -------------Récupérer l'id de l'anonyme----------------------------
             $objetAnonyme=$a;
-            // dump($objetAnonyme);
             }
             // $r = nombre de question avec des reponses en checkbox ou radio bouton
             for($j=0;$j<$r;$j++){
@@ -293,11 +232,7 @@ class QuestionnaireController extends AbstractController
                 if(is_array($data["reponse".$j])){ 
                     foreach ($data["reponse".$j] as $reponse)
                     {
-                        // dump($data["reponse".$j]);
                         $Objet = $reponseRepository->find($reponse);
-                        // dump($Objet->getQuestion());
-                        // $dateReponse->setDate(new \DateTime());
-
                         // pour chaque question
                         // Créer une entité reponse_utilisateur vide
                         $ru = new reponseUtilisateur();
@@ -314,7 +249,6 @@ class QuestionnaireController extends AbstractController
                         $ru->setQuestion($Objet->getQuestion());
                         $ru->setDate(new \DateTime());
                         // enregistrer l'entité dans la BDD
-                        // dump($ru);
 
                         $entityManager = $this->getDoctrine()->getManager();
                         //Cette méthode signale à Doctrine que l'objet doit être enregistré
@@ -322,12 +256,7 @@ class QuestionnaireController extends AbstractController
                     }
                 }
                 else {
-                    // dump($data["reponse".$j]);
                     $Objet = $reponseRepository->find($data["reponse".$j]);
-           
-                    // dump($Objet->getQuestion());
-                    // $dateReponse->setDate(new \DateTime());
-
                     // pour chaque question
                     // Créer une entité reponse_utilisateur vide
                     $ru = new reponseUtilisateur();
@@ -383,8 +312,6 @@ class QuestionnaireController extends AbstractController
 
        return $this->render('question/quiz.html.twig',[
            'questionnaire' => $questionnaire,
-        //    'reponse_utilisateur' => $reponseUtilisateur,
-            // 'form' => $form->createView(),
             'form2' => $form2->createView(),
             'key'=> $key,
         ]);

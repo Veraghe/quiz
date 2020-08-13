@@ -14,8 +14,6 @@
                 <th >Prénom</th>
                 <th class="flexG">Email</th>
                 <th class="flexG">Roles</th>
-                {# <th class="flexP">Score</th> #}
-                {# <th>Password</th> #}
                 <th class="flexP"></th>
             </tr>
         </thead>
@@ -27,8 +25,6 @@
                 <td >{{ utilisateur.prenom }}</td>
                 <td class="flexG">{{ utilisateur.email }}</td>
                 <td class="flexG">{{ utilisateur.roles ? utilisateur.roles|json_encode : '' }}</td>
-                 {# <td class="flexP">{{ utilisateur.score }}</td> #}
-                {# <td ><div class="scroll">{{ utilisateur.password }}</div></td> #}
                 <td class="flexP">
                     <a href="{{ path('utilisateur_show', {'id': utilisateur.id}) }}"><i class="far fa-eye"></i></a>
                     <a href="{{ path('utilisateur_edit', {'id': utilisateur.id}) }}"><i class="far fa-edit"></i></a>

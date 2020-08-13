@@ -40,19 +40,15 @@ class QuizImageController extends AbstractController
         $objetQuizImage = $quizImageRepository->findAll();
         $objetEmplacementImage = $quizImageRepository->findAll();
         // mélanger l'emplacement des réponses
-        // dump($objetQuizImage);
         shuffle($objetQuizImage);
-        // dump($objetQuizImage);
 
     // On doit récupérer:
         // l'id de base de l'emplacement.
         $i=0;
         foreach($objetEmplacementImage as $QuizImage){
             $idQuizImage[$i]=$QuizImage->getId();
-            dump($idQuizImage);
             $i++;
         }
-        // dump($i);
         // l'id de l'image posée (Créer un formulaire pour enregistrer les réponsesImage)
         $formBuilder = $this->createFormBuilder();
         // ------------------------Ajouter un utilisateur---------------------------------------------------
@@ -92,12 +88,9 @@ class QuizImageController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($a);
                 $entityManager->flush();
-                // dump($a);
                 // -------------Récupérer l'id de l'anonyme----------------------------
                 $objetAnonyme=$a;
             }
-            // $i=$i-1;
-            // dump($i);
             for($j=0;$j<$i;$j++){
                 dump($data["reponseImage".$j]);
                 $objetReponseImage=$data["reponseImage".$j];
@@ -109,11 +102,9 @@ class QuizImageController extends AbstractController
 
                 $ru->setDate(new \DateTime());
                 $idQuiz=$idQuizImage[$j];
-                // dump($idQuiz);
                 $ru ->setImage($idQuiz); //l'emplacement des cases avec son id
 //--------------// récuperer l'id de l'objet déposé !!!!
                 $ru ->setReponseImage($objetReponseImage); //reponse de l'utilisateur
-                // dump($ru);
 
                 $entityManager= $this->getDoctrine()->getManager();
                 $entityManager->persist($ru);
@@ -144,8 +135,8 @@ class QuizImageController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            // $entityManager->persist($quizImage);
-            // $entityManager->flush();
+            $entityManager->persist($quizImage);
+            $entityManager->flush();
 
             return $this->redirectToRoute('quiz_image_index');
         }

@@ -13,10 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-
 /**
  * @Route("/reponse")
  */
@@ -28,13 +24,10 @@ class ReponseController extends AbstractController
     public function index( QuestionnaireRepository $questionnaireRepository, ReponseRepository $reponseRepository, QuestionRepository $questionRepository, Request $request): Response
     {
         // rechercher plusieurs objets reponse correspondant au question
-        // dump($request->query->get('id'));
 
         $reponses = $reponseRepository->findBy(['question' => $request->query->get('id')]);
-        dump($reponses);
 
         $questions=$questionRepository->findBy(['id' => $request->query->get('id')]);
-        dump($questions[0]->getQuestionnaire()->getId());
 
 
         return $this->render('reponse/index.html.twig', [

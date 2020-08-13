@@ -21,13 +21,12 @@
                 var dropped = ui.draggable;
                 // l'emplacement de la case pour déposer l'image
                 var droppedOn = this;
-                console.log(droppedOn);
-                // récupérer l'id de l'élément déposé
+
+                // récupérer l'id de l'élément pris puis déposé
                 var id_objet = dropped.attr('id');
-                console.log(id_objet);
+
                 // récupérer l'emplacement de la case
-                var drop = $(this).attr('id');
-                console.log(drop);
+                // var drop = $(this).attr('id');
 
                 $(formQuizImage).val(id_objet);
 
@@ -40,7 +39,7 @@
                 $(dropped).detach().css({
                     top: 0,
                     left: 0
-                }).prependTo($(droppedOn));
+                }).prependTo($(droppedOn)); //Ajoute à l'emplacement de la case
             }
         }); 
     }

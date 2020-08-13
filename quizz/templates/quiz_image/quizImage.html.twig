@@ -15,16 +15,11 @@
         {{ form_start(formQuizImage) }}
         <div class="quizImage">
             <div class="reponseImage" id="answers">
-                <!-- utiliser aussi ici une boucle pour afficher les réponsesImage dans le désordre -->
                 <ul >
                     {% for key,  quiz_image in quiz_images_mélange %}
                         <div class="reponseQuizImage" >   
                             <p>{{quiz_image.reponseImage}} :</p>
-                            {# <li id="{{quiz_image.id}}"> #}
-                            <li id="{{key}}"> 
-                                {# <img class="imageQuiz" src="{{ form_widget(formQuizImage) }}" alt="">  #}
-                            
-                            </li>
+                            <li id="{{key}}"></li>
                         </div>
                     {% endfor %}
                 </ul> 

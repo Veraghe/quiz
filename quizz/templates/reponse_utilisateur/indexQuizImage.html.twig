@@ -6,7 +6,7 @@
 
 
     <h1>Résultat Quiz image </h1>
-
+{# UTILISATEUR #}
     <table class="table aideBase">
         {% if is_granted('ROLE_ADMIN') %}
             <thead class="orange">
@@ -25,22 +25,14 @@
             <tr>
                 {% if  image[key] == null %}
                     <td class="none"></td>
+                    <td class="none"></td>
+                    <td class="none"></td>
                 {% else %}
                     <td>{{ reponse_utilisateur.Date|date('d-m-Y ') }}</td>
-                 {% endif %}
-
-                {% if  image[key] == null %}
-                    <td class="none"></td>
-                {% else %}
-                    <td class="flexG">{{ reponse_utilisateur.Utilisateur}}</td>
-                 {% endif %}
-
-                {% if  image[key] == null %}
-                    <td class="none"></td>
-                {% else %}
+                    <td class="flexG">{{ reponse_utilisateur.Utilisateur.nom}} {{ reponse_utilisateur.Utilisateur.prenom}}</td>
                     <td>{{ reponse_utilisateur.Image}}</td>
                  {% endif %}
-                
+
                 {# Si la réponse est bonne afficher en vert et fause en orange#}
                 {% if image[key] != reponseQuizImage[key] %}
                     <td class="orange">{{ reponse_utilisateur.ReponseImage}}</td>
@@ -57,10 +49,53 @@
         {% endfor %}
         </tbody>
     </table>
+{# ANONYME #}
+    <table class="table aideBase">
+        {% if is_granted('ROLE_ADMIN') %}
+            <thead class="orange">
+        {% else %}
+            <thead class="vert">
+        {% endif %}
+            <tr>
+                <th>Date</th>
+                <th class="flexG">Anonyme</th>
+                <th>Solution</th>
+                <th>Réponse</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for key, reponse_anonyme in reponse_anonymes %}
+            <tr>
+                {% if  imageAnonyme[key] == null %}
+                    <td class="none"></td>
+                    <td class="none"></td>
+                    <td class="none"></td>
+                {% else %}
+                    <td>{{ reponse_anonyme.Date|date('d-m-Y ') }}</td>
+                    <td class="flexG">{{ reponse_anonyme.Anonyme}}</td>
+                    <td>{{ reponse_anonyme.Image}}</td>
+                 {% endif %}
+
+                {% if imageAnonyme[key] != reponseQuizImageAnonyme[key] %}
+                    <td class="orange">{{ reponse_anonyme.ReponseImage}}</td>
+                {% elseif  imageAnonyme[key] == null %}
+                    <td class="none"></td>
+                {% else %}
+                    <td class="vert">{{ reponse_anonyme.ReponseImage}}</td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
     <div class="centerbtn">
         <a href="{{ path('questionnaire_reponses') }}" class="btn orange">Retour</a>
     </div>
 
+{# AIDE IMAGE REPONSE !! #}
     <div class="aide-container">
         {% for quizImage in quizImages %}
             <div class="aide">
@@ -71,4 +106,5 @@
                 <p>Aucun enregistrement trouvé</p>
         {% endfor %}
     </div>
+
 {% endblock %}

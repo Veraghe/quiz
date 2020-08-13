@@ -24,7 +24,6 @@ class QuestionController extends AbstractController
      */
     public function index(QuestionRepository $questionRepository, ReponseRepository $reponseRepository, Request $request): Response
     {
-        // dump($request->query->get('id'));
         $question = $questionRepository->findBy(['Questionnaire' => $request->query->get('id')]);
          dump($question);
         return $this->render('question/index.html.twig',[
@@ -40,7 +39,6 @@ class QuestionController extends AbstractController
      */
     public function questionAdmin(QuestionRepository $questionRepository, ReponseRepository $reponseRepository, Request $request): Response
     {
-        // dump($request->query->get('id'));
         return $this->render('question/index.html.twig',[
             'questions' => $questionRepository->findAll(),
             'reponses' => $reponseRepository->findAll(),
@@ -53,8 +51,6 @@ class QuestionController extends AbstractController
      */
     public function new(QuestionRepository $questionRepository,Request $request): Response
     {
-        // $question = $questionRepository->findBy(['Questionnaire' => $request->query->get('id')]);
-        //  dump($question);
         $question = new Question();
         $form = $this->createForm(QuestionType::class, $question);
         $form->handleRequest($request);

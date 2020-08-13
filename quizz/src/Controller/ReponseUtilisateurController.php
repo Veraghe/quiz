@@ -9,13 +9,12 @@ use App\Repository\ReponseRepository;
 use App\Repository\QuestionRepository;
 use App\Repository\QuizImageRepository;
 use App\Repository\UtilisateurRepository;
+use App\Repository\AnonymeRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Knp\Component\Pager\PaginatorInterface; // Nous appelons le bundle KNP Paginator
 
@@ -34,20 +33,15 @@ class ReponseUtilisateurController extends AbstractController
         // ----------------On doit récupérer que les réponses qui sont relier aux questionnaires.---------------
         // On commence part récupèrer les questions qui correspond aux questionnaire 
         $questions = $questionRepository->findBy(['Questionnaire' => $request->query->get('id')]);
-        // dump($questions);
-        // dump($questions);
         if(!empty($questions)){
             // récupère l'id des questions
             foreach($questions as $clef =>$question){
-                $idQuestion= $question->getId();    
-                // dump($idQuestion); 
+                $idQuestion= $question->getId();   
                 $tab_question[$clef]=$idQuestion;
-                // dump($tab_question);
             }
             // afficher les réponses utilisateur part rapport à l'idQuestion
             $reponses = $reponseUtilisateurRepository->findBy(['Question'=>$tab_question]);
 //----------// ajouter les types textarea !!
-            // dump($reponses);
         }
         else {
             $reponses="";
@@ -57,15 +51,11 @@ class ReponseUtilisateurController extends AbstractController
             for($i=0;$i<count($reponses);$i++){ 
                 $questionReponse=$reponses[$i]->getReponse();
                 $reponseTextarea=$reponses[$i]->getReponseTextarea();
-                // dump($reponseTextarea);
                 if( $questionReponse != null){
                     $idReponse = $reponses[$i]->getReponse()->getId();
-                    // dump($idReponse);
                     $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
-                    // dump($laReponse);
                     $valeur[$i] = $laReponse[0]->getValeurReponse();
                 }
-                // // *******Question/ReponseTextarea***************************
                 else{
                     $valeur[$i]=2;
                 }
@@ -76,13 +66,6 @@ class ReponseUtilisateurController extends AbstractController
         else {
             $valeur="";
         }
-        // $reponsePagination=$paginator->paginate(
-        //     $reponses,
-        //     $request->query->getInt('page',1),
-        //     15
-        // );
-        // dump($reponsePagination);
-        // dump($valeur);
 
         // afficher les réponses du quiz image
         return $this->render('reponse_utilisateur/index.html.twig', [
@@ -102,10 +85,8 @@ class ReponseUtilisateurController extends AbstractController
         // récupère l'id de la personne connecté :
         if($this->getUser()){
             $utilisateur = $this -> getUser()->getId();
-            // dump($utilisateur);
             // afficher que les réponses de l'id Utilisateur connecté:
             $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
-            // dump($reponses);
 
          }
         else {
@@ -118,20 +99,15 @@ class ReponseUtilisateurController extends AbstractController
         $totalResultat=0;
         for($i=0;$i<count($reponses);$i++){ 
             $questionReponse=$reponses[$i]->getReponse();
-            dump($questionReponse);
             $reponseTextarea=$reponses[$i]->getReponseTextarea();
             // *******Question/Reponse***************************
             if( $questionReponse != null){
-            // if( $reponses == null){
                 $idReponse = $reponses[$i]->getReponse()->getId();
-            //    dump($idReponse);
                 // on veut la valeurReponse, des réponses répondues!
                 // chercher l'id de la réponse pour afficher sa valeur
                 $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
-                // dump($laReponse);
                 // Je dois avoir comme valeur 0 ou 1
                 $valeur[$i] = $laReponse[0]->getValeurReponse();
-                // dump($valeur);
                 if($valeur[$i]==1)
                 $valeurVrai++;
 
@@ -141,11 +117,9 @@ class ReponseUtilisateurController extends AbstractController
             // *******Question/ReponseTextarea***************************
             elseif($reponseTextarea != null){
                 $valeur[$i]=2;
-                // $image="";
                 $quizImage="";
                 $valeurok[$i]="";
                 $idReponseTextarea = $reponses[$i]->getReponseTextarea();
-                // dump($idReponseTextarea);
 
             }
             else {
@@ -155,7 +129,6 @@ class ReponseUtilisateurController extends AbstractController
         $resultat=$valeurVrai.'/'.$totalResultat;
    
         return $this->render('reponse_utilisateur/resultat.html.twig', [
-            // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
             'reponse_utilisateurs' => $reponses,
             'valeurReponse'=>$valeur,
             'resultat'=>$resultat,
@@ -168,60 +141,37 @@ class ReponseUtilisateurController extends AbstractController
      * @param ReponseUtilisateur $reponseUtilisateur
      * @return Response
      */
-    public function indexQuizImage(ReponseUtilisateurRepository $reponseUtilisateurRepository, ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository,QuizImageRepository $quizImageRepository, Request $request): Response
+    public function indexQuizImage(ReponseUtilisateurRepository $reponseUtilisateurRepository, ReponseRepository $reponseRepository, UtilisateurRepository $utilisateurRepository, AnonymeRepository $anonymeRepository,QuizImageRepository $quizImageRepository, Request $request): Response
     {
         // récupère l'id de la personne connecté :
         if($this->getUser()){
             $utilisateur = $utilisateurRepository->findAll();
-            dump($utilisateur);
+            $anonyme = $anonymeRepository->findAll();
+
             // afficher que les réponses de l'id Utilisateur connecté:
-            $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);   
-            dump($reponses);
+            $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]); 
+            $reponsesAnonyme = $reponseUtilisateurRepository->findBy(['Anonyme' => $anonyme]);
         }
-        // $reponses=5;
-        $valeurVrai=0;
-        $total=0;
+
         // afficher les images et les réponseImage
         for($i=0;$i<count($reponses);$i++){
-           
-                $image[$i]=$reponses[$i]->getImage();
-                $reponse[$i]=$reponses[$i]->getReponseImage();
-                // dump($image);
-
-
-            if($reponse[$i]!=null){
-                $total++;
-                if($image[$i]==$reponse[$i] ){
-                        $valeurVrai++;
-                }
-            }
+           $image[$i]=$reponses[$i]->getImage();
+           $reponse[$i]=$reponses[$i]->getReponseImage();
         }
-        $resultat=$valeurVrai.'/'.$total;
-        // voir pour afficher les images au lieu des chiffres
-        dump($image);
-        $quizImage=$quizImageRepository->findAll();
-        dump($quizImage);
-        for($i=0;$i<count($quizImage);$i++){ 
-            $idQuizImage[$i]=$quizImage[$i]->getId();
-            dump($idQuizImage);
-        }
-        for($i=0;$i<count($reponses);$i++){ 
 
-            if($idQuizImage[0] == $image[$i]){
-                // $imageFinal[$i]=$quizImage[$i]->getImage();
-                // dump($imageFinal);
-                dump('test');
-            }
-
+        for($i=0;$i<count($reponsesAnonyme);$i++){
+            $imageAnonyme[$i]=$reponsesAnonyme[$i]->getImage();
+            $reponseAnonyme[$i]=$reponsesAnonyme[$i]->getReponseImage();
         }
-        $test = $quizImageRepository->findBy(['id' => $request->query->get('id')]);
-        dump($test);
+ 
         return $this->render('reponse_utilisateur/indexQuizImage.html.twig', [
             // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
+            'reponse_anonymes' =>$reponsesAnonyme ,
             'reponse_utilisateurs' => $reponses,
             'image'=>$image,
             'reponseQuizImage'=>$reponse,
-            'resultat'=>$resultat,
+            'imageAnonyme'=>$imageAnonyme,
+            'reponseQuizImageAnonyme'=>$reponseAnonyme,
             'quizImages'=>$quizImageRepository->findAll(),
         ]);
     }
@@ -254,7 +204,6 @@ class ReponseUtilisateurController extends AbstractController
         }
         $resultat=$valeurVrai.'/'.$total;
         return $this->render('reponse_utilisateur/resultatQuizImage.html.twig', [
-            // 'reponse_utilisateurs' => $reponseUtilisateurRepository->findAll(),
             'reponse_utilisateurs' => $reponses,
             'image'=>$image,
             'reponseQuizImage'=>$reponse,
@@ -275,14 +224,11 @@ class ReponseUtilisateurController extends AbstractController
 
         // afficher que les réponses de l'id Utilisateur connecté:
         $reponses = $reponseUtilisateurRepository->findBy(['Utilisateur' => $utilisateur]);
-    //    dump($reponses);
-      
-    //    dump(count($reponses));
+        
     // -----------Savoir si c'est la bonne réponse (pour l'affichage)-----------------
     $valeurVrai=0;
     $totalResultat=0;
     if (!empty($reponses)){
-        // dump($reponses);
 
         for($i=0;$i<count($reponses);$i++){ 
             // si c'est une question reponse
@@ -291,17 +237,14 @@ class ReponseUtilisateurController extends AbstractController
             // *******Question/Reponse***************************
             if( $questionReponse != null){
                 $idReponse = $reponses[$i]->getReponse()->getId();
-                // dump($idReponse);
                 // on veut la valeurReponse, des réponses répondues!
                 // chercher l'id de la réponse pour afficher sa valeur
                 $laReponse = $reponseRepository->findBy(['id'=>$idReponse]);
-                // dump($laReponse);
                 // Je dois avoir comme valeur 0 ou 1
                 $valeur[$i] = $laReponse[0]->getValeurReponse();
                 if($valeur[$i]==1)
                 $valeurVrai++;
 
-                // $image="";
                 $quizImage="";
                 $valeurok[$i]="";
                 $totalResultat++;
@@ -309,29 +252,21 @@ class ReponseUtilisateurController extends AbstractController
             // *******Question/ReponseTextarea***************************
             elseif($reponseTextarea != null){
                 $valeur[$i]=2;
-                // $image="";
                 $quizImage="";
                 $valeurok[$i]="";
                 $idReponseTextarea = $reponses[$i]->getReponseTextarea();
-                // dump($idReponseTextarea);
 
             }
             // *******QuizImage***************************
             else{
                 $valeur[$i]="";
-                
                 $image[$i]=$reponses[$i]->getImage();
-                dump($image[$i]);
-
                 $imageQuiz=$quizImageRepository->findAll();
-                dump($imageQuiz);
 
                 $reponse[$i]=$reponses[$i]->getReponseImage();
-                dump($reponse[$i]);
                 // Voir pour afficher le nom de la réponses et l'image
-                    // por que ça soit plus parlant pour l'utilisateur, à la place des id !!
+                    // pour que ça soit plus parlant pour l'utilisateur, à la place des id !!
                 $quizImage=$quizImageRepository->find($reponse[$i]);
-                dump($quizImage);
                 
                 $totalResultat++;
                 if($reponse[$i]!=null){
@@ -339,7 +274,6 @@ class ReponseUtilisateurController extends AbstractController
                     if($image[$i]==$reponse[$i] ){
                             $valeurVrai++;
                             $valeurok[$i]=1;
-                            // dump($valeurok);
                     }
                     else{
                         $valeurok[$i]=0;
@@ -347,27 +281,20 @@ class ReponseUtilisateurController extends AbstractController
                 }
                 
             }
-
-            // dump($valeur);
         } 
     }
     else {
         // si, il n'y a pas c'est valeurs, rien mettre dedans!!
         $valeur="";
         $valeurok="";
-        // $image="";
-        // $quizImage="";
     }   
     $resultat=$valeurVrai.'/'.$totalResultat;
-    // dump($resultat);
 
         return $this->render('utilisateur/compte.html.twig', [
             'reponse_utilisateurs' => $reponses,
             'valeurReponse'=>$valeur,
             'valeurok'=>$valeurok,
             'resultat'=>$resultat,
-            // 'image'=>$image,
-            // 'reponseQuizImages'=>$quizImage,
         ]);
     }
     /*************************************************************** */
